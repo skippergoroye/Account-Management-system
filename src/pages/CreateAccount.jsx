@@ -90,12 +90,19 @@ const CreateAccount = () => {
   return (
     <div className='flex flex-row md:px-[100px] md:py-12 bg-slate-100'>
       <div className='flex flex-col md:flex-row w-full pt-19 bg-white'>
-        <div className="text-center flex item-center justify-center">
+        <div className="sideImg text-center item-center justify-center">
           <img 
             src={SideImg}
             alt='SideImg'
             className=' hidden md:flex h-[1100px] w-[600px] justify-start items-start mr-[100px]'
           />
+          <div className="p-10 sideimg-text rounded-xl">
+            <div className="">
+              <p className="text-[27px] font-normal text-white">“Using AccMan software has been a game-<br />changer for me! It's streamlined my finances, 
+              <br />making it effortless to track expenses, set<br /> budgets, and monitor transactions.”</p>
+              <p className="text-[40px] font-normal text-white mt-10 italic">Folashade Rose</p>
+            </div>
+          </div>
         </div>
         <div className="pt-[60px] px-6">
           <div className="">

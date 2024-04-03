@@ -15,5 +15,14 @@ body {
     font-family: "Sary"!important;
 }
 
-
+.sideimg-text {
+    position: absolute;
+    top: 130%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(16, 2, 2, 0.452);
+    text-align: justify;
+    margin-left: 20px;
+    margin-right: 20px;
+}
 

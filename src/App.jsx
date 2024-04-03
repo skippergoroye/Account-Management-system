@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CreateAccount, Home, Login, NotFound } from "./pages";
-import { PrivateRoute } from "./components";
+import { CreateAccount, Home, Login, NotFound, VerificationMail } from "./pages";
+// import { PrivateRoute } from "./components";
 
 
 
@@ -17,9 +17,13 @@ function App() {
           <Route
             path="/create-account"
             element={
-              <PrivateRoute>
-                <CreateAccount />
-              </PrivateRoute>
+              <CreateAccount />
+            }
+          />
+          <Route
+            path="/verification-mail"
+            element={
+              <VerificationMail />
             }
           />
           <Route path="*" element={<NotFound />} />

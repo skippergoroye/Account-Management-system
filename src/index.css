@@ -17,8 +17,8 @@ body {
 
 .sideimg-text {
     position: absolute;
-    top: 130%;
-    left: 25%;
+    top: 110%;
+    left: 20%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.6);
     text-align: justify;
@@ -26,3 +26,6 @@ body {
     margin-right: 20px;
 }
 
+.error {
+    color: red;
+}

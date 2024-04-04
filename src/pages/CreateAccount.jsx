@@ -88,13 +88,13 @@ const CreateAccount = () => {
 
 
   return (
-    <div className='flex flex-row md:px-[100px] md:py-12 bg-slate-100'>
+    <div className='flex flex-row bg-slate-100'>
       <div className='flex flex-col md:flex-row w-full pt-19 bg-white'>
         <div className="sideImg text-center item-center justify-center">
           <img 
             src={SideImg}
             alt='SideImg'
-            className=' hidden md:flex h-[1100px] w-[600px] justify-start items-start mr-[100px]'
+            className=' hidden md:flex h-[1100px] w-[650px] justify-start items-start mr-[100px]'
           />
           <div className="hidden md:flex p-10 sideimg-text rounded-xl">
             <div className="">

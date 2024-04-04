@@ -12,8 +12,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-
-          {/* Private Route  */}
           <Route
             path="/create-account"
             element={
@@ -26,7 +24,6 @@ function App() {
               <VerificationMail />
             }
           />
-          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

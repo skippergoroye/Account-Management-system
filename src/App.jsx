@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CreateAccount, Home, Login, NotFound, VerificationMail} from "./pages";
+import { CreateAccount, Home, Login, NotFound, VerificationMail, Form} from "./pages";
 // import { PrivateRoute } from "./components";
 
 
@@ -26,12 +26,12 @@ function App() {
               <VerificationMail />
             }
           />
-          {/* <Route 
-            path="/createaccount-form"
+          <Route 
+            path="/form"
             element={
-              <CreateAccountForm />
+              <Form />
             }
-          /> */}
+          />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

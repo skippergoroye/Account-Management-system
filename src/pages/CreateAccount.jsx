@@ -1,220 +1,228 @@
 
-import {useState} from "react";
-import * as Yup from 'yup';
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import SideImg from '../assets/PNG/SideImg.png';
 import Logo from '../assets/PNG/logo.png';
 import { Link } from 'react-router-dom';
 
+const formSchema = yup.object().shape({
+  firstName: yup
+  .string()
+  .required(),
+  lastName: yup
+  .string()
+  .required(),
+  email: yup
+  .string()
+  .email("please provide a valid email address")
+  .required("email address is required"),
+  phoneNumber: yup
+  .string()
+  .required(),
+password: yup
+  .string()
+  .min(5, "password should have a minimum length of 5")
+  .max(12, "password should have a maximum length of 12")
+  .required("password is required"),
+confirmPassword: yup
+  .string()
+  .oneOf([yup.ref("password")])
+  .required("confirm password is required"),
+
+});
+
+const textInputClassName =
+"bg-gray-50 border border-gray-300 text-gray-900 text-[25px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+
 const CreateAccount = () => {
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(formSchema),
   });
 
-  const [errors, setErrors] = useState({});
-
-   const validationSchema = Yup.object({
-    firstName: Yup.string().required("First Name is Required"),
-    lastName: Yup.string().required("Last Name is Required"),
-    email: Yup.string()
-      .required("Email is Required")
-      .email("Invalid email format"),
-    phoneNumber: Yup.string()
-      .matches(/^\d{10}$/, "Phone Number must be 10 digits")
-      .required(),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
-      .matches(
-        /[!@#$%^&*(),.?":{}|<>]/,
-        "Password must contain at least one symbol"
-      )
-      .matches(/[0-9]/, "Password must contain at least one number")
-      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Password must contain at least one lowercase letter"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords must match")
-      .required("Confirm password is required"),
-    
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const nonParsed = {
-      firstName: "Piyush",
-      lastName: "Agarwal",
-      email: "piyush@example.com",
-      phoneNumber: "1231234218",
-      password: "123456Qq*",
-      confirmPassword: "123456Qq*",
-      age: "18",
-      gender: "male",
-      interests: ["coding"],
-      birthDate: "2024-02-12",
+  const formSubmitHandler = (data) => {
+      console.log(data);
     };
-
-    const parsedUser = validationSchema.cast(nonParsed);
-
-    console.log(nonParsed, parsedUser);
-
-    try {
-      await validationSchema.validate(formData, {abortEarly: false});
-      console.log("Form Submitted", formData);
-    } catch (error) {
-      const newErrors = {};
-
-      error.inner.forEach((err) => {
-        newErrors[err.path] = err.message;
-      });
-
-      setErrors(newErrors);
-    }
-  };
-
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-
-  return (
-    <div className='flex flex-row bg-slate-100'>
-      <div className='flex flex-col md:flex-row w-full pt-19 bg-white'>
-        <div className="sideImg text-center item-center justify-center">
+  
+    return (
+      <div className='w-full h-screen flex items-start'>
+        <div className="hidden md:flex relative w-1/2 h-full flex flex-col">
+          <div className="hidden md:flex p-10 sideimg-text rounded-xl flex flex-col">
+            <p className="text-[27px] font-normal text-white">“Using AccMan software has been a game-changer for me! It's streamlined my finances, 
+              making it effortless to track expenses, set budgets, and monitor transactions.”
+            </p>
+           <p className="text-[40px] font-normal text-white mt-10 italic">Folashade Rose</p>
+          </div>
+          
           <img 
             src={SideImg}
             alt='SideImg'
-            className=' hidden md:flex h-[1100px] w-[650px] justify-start items-start mr-[100px]'
+            className='hidden md:flex h-[1180px] w-full object-cover'
           />
-          <div className="hidden md:flex p-10 sideimg-text rounded-xl">
-            <div className="">
-              <p className="text-[27px] font-normal text-white">“Using AccMan software has been a game-<br />changer for me! It's streamlined my finances, 
-              <br />making it effortless to track expenses, set<br /> budgets, and monitor transactions.”</p>
-              <p className="text-[40px] font-normal text-white mt-10 italic">Folashade Rose</p>
-            </div>
-          </div>
         </div>
-        <div className="pt-[60px] px-6">
-          <div className="">
+        <div className="md:w-1/2 w-full h-full bg-white flex flex-col justify-between pt-[60px] px-6">
+          <div className="md:pl-11 pl-4">
             <img 
               src={Logo}
               alt='Logo'
               className='flex justify-start items-start h-[40px]'
             />
+          
+            <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Create an account</h1>
+            <p className="text-[25px] font-normal mb-6">Create your accman account</p>
           </div>
-          <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Create an account</h1>
-          <p className="text-[25px] font-normal mb-6">Create your accman account</p>
-          <form className="form" onSubmit={handleSubmit}>
-            <div className='flex flex-col flex-row gap-4'>
-              <div>
-                <h2 className="font-normal text-[25px] mb-1">
-                  First name
-                </h2>
-                <input
-                  className="w-full border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  placeholder='John'
-                  onChange={handleChange}
-                />
-                {errors.firstName && <div className="error">{errors.firstName}</div>}
+          <div className="shadow-sm shadow-white bg-white] md:mx-auto md:px-7 px-4 py-4 rounded-xl">
+            <form onSubmit={handleSubmit(formSubmitHandler)} className="w-full">
+              <div className="mb-6 flex gap-4">
+                  <div className="w-full">
+                      <label
+                          htmlFor="firstName"
+                          className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                      >
+                          First name
+                      </label>
+                      <input
+                          {...register("firstName")}
+                          type="text"
+                          name="firstName"
+                          id="firstName"
+                          className={textInputClassName}
+                          placeholder="John"
+                      />
+                      {errors.firstName ? (
+                      <span className="text-red-900">{errors.firstName.message}</span>
+                      ) : (
+                          <></>
+                      )}
+                  </div>
+                  <div className="w-full">
+                      <label
+                          htmlFor="lastName"
+                          className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                      >
+                          Last name
+                      </label>
+                      <input
+                          {...register("lastName")}
+                          type="text"
+                          name="lastName"
+                          id="lastName"
+                          className={textInputClassName}
+                          placeholder="Doe"
+                      />
+                      {errors.lastName ? (
+                      <span className="text-red-900">{errors.lastName.message}</span>
+                      ) : (
+                          <></>
+                      )}
+                  </div>
+                  
               </div>
-              <div>
-                <h2 className="font-normal text-[25px] mb-1">
-                  Last name
-                </h2>
-                <input
-                  className="w-full border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  placeholder='Doe'
-                  onChange={handleChange}
-                />
-                {errors.lastName && <div className="error">{errors.lastName}</div>}
+              <div className="mb-6"> 
+                  <label
+                      htmlFor="phoneNumber"
+                      className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                  >
+                      Phone number
+                  </label>
+                  <input
+                      {...register("phoneNumber")}
+                      type="text"
+                      name="phoneNumber"
+                      id="phoneNumber"
+                      className={textInputClassName}
+                      placeholder="08033xxxxxx"
+                  />
+                  {errors.phoneNumber ? (
+                  <span className="text-red-900">{errors.phoneNumber.message}</span>
+                  ) : (
+                      <></>
+                  )}
               </div>
-            </div>
-            <div className='mt-5'>
-              <h2 className="font-normal text-[25px] mb-1">
-                Email
-              </h2>
-              <input
-                className="w-full md:w-[480px] border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                type="text"
-                name="email"
-                value={formData.email}
-                placeholder='Enter your email address'
-                onChange={handleChange}
-              />
-              {errors.email && <div className="error">{errors.email}</div>}
-            </div>
-            <div className='mt-5'>
-              <h2 className="font-normal text-[25px] mb-1">
-                Phone number
-              </h2>
-              <input
-                className="w-full md:w-[480px] border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                type="text"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                placeholder='08033xxxxxx'
-                onChange={handleChange}
-              />
-              {errors.phoneNumber && (
-                <div className="error">{errors.phoneNumber}</div>
-              )}
-            </div>
-            <div className='mt-5'>
-              <h2 className="font-normal text-[25px] mb-1">
-                Password
-              </h2>
-              <input
-                className="w-full md:w-[480px] border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                type="password"
-                name="password"
-                value={formData.password}
-                placeholder='Create a password'
-                onChange={handleChange}
-              />
-              {errors.password && <div className="error">{errors.password}</div>}
-            </div>
-            <div className='mt-5'>
-              <h2 className="font-normal text-[25px] mb-1">
-                Confirm password
-              </h2>
-              <input
-                className="w-full md:w-[480px] border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                placeholder='******************'
-                onChange={handleChange}
-              />
-              {errors.confirmPassword && (
-                <div className="error">{errors.confirmPassword}</div>
-              )}
-            </div>
-            <p className='mt-5 text-gray-400 text-[18px] font-normal'>By clicking on create account below you agree to our <Link to ='/' className="text-primary">Terms of use</Link> and <br /><Link to ='/' className="text-primary">Privacy policy.</Link></p>
-            <div className='mt-5'>
-              <button type="submit" className='w-full md:w-[480px] bg-primary border rounded-xl md:rounded-md text-white px-10 py-4'>Create account</button>
-            </div>
-            <p className='mt-3 text-gray-400 text-[18px] font-normal text-center'>Already have an account ? <Link to ='/' className="text-primary">Log In</Link></p>
-          </form>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Your email
+                </label>
+                <input
+                  {...register("email")}
+                  type="email"
+                  name="email"
+                  id="email"
+                  className={textInputClassName}
+                  placeholder="test@test.com"
+                />
+                {errors.email ? (
+                  <span className="text-red-900">{errors.email.message}</span>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Your password
+                </label>
+                <input
+                  {...register("password")}
+                  type="password"
+                  name="password"
+                  id="password"
+                  className={textInputClassName}
+                  placeholder="Create a password"
+                />
+                {errors.password ? (
+                  <span className="text-red-900">{errors.password.message}</span>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  {...register("confirmPassword")}
+                  name="confirmPassword"
+                  type="password"
+                  id="confirmPassword"
+                  className={textInputClassName}
+                  placeholder='******************'
+                />
+                {errors.confirmPassword ? (
+                  <span className="text-red-900">
+                    {errors.confirmPassword.message}
+                  </span>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <p className='mt-5 mb-4 text-gray-400 text-[18px] font-normal'>By clicking on create account below you agree to our <Link to ='/' className="text-primary">Terms of use</Link> and <Link to ='/' className="text-primary">Privacy policy.</Link></p>
+              <button
+                type="submit"
+                className="w-full bg-primary border rounded-xl md:rounded-md text-[25px] text-white px-10 py-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+              >
+                Create account
+              </button>
+              <p className='mt-3 text-gray-400 text-[18px] font-normal text-center'>Already have an account ? <Link to ='/' className="text-primary">Log In</Link></p>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  )
-}
+    );
+  };
 
 export default CreateAccount

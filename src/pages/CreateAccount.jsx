@@ -96,7 +96,7 @@ const CreateAccount = () => {
             alt='SideImg'
             className=' hidden md:flex h-[1100px] w-[600px] justify-start items-start mr-[100px]'
           />
-          <div className="p-10 sideimg-text rounded-xl">
+          <div className="hidden md:flex p-10 sideimg-text rounded-xl">
             <div className="">
               <p className="text-[27px] font-normal text-white">“Using AccMan software has been a game-<br />changer for me! It's streamlined my finances, 
               <br />making it effortless to track expenses, set<br /> budgets, and monitor transactions.”</p>

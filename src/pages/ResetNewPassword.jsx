@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as Yup from 'yup';
 import SideImg from '../assets/PNG/SideImg.png';
 import Logo from '../assets/PNG/logo.png';
+import Button from "../components/Button";
 
 const ResetNewPassword = () => {
   const [formData, setFormData] = useState({
@@ -81,13 +82,13 @@ const ResetNewPassword = () => {
             className='h-[40px] md:h-[40px]'
           />
         </div>
-        <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Set a new password</h1>
+        <h1 className="md:text-[64px] text-[34px] font-bold leading-[40px] mt-16">Set a new password</h1>
         <p className="text-[25px] font-normal  my-4">It’s easy and quick </p>
         <form className="form" onSubmit={handleSubmit}>
           <div className='mt-5'>
-            <h2 className="font-normal text-[25px] mb-1">
+            <label className="font-normal text-[25px] mb-1">
               Password
-            </h2>
+            </label>
             <input
               className="w-full border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
               type="password"
@@ -99,9 +100,9 @@ const ResetNewPassword = () => {
             {errors.password && <div className="text-red-500">{errors.password}</div>}
           </div>
           <div className='mt-5'>
-              <h2 className="font-normal text-[25px] mb-1">
+              <label className="font-normal text-[25px] mb-1">
                 Confirm password
-              </h2>
+              </label>
               <input
                 className="w-full border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
                 type="password"
@@ -111,12 +112,10 @@ const ResetNewPassword = () => {
                 onChange={handleChange}
               />
               {errors.confirmPassword && (
-                <div className="error">{errors.confirmPassword}</div>
+                <div className="text-red-500">{errors.confirmPassword}</div>
               )}
             </div>
-          <div className='mt-5'>
-            <button type="submit" className='w-full bg-primary border rounded-xl text-white px-10 py-4'>Reset Password</button>
-          </div>
+          <Button label="Reset Password"/>
         </form>
       </div>
     </div>

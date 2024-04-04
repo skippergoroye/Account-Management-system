@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as Yup from 'yup';
 import LadyImg from '../assets/PNG/Lady.png';
 import Logo from '../assets/PNG/logo.png';
+import Button from "../components/Button";
 
 const ResetPassword = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ const ResetPassword = () => {
 
   return (
     <div className='flex flex-col md:flex-row md:px-[100px] md:py-12 bg-slate-100'>
-      <div className='md:flex-1'>
+      <div className='flex-1 md:flex-2'>
         <div className=" mt-[-50px] md:block flex-1 flex justify-center items-center">
           <div className="flex flex-col justify-center items-center">
             <img
@@ -50,7 +51,7 @@ const ResetPassword = () => {
               alt='SideImg'
               className='h-[900px] w-auto'
             />
-            <div className="bg-black p-3 bg-opacity-50 rounded-xl relative bottom-52">
+            <div className="bg-black p-6 bg-opacity-50 rounded-xl relative bottom-64">
               <div className="">
                 <p className="text-[22px] font-normal text-white">“I love how intuitive AccMan interface is,<br />making it easy to navigate and manage 
                 <br />multiple accounts seamlessly.”</p>
@@ -68,13 +69,13 @@ const ResetPassword = () => {
             className='h-[40px] md:h-[40px]'
           />
         </div>
-        <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Reset password</h1>
+        <h1 className="md:text-[64px] text-[32px] font-bold leading-[40px] mt-16">Reset password</h1>
         <p className="text-[25px] font-normal my-4">It’s easy and quick. let’s get you back.</p>
         <form className="form" onSubmit={handleSubmit}>
           <div className='mt-5'>
-            <h2 className="font-normal text-[25px] mb-1">
+            <label className="font-normal text-[25px] mb-1">
               Email Address
-            </h2>
+            </label>
             <input
               className="w-full border rounded-xl border-slate-300 h-12 text-xl pl-4"
               type="text"
@@ -85,9 +86,7 @@ const ResetPassword = () => {
             />
             {errors.email && <div className="text-red-500">{errors.email}</div>}
           </div>
-          <div className='mt-5'>
-            <button type="submit" className='w-full bg-primary border rounded-xl text-white px-10 py-4'>Reset Password</button>
-          </div>
+          <Button label="Reset Password"/>
         </form>
       </div>
     </div>

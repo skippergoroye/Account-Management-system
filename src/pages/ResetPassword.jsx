@@ -1,15 +1,13 @@
-import  { useState } from "react";
+import { useState } from "react";
 import * as Yup from 'yup';
 import LadyImg from '../assets/PNG/Lady.png';
 import Logo from '../assets/PNG/logo.png';
-import { Link } from 'react-router-dom';
 
-const Login = () => {
+const ResetPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
 
   const [errors, setErrors] = useState({});
 
@@ -17,19 +15,6 @@ const Login = () => {
     email: Yup.string()
       .required("Email is required")
       .email("Invalid email format"),
-      password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .test('contains-special-char', 'Password must contain at least one symbol', (value) => {
-      const specialCharacters = /[!@#$%^&*(),.?":{}|<>]/;
-      return specialCharacters.test(value);
-    })
-    .test('contains-number', 'Password must contain at least one number', (value) => {
-      const numbers = /[0-9]/;
-      return numbers.test(value);
-    })
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter"),
   });
 
   const handleSubmit = async (e) => {
@@ -83,8 +68,8 @@ const Login = () => {
             className='h-[40px] md:h-[40px]'
           />
         </div>
-        <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Welcome back!</h1>
-        <p className="text-[25px] font-normal mb-6">Sign in to your account</p>
+        <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Reset password</h1>
+        <p className="text-[25px] font-normal my-4">It’s easy and quick. let’s get you back.</p>
         <form className="form" onSubmit={handleSubmit}>
           <div className='mt-5'>
             <h2 className="font-normal text-[25px] mb-1">
@@ -101,28 +86,12 @@ const Login = () => {
             {errors.email && <div className="text-red-500">{errors.email}</div>}
           </div>
           <div className='mt-5'>
-            <h2 className="font-normal text-[25px] mb-1">
-              Password
-            </h2>
-            <input
-              className="w-full border rounded-xl border-slate-300 h-12 text-xl pl-4"
-              type="password"
-              name="password"
-              value={formData.password}
-              placeholder='Create a password'
-              onChange={handleChange}
-            />
-            {errors.password && <div className="text-red-500">{errors.password}</div>}
+            <button type="submit" className='w-full bg-primary border rounded-xl text-white px-10 py-4'>Reset Password</button>
           </div>
-          <p className='mt-5 text-gray-400 text-[18px] font-normal'><Link to ='/reset-password' className="text-primary">Forgot password?</Link></p>
-          <div className='mt-5'>
-            <button type="submit" className='w-full bg-primary border rounded-xl text-white px-10 py-4'>Sign In</button>
-          </div>
-          <p className='mt-3 text-gray-400 text-[18px] font-normal text-center'>Don’t have an account ? <Link to ='/create-account' className="text-primary">Create an account</Link></p>
         </form>
       </div>
     </div>
   )
 }
 
-export default Login;
+export default ResetPassword;

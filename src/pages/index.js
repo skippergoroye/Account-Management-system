@@ -4,7 +4,8 @@ import NotFound from "./NotFound";
 import CreateAccount from "./CreateAccount";
 import VerificationMail from "./VerificationMail";
 import Settings from "./Settings";
-
+import AccountSettings from "./AccountSettings";
+import SecuritySettings from "./SecuritySettings";
 
 
 export {
@@ -14,4 +15,6 @@ export {
     CreateAccount,
     VerificationMail,
     Settings,
+    AccountSettings,
+    SecuritySettings
 }

@@ -73,7 +73,7 @@ const AccountSettings = () => {
                         </div>
                     </form>
 
-                    <Button btnText={'Update Account'} btnClass={'w-[144px]'} onClick={handleSubmit(formSubmitHandler)} />
+                    <Button label={'Update Account'} btnClass={'w-[144px]'} handleSubmit={handleSubmit(formSubmitHandler)} />
                 </div>
                 <div className="mt-7">
                     <span className="cursor-pointer text-sm text-red-600">Delete</span>

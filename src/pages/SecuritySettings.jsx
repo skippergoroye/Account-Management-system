@@ -43,7 +43,7 @@ const SecuritySettings = () => {
                         {errors.confirmPassword && <div className="text-red-600 text-sm">{errors.confirmPassword.message}</div>}
                     </div>
 
-                    <Button btnText={'Change password'} btnClass={'w-[144px]'} onClick={handleSubmit(formSubmitHandler)} />
+                    <Button label={'Change password'} btnClass={'w-[144px]'} handleSubmit={handleSubmit(formSubmitHandler)} />
                 </form>
             </div>
         </div>

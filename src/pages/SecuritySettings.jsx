@@ -1,62 +1,22 @@
 
-import { useState } from "react";
 import Button from "../components/Button"
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const formSchema = yup.object().shape({
+    oldPassword: yup.string().required('old password is required'),
+    newPassword: yup.string().min(8, 'password must not be less than 8 characters').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;':",.<>?~`\-=/\\]).{8,}$/, 'password must have at least 1 uppercase, 1 lowercase, 1 number and 1 special character').required('new password is required'),
+    confirmPassword: yup.string().oneOf([yup.ref("newPassword")], 'password mismatch').required("confirm password is required")
+});
 
 const SecuritySettings = () => {
-    const [settingsFormData, setSettingsFormData] = useState({
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    });
-    const [settingsErrors, setSettingsErrors] = useState({});
+    const { register, handleSubmit, formState: { errors }, } = useForm({
+        resolver: yupResolver(formSchema),
+    },);
 
-    const handleSettingsFormChange = (event) => {
-        const { name, value } = event.target;
-        setSettingsFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleSettingsFormSubmit = (event) => {
-        event.preventDefault();
-        const validationErrors = validateSettingsForm(settingsFormData);
-        if (Object.keys(validationErrors).length === 0) {
-            // Form is valid, handle submission
-            console.log('Form submitted:', settingsFormData);
-            // Reset form data
-            setSettingsFormData({
-                oldPassword: '',
-                newPassword: '',
-                confirmPassword: ''
-            });
-        } else {
-            // Form has errors, display validation errors
-            setSettingsErrors(validationErrors);
-        }
-    };
-
-    const validateSettingsForm = (data) => {
-        let errors = {};
-        if (!data.oldPassword) {
-            errors.oldPassword = 'old password is required';
-        }
-        if (!data.newPassword) {
-            errors.newPassword = 'new password is required';
-        } else if (!isValidPassword(data.newPassword)) {
-            errors.newPassword = 'invalid password format';
-        }
-        if (!data.confirmPassword) {
-            errors.confirmPassword = 'confirm password is required';
-        } else if (data.newPassword !== data.confirmPassword) {
-            errors.confirmPassword = 'password mismatch ';
-        }
-        return errors;
-    };
-
-    const isValidPassword = (password) => {
-        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;':",.<>?~`\-=/\\]).{8,}$/;
-        return passwordPattern.test(password);
+    const formSubmitHandler = (data) => {
+        console.log(data);
     };
 
     return (
@@ -65,28 +25,25 @@ const SecuritySettings = () => {
                 <h4 className="font-semibold text-gray-900 text-xl">Change Password</h4>
                 <p className="mt-1.5 text-gray-600">Secure your accman account</p>
             </div>
-            <div className="mt-8">
-                <form className="mt-12 grid grid-cols-1 gap-y-5 md:gap-y-7 pb-9 border-b border-[#F3F3F3]">
+            <div className="mt-8 mb-4">
+                <form className="mt-12 grid grid-cols-1 gap-y-5 md:gap-y-7">
                     <div className="flex flex-col gap-1 lg:w-1/2">
                         <label htmlFor="oldPassword" className="font-medium text-sm text-[#09090B]">Current password</label>
-                        <input type="password" name="oldPassword" id="oldPassword" value={settingsFormData.oldPassword}
-                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                        {settingsErrors.oldPassword && <div className="text-red-600 text-sm">{settingsErrors.oldPassword}</div>}
+                        <input {...register("oldPassword")} type="password" name="oldPassword" id="oldPassword" placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                        {errors.oldPassword && <div className="text-red-600 text-sm">{errors.oldPassword.message}</div>}
                     </div>
                     <div className="flex flex-col gap-1 lg:w-1/2">
                         <label htmlFor="newPassword" className="font-medium text-sm text-[#09090B]">New password</label>
-                        <input type="password" name="newPassword" id="newPassword" value={settingsFormData.newPassword}
-                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                        {settingsErrors.newPassword && <div className="text-red-600 text-sm">{settingsErrors.newPassword}</div>}
+                        <input {...register("newPassword")} type="password" name="newPassword" id="newPassword" placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                        {errors.newPassword && <div className="text-red-600 text-sm">{errors.newPassword.message}</div>}
                     </div>
                     <div className="flex flex-col gap-1 lg:w-1/2">
                         <label htmlFor="confirmPassword" className="font-medium text-sm text-[#09090B]">Confirm new password</label>
-                        <input type="password" name="confirmPassword" id="confirmPassword" value={settingsFormData.confirmPassword}
-                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                        {settingsErrors.confirmPassword && <div className="text-red-600 text-sm">{settingsErrors.confirmPassword}</div>}
+                        <input {...register("confirmPassword")} type="password" name="confirmPassword" id="confirmPassword"  placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                        {errors.confirmPassword && <div className="text-red-600 text-sm">{errors.confirmPassword.message}</div>}
                     </div>
 
-                    <Button btnText={'Change password'} btnClass={'w-[144px]'} onClick={handleSettingsFormSubmit} />
+                    <Button btnText={'Change password'} btnClass={'w-[144px]'} onClick={handleSubmit(formSubmitHandler)} />
                 </form>
             </div>
         </div>

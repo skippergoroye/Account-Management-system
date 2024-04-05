@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CreateAccount, Home, Login, NotFound, VerificationMail} from "./pages";
+import { CreateAccount, Home, Login, NotFound, VerificationMail, Settings } from "./pages";
 // import { PrivateRoute } from "./components";
 
 
@@ -22,6 +22,12 @@ function App() {
             path="/verification-mail"
             element={
               <VerificationMail />
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <Settings />
             }
           />
           <Route path="*" element={<NotFound />} />

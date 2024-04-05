@@ -2,7 +2,7 @@ import React from 'react'
 
 const DashBoardNavbar = () => {
   return (
-    <div>DashBoardNavbar</div>
+    <div className='bg-white fixed top-0 w-full z-10'>DashBoardNavbar</div>
   )
 }
 

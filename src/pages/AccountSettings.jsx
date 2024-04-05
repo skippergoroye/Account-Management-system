@@ -92,30 +92,30 @@ const AccountSettings = () => {
                         <div className="flex flex-col gap-1">
                             <label htmlFor="firstName" className="font-medium text-sm text-[#09090B]">First Name</label>
                             <input type="text" name="firstName" id="firstName" value={accountFormData.firstName}
-                                onChange={handleAccountFormChange} placeholder="John" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                                onChange={handleAccountFormChange} placeholder="John" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                             {accountErrors.firstName && <div className="text-red-600 text-sm">{accountErrors.firstName}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="lastName" className="font-medium text-sm text-[#09090B]">Last Name</label>
                             <input type="text" name="lastName" id="lastName" value={accountFormData.lastName}
-                                onChange={handleAccountFormChange} placeholder="Doe" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                                onChange={handleAccountFormChange} placeholder="Doe" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                             {accountErrors.lastName && <div className="text-red-600 text-sm">{accountErrors.lastName}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="emailAddress" className="font-medium text-sm text-[#09090B]">Email Address</label>
                             <input type="email" name="emailAddress" id="emailAddress" value={accountFormData.emailAddress}
-                                onChange={handleAccountFormChange} placeholder="johndoe@gmail.com" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                                onChange={handleAccountFormChange} placeholder="johndoe@gmail.com" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                             {accountErrors.emailAddress && <div className="text-red-600 text-sm">{accountErrors.emailAddress}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="phoneNumber" className="font-medium text-sm text-[#09090B]">Phone Number</label>
                             <input type="text" name="phoneNumber" id="phoneNumber" value={accountFormData.phoneNumber}
-                                onChange={handleAccountFormChange} placeholder="080********" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                                onChange={handleAccountFormChange} placeholder="080********" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                             {accountErrors.phoneNumber && <div className="text-red-600 text-sm">{accountErrors.phoneNumber}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="gender" className="font-medium text-sm text-[#09090B]">Gender</label>
-                            <select name="gender" defaultValue={''} className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" onChange={handleAccountFormChange}>
+                            <select name="gender" defaultValue={''} className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" onChange={handleAccountFormChange}>
                                 <option value="" disabled>Select an option</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>

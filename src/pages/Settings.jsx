@@ -22,7 +22,7 @@ function Settings() {
 
                 <ul className="flex flex-col">
                     <li>
-                        <Link to={'/settings/account-settings'} onClick={() => handleLinkClick('/settings/account-settings')} className={`flex items-center gap-4 px-4 py-2.5 rounded-md cursor-pointer ${activeLink === '/settings/account-settings' ? "bg-zinc-200" : "bg-transparent"}`}>
+                        <Link to={'/settings'} onClick={() => handleLinkClick('/settings')} className={`flex items-center gap-4 px-4 py-2.5 rounded-md cursor-pointer ${activeLink === '/settings' ? "bg-zinc-200" : "bg-transparent"}`}>
                             <img src={userIcon} alt="" />
                             <span className="text-zinc-700 text-sm">Account Details</span>
                         </Link>

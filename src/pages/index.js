@@ -3,7 +3,7 @@ import Login from "./Login";
 import NotFound from "./NotFound";
 import CreateAccount from "./CreateAccount";
 import VerificationMail from "./VerificationMail";
-
+import Settings from "./Settings";
 
 
 
@@ -13,4 +13,5 @@ export {
     NotFound,
     CreateAccount,
     VerificationMail,
+    Settings,
 }

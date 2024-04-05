@@ -30,7 +30,7 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={faBars} />
                 </div>
 
-                <ul className={`logo md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white text-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-20 ' : 'top-[-490px]'}`}>
+                <ul className={`logo md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white text-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in`}>
                     <li className='md:ml-8 text-xl md:mb-0 mb-3 md:my-0 my-7'>
                         <NavLink to="/login" className='text-primary hover:text-gray-400 duration-500'>Sign In</NavLink>
                     </li>

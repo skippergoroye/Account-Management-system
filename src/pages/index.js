@@ -5,7 +5,8 @@ import CreateAccount from "./CreateAccount";
 import VerificationMail from "./VerificationMail";
 import Dashboard from "./Dashboard";
 import Settings from "./Settings";
-
+import AccountSettings from "./AccountSettings";
+import SecuritySettings from "./SecuritySettings";
 
 
 export {
@@ -15,5 +16,8 @@ export {
     CreateAccount,
     VerificationMail,
     Settings,
+    AccountSettings,
+    SecuritySettings,
     Dashboard
+
 }

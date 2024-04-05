@@ -36,6 +36,17 @@ const router = createBrowserRouter(
         <Route path="security-settings" element={<SecuritySettings />} />
       </Route>
       <Route path="*" element={<NotFound />} />
+
+      
+      {/* // Private Route
+      <Route
+        path="dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      /> */}
     </Route>
   )
 );

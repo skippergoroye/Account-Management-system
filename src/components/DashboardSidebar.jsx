@@ -20,7 +20,7 @@ const DashboardSidebar = () => {
             <NavLink
             to={item.route}
             key={item.label}
-            className={`flex gap-4 items-center p-4 rounded-lg justify-start ${isActive ? 'bg-[#7C3AED]' : ''}`}
+            className={`flex gap-4 items-center p-3 ml-5 rounded-lg justify-start ${isActive ? 'bg-[#7C3AED] w-[160px]' : ''}`}
           >
             <img
               src={item.imgURL}

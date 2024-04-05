@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CreateAccount, Home, Login, NotFound, VerificationMail, Settings, Dashboard, AccountSettings, SecuritySettings } from "./pages";
+import { CreateAccount, ResetPassword, ResetNewPassword, Home, Login, NotFound, VerificationMail, Settings, Dashboard, AccountSettings, SecuritySettings } from "./pages";
 
 // import { PrivateRoute } from "./components";
 
@@ -19,6 +19,19 @@ function App() {
             path="/dashboard"
             element={
               <Dashboard />
+            }
+          />
+
+<Route
+            path="/reset-password"
+            element={
+              <ResetPassword />
+            }
+          />
+          <Route
+            path="/reset-new-password"
+            element={
+              <ResetNewPassword />
             }
           />
 

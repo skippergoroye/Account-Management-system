@@ -51,8 +51,8 @@ const CreateAccount = () => {
   
     return (
       <div className='w-full h-screen flex items-start'>
-        <div className="hidden md:flex relative w-1/2 h-full flex flex-col">
-          <div className="hidden md:flex p-10 sideimg-text rounded-xl flex flex-col">
+        <div className="hidden md:flex relative w-1/2 h-full flex-col">
+          <div className="hidden md:flex p-10 sideimg-text rounded-xl flex-col">
             <p className="text-[27px] font-normal text-white">“Using AccMan software has been a game-changer for me! Its streamlined my finances, 
               making it effortless to track expenses, set budgets, and monitor transactions.”
             </p>

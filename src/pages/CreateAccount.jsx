@@ -33,7 +33,7 @@ confirmPassword: yup
 });
 
 const textInputClassName =
-"bg-gray-50 border border-gray-300 text-gray-900 text-[25px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+"border border-gray-300 text-gray-900 text-[25px] rounded-lg  block w-full p-2  dark:placeholder-gray-400 dark:text-white";
 
 const CreateAccount = () => {
 
@@ -62,11 +62,11 @@ const CreateAccount = () => {
           <img 
             src={SideImg}
             alt='SideImg'
-            className='hidden md:flex h-[1180px] w-full object-cover'
+            className='hidden md:flex h-[1080px] w-full object-cover'
           />
         </div>
         <div className="md:w-1/2 w-full h-full bg-white flex flex-col justify-between pt-[60px] px-6">
-          <div className="md:pl-11 pl-4">
+          <div className="md:pl-[60px] pl-4">
             <img 
               src={Logo}
               alt='Logo'
@@ -95,7 +95,7 @@ const CreateAccount = () => {
                           placeholder="John"
                       />
                       {errors.firstName ? (
-                      <span className="text-red-900">{errors.firstName.message}</span>
+                      <span className="text-red-500">{errors.firstName.message}</span>
                       ) : (
                           <></>
                       )}
@@ -116,7 +116,7 @@ const CreateAccount = () => {
                           placeholder="Doe"
                       />
                       {errors.lastName ? (
-                      <span className="text-red-900">{errors.lastName.message}</span>
+                      <span className="text-red-500">{errors.lastName.message}</span>
                       ) : (
                           <></>
                       )}
@@ -139,7 +139,7 @@ const CreateAccount = () => {
                       placeholder="08033xxxxxx"
                   />
                   {errors.phoneNumber ? (
-                  <span className="text-red-900">{errors.phoneNumber.message}</span>
+                  <span className="text-red-500">{errors.phoneNumber.message}</span>
                   ) : (
                       <></>
                   )}
@@ -161,7 +161,7 @@ const CreateAccount = () => {
                   placeholder="test@test.com"
                 />
                 {errors.email ? (
-                  <span className="text-red-900">{errors.email.message}</span>
+                  <span className="text-red-500">{errors.email.message}</span>
                 ) : (
                   <></>
                 )}
@@ -182,7 +182,7 @@ const CreateAccount = () => {
                   placeholder="Create a password"
                 />
                 {errors.password ? (
-                  <span className="text-red-900">{errors.password.message}</span>
+                  <span className="text-red-500">{errors.password.message}</span>
                 ) : (
                   <></>
                 )}
@@ -203,7 +203,7 @@ const CreateAccount = () => {
                   placeholder='******************'
                 />
                 {errors.confirmPassword ? (
-                  <span className="text-red-900">
+                  <span className="text-red-500">
                     {errors.confirmPassword.message}
                   </span>
                 ) : (

@@ -70,19 +70,19 @@ const SecuritySettings = () => {
                     <div className="flex flex-col gap-1 lg:w-1/2">
                         <label htmlFor="oldPassword" className="font-medium text-sm text-[#09090B]">Current password</label>
                         <input type="password" name="oldPassword" id="oldPassword" value={settingsFormData.oldPassword}
-                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                         {settingsErrors.oldPassword && <div className="text-red-600 text-sm">{settingsErrors.oldPassword}</div>}
                     </div>
                     <div className="flex flex-col gap-1 lg:w-1/2">
                         <label htmlFor="newPassword" className="font-medium text-sm text-[#09090B]">New password</label>
                         <input type="password" name="newPassword" id="newPassword" value={settingsFormData.newPassword}
-                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                         {settingsErrors.newPassword && <div className="text-red-600 text-sm">{settingsErrors.newPassword}</div>}
                     </div>
                     <div className="flex flex-col gap-1 lg:w-1/2">
                         <label htmlFor="confirmPassword" className="font-medium text-sm text-[#09090B]">Confirm new password</label>
                         <input type="password" name="confirmPassword" id="confirmPassword" value={settingsFormData.confirmPassword}
-                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none" />
+                            onChange={handleSettingsFormChange} placeholder="**************" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
                         {settingsErrors.confirmPassword && <div className="text-red-600 text-sm">{settingsErrors.confirmPassword}</div>}
                     </div>
 

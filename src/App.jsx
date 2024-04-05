@@ -41,7 +41,7 @@ function App() {
               <Settings />
             }
           >
-            <Route index path="account-settings" element={<AccountSettings />} />
+            <Route index element={<AccountSettings />} />
             <Route path="security-settings" element={<SecuritySettings />} />
           </Route>
           <Route path="*" element={<NotFound />} />

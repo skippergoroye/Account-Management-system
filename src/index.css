@@ -1,6 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+    font-family: "Sary";
+    src: url("https://db.onlinewebfonts.com/t/b592f44ac3f5267196b6fde929a64104.eot");
+    src: url("https://db.onlinewebfonts.com/t/b592f44ac3f5267196b6fde929a64104.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/b592f44ac3f5267196b6fde929a64104.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/b592f44ac3f5267196b6fde929a64104.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/b592f44ac3f5267196b6fde929a64104.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/b592f44ac3f5267196b6fde929a64104.svg#Sary")format("svg");
+}
 
+body {
+    font-family: "Sary"!important;
+}
 
+.sideimg-text {
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    text-align: justify;
+    width: 600px;
+}
 
+.error {
+    color: red;
+}

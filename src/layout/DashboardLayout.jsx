@@ -1,9 +1,9 @@
-import { DashBoardNavbar, DashboardSidebar } from "../components";
+import { DashboardNavbar, DashboardSidebar } from "../components";
 
 const DashboardLayout = ({ children }) => {
   return (
     <main className="relative">
-      <DashBoardNavbar />
+      <DashboardNavbar />
 
       <div className="flex">
         <DashboardSidebar />

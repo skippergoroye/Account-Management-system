@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom"
 
 
 
-
 const DashBoardNavbar = () => {
   return (
     <nav className="flex justify-between items-center text-center fixed z-50 w-full bg-white px-6 lg:px-10 pt-4 pb-2 max-lg:py-5">

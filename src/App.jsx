@@ -19,6 +19,9 @@ import {
 } from "./pages";
 // import { PrivateRoute } from "./components";
 
+
+
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>

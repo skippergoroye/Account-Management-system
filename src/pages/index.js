@@ -18,5 +18,6 @@ export {
     Settings,
     AccountSettings,
     SecuritySettings,
-    Dashboard,
+    Dashboard
+
 }

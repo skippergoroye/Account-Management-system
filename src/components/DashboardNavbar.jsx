@@ -12,7 +12,7 @@ const DashBoardNavbar = () => {
 
       <div className="flex items-center justify-center gap-4">
         <h2>Hi, Folaranmi</h2>
-        <img src="src/assets/SVG/dashboard-user-icon.svg" alt="Dasboard person" width={50} height={30} />
+        <img src="src/assets/SVG/dashboard-user-icon.svg" alt="Dasboard usericon and text" width={50} height={30} />
       </div>
     </nav>
   )

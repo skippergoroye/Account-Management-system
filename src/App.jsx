@@ -22,7 +22,7 @@ function App() {
             }
           />
 
-<Route
+          <Route
             path="/reset-password"
             element={
               <ResetPassword />

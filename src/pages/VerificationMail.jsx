@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const VerificationMail = () => {
   return (
-    <div className='text-center md:px-[100px] md:py-[112px] bg-slate-100 pt-10'>
+    <div className='text-center md:px-[350px] md:py-[112px] bg-slate-100 pt-10 bg-[#EEF2FF]  text-center items-center justify-center'>
         <div className="w-full text-center items-center justify-center flex">
             <div>
                 <img 
@@ -17,7 +17,7 @@ const VerificationMail = () => {
             </div>
             
         </div>
-        <div className='w-full bg-white mt-10 pb-20 px-10 text-center justify-center'>
+        <div className='w-full bg-white mt-10 pb-20 px-2 text-center items-center justify-center border rounded-xl'>
             <div className='flex justify-center'>
                 <img 
                     src={VerifyImg}

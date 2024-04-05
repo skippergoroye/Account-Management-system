@@ -3,7 +3,6 @@ import {
   createRoutesFromElements,
   RouterProvider,
   Route,
-  NavLink,
 } from "react-router-dom";
 import {
   CreateAccount,
@@ -37,7 +36,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="*" element={<NotFound />} />
 
-      
+
       {/* // Private Route
       <Route
         path="dashboard"

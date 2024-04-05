@@ -7,6 +7,10 @@ import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import AccountSettings from "./AccountSettings";
 import SecuritySettings from "./SecuritySettings";
+import ResetPassword from "./ResetPassword";
+import ResetNewPassword from "./ResetNewPassword";
+
+
 
 
 export {
@@ -18,6 +22,8 @@ export {
     Settings,
     AccountSettings,
     SecuritySettings,
-    Dashboard
+    Dashboard,
+    ResetPassword,
+    ResetNewPassword,
 
 }

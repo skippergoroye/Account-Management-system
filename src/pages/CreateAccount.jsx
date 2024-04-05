@@ -217,7 +217,7 @@ const CreateAccount = () => {
               >
                 Create account
               </button>
-              <p className='mt-3 text-gray-400 text-[18px] font-normal text-center'>Already have an account ? <Link to ='/' className="text-primary">Log In</Link></p>
+              <p className='mt-3 text-gray-400 text-[18px] font-normal text-center'>Already have an account ? <Link to ='/login' className="text-primary">Log In</Link></p>
             </form>
           </div>
         </div>

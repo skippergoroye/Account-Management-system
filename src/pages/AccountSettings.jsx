@@ -1,76 +1,25 @@
 
-import { useState } from "react";
 import avatar from "../assets/icons/avatar.svg"
 import Button from "../components/Button"
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const formSchema = yup.object().shape({
+    firstName: yup.string().required('first name is required'),
+    lastName: yup.string().required('last name is required'),
+    emailAddress: yup.string().email("please provide a valid email address").required("email address is required"),
+    phoneNumber: yup.string().matches(/^0\d{10}$/, 'invalid phone number').required('phone number is required'),
+    gender: yup.string().required('gender is required'),
+});
 
 const AccountSettings = () => {
-    const [accountFormData, setAccountFormData] = useState({
-        firstName: '',
-        lastName: '',
-        emailAddress: '',
-        phoneNumber: '',
-        gender: ''
-    });
-    const [accountErrors, setAccountErrors] = useState({});
-    const handleAccountFormChange = (event) => {
-        const { name, value } = event.target;
-        setAccountFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    const { register, handleSubmit, formState: { errors }, } = useForm({
+        resolver: yupResolver(formSchema),
+    },);
 
-    const handleAccountFormSubmit = (event) => {
-        event.preventDefault();
-        const validationErrors = validateAccountForm(accountFormData);
-        if (Object.keys(validationErrors).length === 0) {
-            // Form is valid, handle submission
-            console.log('Form submitted:', accountFormData);
-            // Reset form data
-            setAccountFormData({
-                firstName: '',
-                lastName: '',
-                emailAddress: '',
-                phoneNumber: '',
-                gender: ''
-            });
-        } else {
-            // Form has errors, display validation errors
-            setAccountErrors(validationErrors);
-        }
-    };
-
-    const validateAccountForm = (data) => {
-        let errors = {};
-        if (!data.firstName) {
-            errors.firstName = 'first name is required';
-        }
-        if (!data.lastName) {
-            errors.lastName = 'last name is required';
-        }
-        if (!data.emailAddress) {
-            errors.emailAddress = 'email address is required';
-        } else if (!isValidEmail(data.emailAddress)) {
-            errors.emailAddress = 'invalid email format';
-        }
-        if (!data.phoneNumber) {
-            errors.phoneNumber = 'phone number is required';
-        } else if (!isValidPhone(data.phoneNumber)) {
-            errors.phoneNumber = 'invalid phone number format';
-        }
-        if (!data.gender) {
-            errors.gender = 'gender is required';
-        }
-        return errors;
-    };
-
-    const isValidEmail = (email) => {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(email);
-    };
-    const isValidPhone = (phoneNumber) => {
-        const phonePattern = /^0\d{10}$/;
-        return phonePattern.test(phoneNumber);
+    const formSubmitHandler = (data) => {
+        console.log(data);
     };
 
     return (
@@ -91,40 +40,40 @@ const AccountSettings = () => {
                     <form className="mt-12 grid grid-cols-1 lg:grid-cols-2 md:gap-x-10 lg:gap-x-10 xl:gap-x-14 gap-y-5 md:gap-y-7 pb-9">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="firstName" className="font-medium text-sm text-[#09090B]">First Name</label>
-                            <input type="text" name="firstName" id="firstName" value={accountFormData.firstName}
-                                onChange={handleAccountFormChange} placeholder="John" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                            {accountErrors.firstName && <div className="text-red-600 text-sm">{accountErrors.firstName}</div>}
+                            <input {...register("firstName")} type="text" name="firstName" id="firstName"
+                               placeholder="John" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                            {errors.firstName && <div className="text-red-600 text-sm">{errors.firstName.message}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="lastName" className="font-medium text-sm text-[#09090B]">Last Name</label>
-                            <input type="text" name="lastName" id="lastName" value={accountFormData.lastName}
-                                onChange={handleAccountFormChange} placeholder="Doe" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                            {accountErrors.lastName && <div className="text-red-600 text-sm">{accountErrors.lastName}</div>}
+                            <input {...register("lastName")} type="text" name="lastName" id="lastName"
+                               placeholder="Doe" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                            {errors.lastName && <div className="text-red-600 text-sm">{errors.lastName.message}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="emailAddress" className="font-medium text-sm text-[#09090B]">Email Address</label>
-                            <input type="email" name="emailAddress" id="emailAddress" value={accountFormData.emailAddress}
-                                onChange={handleAccountFormChange} placeholder="johndoe@gmail.com" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                            {accountErrors.emailAddress && <div className="text-red-600 text-sm">{accountErrors.emailAddress}</div>}
+                            <input {...register("emailAddress")} type="email" name="emailAddress" id="emailAddress"
+                              placeholder="johndoe@gmail.com" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                            {errors.emailAddress && <div className="text-red-600 text-sm">{errors.emailAddress.message}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="phoneNumber" className="font-medium text-sm text-[#09090B]">Phone Number</label>
-                            <input type="text" name="phoneNumber" id="phoneNumber" value={accountFormData.phoneNumber}
-                                onChange={handleAccountFormChange} placeholder="080********" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" />
-                            {accountErrors.phoneNumber && <div className="text-red-600 text-sm">{accountErrors.phoneNumber}</div>}
+                            <input {...register("phoneNumber")} type="text" name="phoneNumber" id="phoneNumber"
+                             placeholder="080********" className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black" />
+                            {errors.phoneNumber && <div className="text-red-600 text-sm">{errors.phoneNumber.message}</div>}
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="gender" className="font-medium text-sm text-[#09090B]">Gender</label>
-                            <select name="gender" defaultValue={''} className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white" onChange={handleAccountFormChange}>
+                            <select {...register("gender")} name="gender" defaultValue={''} className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black">
                                 <option value="" disabled>Select an option</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
-                            {accountErrors.gender && <div className="text-red-600 text-sm">{accountErrors.gender}</div>}
+                            {errors.gender && <div className="text-red-600 text-sm">{errors.gender.message}</div>}
                         </div>
                     </form>
 
-                    <Button btnText={'Update Account'} btnClass={'w-[144px]'} onClick={handleAccountFormSubmit} />
+                    <Button label={'Update Account'} btnClass={'w-[144px]'} handleSubmit={handleSubmit(formSubmitHandler)} />
                 </div>
                 <div className="mt-7">
                     <span className="cursor-pointer text-sm text-red-600">Delete</span>

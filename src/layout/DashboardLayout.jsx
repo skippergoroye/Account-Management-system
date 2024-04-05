@@ -2,7 +2,7 @@ import { DashboardNavbar, DashboardSidebar } from "../components";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <main className="relative">
+    <main className="relative bg-[#F9FAFB]">
       <DashboardNavbar />
 
       <div className="flex">

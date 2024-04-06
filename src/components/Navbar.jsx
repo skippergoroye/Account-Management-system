@@ -38,7 +38,7 @@ const Navbar = () => {
         >
           <li className="mb-3 text-xl md:ml-8 md:mb-0 md:my-0 my-7">
             <Button
-              variant="link"
+              variant="ghost"
               className="p-0 m-0 bg-transparent hover:bg-transparent"
             >
               <Link to="/login">Login</Link>

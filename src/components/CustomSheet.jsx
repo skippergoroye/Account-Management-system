@@ -21,10 +21,11 @@ export const CustomSheet = ({
   footer,
   children,
   className,
+  side = "right",
 }) => {
   return (
     <Sheet open={isOpen} onOpenChange={onClose} modal={true}>
-      <SheetContent className={cn(`sm:max-w-lg`, className)}>
+      <SheetContent side={side} className={cn(`sm:max-w-lg`, className)}>
         {/* <Image alt='pattern' src={Pattern} className='absolute -top-0 h-30' /> */}
 
         <SheetHeader>

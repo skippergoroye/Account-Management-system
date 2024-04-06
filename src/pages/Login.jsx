@@ -1,5 +1,5 @@
 import Logo from "../assets/PNG/logo.png";
-
+import { useState } from "react";
 import {
   Form,
   FormControl,
@@ -16,6 +16,7 @@ import { Input } from "../components/ui/input";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
+import { EyeOff, Eye } from "lucide-react";
 
 // Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
 // const passwordValidation = new RegExp(
@@ -30,6 +31,8 @@ const formSchema = z.object({
 });
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -88,9 +91,22 @@ const Login = () => {
                   <FormControl>
                     <Input
                       placeholder="Enter Password"
-                      type="password"
                       className="border-neutral-300"
+                      type={showPassword ? "text" : "password"}
                       {...field}
+                      rightIcon={
+                        showPassword ? (
+                          <Eye
+                            className="cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        ) : (
+                          <EyeOff
+                            className="cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        )
+                      }
                     />
                   </FormControl>
                   <FormDescription />

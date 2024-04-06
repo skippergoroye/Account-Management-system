@@ -15,9 +15,10 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
+import { EyeOff, Eye } from "lucide-react";
 
 // Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
 const passwordValidation = new RegExp(
@@ -45,6 +46,8 @@ const formSchema = z
   });
 
 const ResetNewPassword = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,6 +58,7 @@ const ResetNewPassword = () => {
 
   function onSubmit(values) {
     console.log({ values });
+    navigate("/login");
   }
 
   return (
@@ -85,8 +89,21 @@ const ResetNewPassword = () => {
                     <Input
                       placeholder="Enter your new password"
                       className="border-neutral-300"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       {...field}
+                      rightIcon={
+                        showPassword ? (
+                          <Eye
+                            className="cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        ) : (
+                          <EyeOff
+                            className="cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        )
+                      }
                     />
                   </FormControl>
                   <FormDescription />
@@ -103,9 +120,22 @@ const ResetNewPassword = () => {
                   <FormControl>
                     <Input
                       placeholder="Confirm your new password"
-                      type="password"
                       className="border-neutral-300"
+                      type={showPassword ? "text" : "password"}
                       {...field}
+                      rightIcon={
+                        showPassword ? (
+                          <Eye
+                            className="cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        ) : (
+                          <EyeOff
+                            className="cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        )
+                      }
                     />
                   </FormControl>
                   <FormDescription />
@@ -124,7 +154,6 @@ const ResetNewPassword = () => {
         </Form>
       </div>
     </OnboardingLayout>
-
   );
 };
 

@@ -56,6 +56,7 @@ const formSchema = z
     path: ["confirmPassword"], // path of error
   });
 
+
 const CreateAccount = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),

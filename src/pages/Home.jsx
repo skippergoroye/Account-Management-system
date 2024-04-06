@@ -7,7 +7,8 @@ const Home = () => {
   return (
     <div className='bg-white min-h-screen flex flex-col justify-center items-center'>
       <Navbar />
-      <div className='text-center pt-[80px]'>
+      <div className='text-center pt-[120px]'>
+
         <h1 className='text-[68px] font-bold line-[67px]'>Unlock <span className='text-[#C4B5FD]'>Efficiency</span>.</h1>
         <h5 className='text-[38.32px]'>Seamlessly Manage your Accounts Today!</h5>
         <div className='flex flex-col items-center'>
@@ -16,16 +17,16 @@ const Home = () => {
             <Link to="/" className='bg-[#374151] py-2 px-8 rounded-lg text-[16px] text-white'>Get Started</Link>
           </div>
         </div>
-        <div className='flex flex-col items-center justify-center mt-10'>
+        <div className="flex justify-center">
           <img 
             src={DocumentImg}
             alt="Documents"
-            width={350}
-            height={50}
+            className='mt-12 h-auto w-full max-w-[300px]'
           />
         </div>
       </div>
-      <div className="pt-4">
+      <div className="pt-4  md:py-[10px]">
+
       <Footer/>
       </div>
     </div>

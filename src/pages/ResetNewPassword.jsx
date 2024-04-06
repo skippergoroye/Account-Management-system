@@ -124,6 +124,7 @@ const ResetNewPassword = () => {
         </Form>
       </div>
     </OnboardingLayout>
+
   );
 };
 

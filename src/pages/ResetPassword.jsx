@@ -38,10 +38,6 @@ const ResetPassword = () => {
     console.log({ values });
   }
 
-
-  const { handleSubmit, onSubmit, registerWithValidation, errors } =
-    useValidation(validationSchema);
-
   return (
     <OnboardingLayout
       feedback="“I love how intuitive AccMan interface is, making it easy to

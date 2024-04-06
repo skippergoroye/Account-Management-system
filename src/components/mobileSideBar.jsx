@@ -18,7 +18,7 @@ function MobileSideBar({ isOpen, onClose }) {
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
         <p className="mt-2">Howdy Folaranmi,</p>
-        <div className="w-11/12 mx-auto mt-14">
+        <div className="w-full mx-auto mt-14">
           {sidebarLinks.map((item) => {
             const isActive =
               pathname === item.route || pathname.startsWith(`${item.route}/`);
@@ -43,7 +43,7 @@ function MobileSideBar({ isOpen, onClose }) {
                     isActive
                       ? "text-violet-600 font-semibold"
                       : "text-gray-500 font-normal"
-                  } text-lg  max-lg:hidden`}
+                  } text-lg`}
                 >
                   {item.label}
                 </p>

@@ -43,7 +43,7 @@ function MobileSideBar({ isOpen, onClose }) {
                     isActive
                       ? "text-violet-600 font-semibold"
                       : "text-gray-500 font-normal"
-                  } text-lg  max-lg:hidden`}
+                  } text-lg`}
                 >
                   {item.label}
                 </p>

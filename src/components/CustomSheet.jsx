@@ -1,18 +1,19 @@
 import React from "react";
+
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/dialog";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "./ui/sheet";
 
 import PropTypes from "prop-types";
 import { cn } from "../lib/utils";
-import { Copy } from "lucide-react";
 
-export const CustomModal = ({
+export const CustomSheet = ({
   isOpen,
   onClose,
   title,
@@ -22,33 +23,33 @@ export const CustomModal = ({
   className,
 }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose} modal={true}>
-      <DialogContent className={cn(`sm:max-w-lg`, className)}>
+    <Sheet open={isOpen} onOpenChange={onClose} modal={true}>
+      <SheetContent className={cn(`sm:max-w-lg`, className)}>
         {/* <Image alt='pattern' src={Pattern} className='absolute -top-0 h-30' /> */}
 
-        <DialogHeader>
-          {!!title && <DialogTitle>{title}</DialogTitle>}
+        <SheetHeader>
+          {!!title && <SheetTitle>{title}</SheetTitle>}
 
           {/* Description */}
           {!!description && (
-            <DialogDescription>
+            <SheetDescription>
               Anyone who has this link will be able to view this.
-            </DialogDescription>
+            </SheetDescription>
           )}
-        </DialogHeader>
+        </SheetHeader>
 
         {children}
 
         {/* Footer */}
         {!!footer && (
-          <DialogFooter className="sm:justify-start">{footer}</DialogFooter>
+          <SheetFooter className="sm:justify-start">{footer}</SheetFooter>
         )}
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 };
 
-CustomModal.propType = {
+CustomSheet.propType = {
   isOpen: PropTypes.bool,
   children: React.ReactNode,
   onClose: PropTypes.func,

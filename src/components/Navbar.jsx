@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Logo from "../assets/PNG/logo.png";
 import { Button } from "./ui/button";
@@ -19,7 +17,7 @@ const Navbar = () => {
         <div className="font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800">
           <span className="pt-2 mr-1 text-3xl text-indigo-600 w-28">
             <Link to="/">
-              <img src={Logo} alt="Logo" className="h-[40px]" />
+              <img src={Logo} alt="Logo" className="h-[40px] md:ml-14" />
             </Link>
           </span>
         </div>
@@ -32,7 +30,7 @@ const Navbar = () => {
         </div>
 
         <ul
-          className={`logo md:flex md:items-center md:pb-0 pb-0 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
+          className={`logo md:flex md:items-center md:pb-0 mr-14 pb-0 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
             open ? "top-16 " : "top-[-90px]"
           } origin-top `}
         >

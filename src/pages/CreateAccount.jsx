@@ -1,228 +1,236 @@
+import { useState } from "react";
+import SideImg from "../assets/PNG/SideImg.png";
+import Logo from "../assets/PNG/logo.png";
 
-import * as yup from "yup";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components/ui/form";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import SideImg from '../assets/PNG/SideImg.png';
-import Logo from '../assets/PNG/logo.png';
-import { Link } from 'react-router-dom';
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "../components/ui/input";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import OnboardingLayout from "../layout/OnboardingLayout";
 
-const formSchema = yup.object().shape({
-  firstName: yup
-  .string()
-  .required(),
-  lastName: yup
-  .string()
-  .required(),
-  email: yup
-  .string()
-  .email("please provide a valid email address")
-  .required("email address is required"),
-  phoneNumber: yup
-  .string()
-  .required(),
-password: yup
-  .string()
-  .min(5, "password should have a minimum length of 5")
-  .max(12, "password should have a maximum length of 12")
-  .required("password is required"),
-confirmPassword: yup
-  .string()
-  .oneOf([yup.ref("password")])
-  .required("confirm password is required"),
+// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+const passwordValidation = new RegExp(
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+);
 
-});
-
-const textInputClassName =
-"border border-gray-300 text-gray-900 text-[25px] rounded-lg  block w-full p-2  dark:placeholder-gray-400 dark:text-white";
-
-const CreateAccount = () => {
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(formSchema),
+const formSchema = z
+  .object({
+    firstName: z.string().min(1, {
+      message: "Please enter your first name",
+    }),
+    lastName: z.string().min(1, {
+      message: "Please enter your last name",
+    }),
+    email: z.string().email("Enter a valid email address.").min(1, {
+      message: "Email is required.",
+    }),
+    phone: z.string().min(11, {
+      message: "Phone number should be 11digits",
+    }),
+    password: z
+      .string()
+      .min(1, { message: "Must have at least 1 character" })
+      .regex(passwordValidation, {
+        message: "Your password is not valid",
+      }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Must have at least 1 character" })
+      .regex(passwordValidation, {
+        message: "Your password is not valid",
+      }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"], // path of error
   });
 
-  const formSubmitHandler = (data) => {
-      console.log(data);
-    };
-  
-    return (
-      <div className='w-full h-screen flex items-start'>
-        <div className="hidden md:flex relative w-1/2 h-full flex flex-col">
-          <div className="hidden md:flex p-10 sideimg-text rounded-xl flex flex-col">
-            <p className="text-[27px] font-normal text-white">“Using AccMan software has been a game-changer for me! Its streamlined my finances, 
-              making it effortless to track expenses, set budgets, and monitor transactions.”
-            </p>
-           <p className="text-[40px] font-normal text-white mt-10 italic">Folashade Rose</p>
-          </div>
-          
-          <img 
-            src={SideImg}
-            alt='SideImg'
-            className='hidden md:flex h-[1080px] w-full object-cover'
-          />
+const CreateAccount = () => {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  function onSubmit(values) {
+    console.log({ values });
+  }
+
+  return (
+    <OnboardingLayout
+      sideImage={SideImg}
+      author="Folashade Rose"
+      feedback="“Using AccMan software has been a game-changer for me! It’s streamlined my finances, making it effortless to track expenses, set budgets, and monitor transactions.”"
+    >
+      <div className="w-5/6 lg:w-[60%] h-full pt-28 pb-10  hideScrollbar overflow-y-scroll">
+        <div>
+          <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
-        <div className="md:w-1/2 w-full h-full bg-white flex flex-col justify-between pt-[60px] px-6">
-          <div className="md:pl-[60px] pl-4">
-            <img 
-              src={Logo}
-              alt='Logo'
-              className='flex justify-start items-start h-[40px]'
+        <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-8">
+          Create an account
+        </h1>
+        <p className="mt-px text-base font-normal text-neutral-600">
+          Create your accman account
+        </p>
+        <Form {...form}>
+          <form className="mt-10 space-y-1">
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="">First name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your first name"
+                        className="border-neutral-300"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="">Last name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your last name"
+                        className="border-neutral-300"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="">Email Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your email address"
+                      className="border-neutral-300"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          
-            <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Create an account</h1>
-            <p className="text-[25px] font-normal mb-6">Create your accman account</p>
-          </div>
-          <div className="shadow-sm shadow-white bg-white] md:mx-auto md:px-7 px-4 py-4 rounded-xl">
-            <form onSubmit={handleSubmit(formSubmitHandler)} className="w-full">
-              <div className="mb-6 flex gap-4">
-                  <div className="w-full">
-                      <label
-                          htmlFor="firstName"
-                          className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
-                      >
-                          First name
-                      </label>
-                      <input
-                          {...register("firstName")}
-                          type="text"
-                          name="firstName"
-                          id="firstName"
-                          className={textInputClassName}
-                          placeholder="John"
-                      />
-                      {errors.firstName ? (
-                      <span className="text-red-500">{errors.firstName.message}</span>
-                      ) : (
-                          <></>
-                      )}
-                  </div>
-                  <div className="w-full">
-                      <label
-                          htmlFor="lastName"
-                          className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
-                      >
-                          Last name
-                      </label>
-                      <input
-                          {...register("lastName")}
-                          type="text"
-                          name="lastName"
-                          id="lastName"
-                          className={textInputClassName}
-                          placeholder="Doe"
-                      />
-                      {errors.lastName ? (
-                      <span className="text-red-500">{errors.lastName.message}</span>
-                      ) : (
-                          <></>
-                      )}
-                  </div>
-                  
-              </div>
-              <div className="mb-6"> 
-                  <label
-                      htmlFor="phoneNumber"
-                      className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
-                  >
-                      Phone number
-                  </label>
-                  <input
-                      {...register("phoneNumber")}
-                      type="text"
-                      name="phoneNumber"
-                      id="phoneNumber"
-                      className={textInputClassName}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="">Phone number</FormLabel>
+                  <FormControl>
+                    <Input
                       placeholder="08033xxxxxx"
-                  />
-                  {errors.phoneNumber ? (
-                  <span className="text-red-500">{errors.phoneNumber.message}</span>
-                  ) : (
-                      <></>
-                  )}
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Your email
-                </label>
-                <input
-                  {...register("email")}
-                  type="email"
-                  name="email"
-                  id="email"
-                  className={textInputClassName}
-                  placeholder="test@test.com"
-                />
-                {errors.email ? (
-                  <span className="text-red-500">{errors.email.message}</span>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Your password
-                </label>
-                <input
-                  {...register("password")}
-                  type="password"
-                  name="password"
-                  id="password"
-                  className={textInputClassName}
-                  placeholder="Create a password"
-                />
-                {errors.password ? (
-                  <span className="text-red-500">{errors.password.message}</span>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  {...register("confirmPassword")}
-                  name="confirmPassword"
-                  type="password"
-                  id="confirmPassword"
-                  className={textInputClassName}
-                  placeholder='******************'
-                />
-                {errors.confirmPassword ? (
-                  <span className="text-red-500">
-                    {errors.confirmPassword.message}
-                  </span>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <p className='mt-5 mb-4 text-gray-400 text-[18px] font-normal'>By clicking on create account below you agree to our <Link to ='/' className="text-primary">Terms of use</Link> and <Link to ='/' className="text-primary">Privacy policy.</Link></p>
-              <button
-                type="submit"
-                className="w-full bg-primary border rounded-xl md:rounded-md text-[25px] text-white px-10 py-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              >
-                Create account
-              </button>
-              <p className='mt-3 text-gray-400 text-[18px] font-normal text-center'>Already have an account ? <Link to ='/login' className="text-primary">Log In</Link></p>
-            </form>
-          </div>
-        </div>
+                      className="border-neutral-300"
+                      type="tel"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="">New password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your new password"
+                      className="border-neutral-300"
+                      type="password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm new password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Confirm your new password"
+                      type="password"
+                      className="border-neutral-300"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+          <p className="mt-6 text-sm font-normal">
+            By clicking on create account below you agree to our{" "}
+            <Link className="font-semibold text-purple-600">Terms of use</Link>
+            {" and "}
+            <Link className="font-semibold text-purple-600">
+              Privacy policy.
+            </Link>
+          </p>
+          <Button
+            onClick={form.handleSubmit(onSubmit)}
+            className="w-full h-12 mt-2 bg-violet-600 hover:bg-violet-400"
+          >
+            Create account
+          </Button>
+          <p className="mt-4 text-sm font-normal text-center">
+            Already have an account ?{" "}
+            <span className="font-semibold text-violet-600">
+              <Link to={"/login"}>Log In</Link>
+            </span>
+          </p>
+        </Form>
       </div>
-    );
-  };
+    </OnboardingLayout>
+  );
+};
 
-export default CreateAccount
+export default CreateAccount;

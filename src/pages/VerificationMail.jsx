@@ -1,35 +1,45 @@
-import Logo from '../assets/PNG/logo.png';
+import Logo from "../assets/PNG/logo.svg";
 import VerifyImg from "../assets/PNG/envilope.png";
-import { Link } from 'react-router-dom';
-
-
+import { Link, useNavigate } from "react-router-dom";
 
 const VerificationMail = () => {
-  return (
-    <div className='text-center md:px-[200px] md:py-[90px] pt-10 bg-[#EEF2FF] items-center justify-center'>
-        <div className="w-full text-center items-center justify-center flex">
-            <div>
-                <img 
-                    src={Logo}
-                    alt='Logo'
-                    className='h-[40px]'
-                />
-            </div>
-            
-        </div>
-        <div className='w-full bg-white mt-10 pb-20 px-2 text-center items-center justify-center border rounded-xl'>
-            <div className='flex justify-center'>
-                <img 
-                    src={VerifyImg}
-                    alt='VerifyImg'
-                    className='h-[180px] w-[140px] pt-20'
-                />
-            </div>
-            <p className='text-[25px] font-normal mt-10 '>Hi Folaranmi, your verification link has just been sent to your email address <br /><Link to="/" className="text-primary">(jamessoon@gmail.com)</Link>. Click the link to verify your account.</p>
-            <p className='text-[16px] font-normal mt-6'>Didn’t get the mail? <Link to="/" className="text-primary">Click to resend</Link></p>
-        </div>
-    </div>
-  )
-}
+  const navigate = useNavigate();
 
-export default VerificationMail
+  return (
+    <div className="flex items-center justify-center bg-[#eef2ff] flex-col h-screen">
+      <div className="flex items-center justify-center w-full text-center">
+        <img src={Logo} alt="Logo" className="h-9 md:h-[40px]" />
+      </div>
+      <div className="items-center justify-center w-11/12 md:w-10/12 lg:w-7/12 px-2 pt-[52px] pb-20 mx-auto text-center bg-white border mt-8 md:mt-14 rounded-xl">
+        <div className="flex justify-center">
+          <img
+            src={VerifyImg}
+            alt="VerifyImg"
+            className="h-[45px] md:h-[90px] "
+          />
+        </div>
+        <div className="w-11/12 mx-auto md:w-8/12">
+          <p className="mt-10 text-sm font-normal ">
+            Dear customer, your verification link has just been sent to your
+            email address
+            <Link to="/" className="font-semibold text-violet-600">
+              (jamessoon@gmail.com)
+            </Link>
+            . Click the link to verify your account.
+          </p>
+        </div>
+        <p className="mt-6 text-sm font-normal">
+          Didn’t get the mail?{" "}
+          <Link
+            to="/reset-new-password"
+            className="font-semibold text-violet-600"
+          >
+            Click to resend
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default VerificationMail;

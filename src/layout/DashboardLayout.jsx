@@ -1,15 +1,18 @@
 import { DashboardNavbar, DashboardSidebar } from "../components";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = ({ children, isSettings }) => {
   return (
-    <main className="relative bg-[#F9FAFB]">
-      <DashboardNavbar />
-
-      <div className="flex">
-        <DashboardSidebar />
-        <section className="flex min-h-screen flex-1 flex-col pt-10">
-          <div className="w-full">{children}</div>
-        </section>
+    <main className="bg-[#f9fafb] relative h-screen w-screen grid grid-cols-12">
+      <DashboardSidebar />
+      <div className="h-screen col-span-9 col-start-4 overflow-hidden pb-14">
+        <DashboardNavbar />
+        <div
+          className={`${
+            !isSettings ? "pl-16 pt-10" : "pt-0"
+          } overflow-y-scroll h-full hideScrollbar`}
+        >
+          {children}
+        </div>
       </div>
     </main>
   );

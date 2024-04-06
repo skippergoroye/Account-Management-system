@@ -1,125 +1,130 @@
 import { useState } from "react";
-import * as Yup from 'yup';
-import SideImg from '../assets/PNG/SideImg.png';
-import Logo from '../assets/PNG/logo.png';
-import Button from "../components/Button";
+import SideImg from "../assets/PNG/SideImg.png";
+import Logo from "../assets/PNG/logo.png";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components/ui/form";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "../components/ui/input";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import OnboardingLayout from "../layout/OnboardingLayout";
+
+// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+const passwordValidation = new RegExp(
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+);
+
+const formSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, { message: "Must have at least 1 character" })
+      .regex(passwordValidation, {
+        message: "Your password is not valid",
+      }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Must have at least 1 character" })
+      .regex(passwordValidation, {
+        message: "Your password is not valid",
+      }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"], // path of error
+  });
 
 const ResetNewPassword = () => {
-  const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
   });
 
-  const [errors, setErrors] = useState({});
-
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .required("Email is required")
-      .email("Invalid email format"),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
-      .matches(
-        /[!@#$%^&*(),.?":{}|<>]/,
-        "Password must contain at least one symbol"
-      )
-      .matches(/[0-9]/, "Password must contain at least one number")
-      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Password must contain at least one lowercase letter"),
-      confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords must match")
-      .required("Confirm password is required"),
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await validationSchema.validate(formData, { abortEarly: false });
-      console.log("Form Submitted", formData);
-    } catch (error) {
-      const newErrors = {};
-      error.inner.forEach((err) => {
-        newErrors[err.path] = err.message;
-      });
-      setErrors(newErrors);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  function onSubmit(values) {
+    console.log({ values });
+  }
 
   return (
-    <div className='flex flex-col md:flex-row md:px-[100px] md:py-12 bg-slate-100'>
-      <div className='md:flex-1'>
-        <div className=" mt-[-50px] md:block flex-1 flex justify-center items-center">
-          <div className="flex flex-col justify-center items-center">
-            <img
-              src={SideImg}
-              alt='SideImg'
-              className='h-[900px] w-auto'
-            />
-            <div className="bg-black p-6 bg-opacity-50 rounded-xl relative bottom-72">
-              <div className="">
-                <p className="text-[22px] font-normal text-white">“Using AccMan software has been a game-<br />changer for me! It’s streamlined my finances, 
-                <br />making it effortless to track expenses, set <br/> budgets, and monitor transactions.”</p>
-                <p className="text-[20px] font-normal text-white mt-2 italic">Folashade Rose</p>
-              </div>
-            </div>
-          </div>
+    <OnboardingLayout
+      sideImage={SideImg}
+      author="Folashade Rose"
+      feedback="“Using AccMan software has been a game-changer for me! It’s streamlined my finances, making it effortless to track expenses, set budgets, and monitor transactions.”"
+    >
+      <div className="w-5/6 lg:w-[60%]">
+        <div>
+          <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
-      </div>
-      <div className='md:flex-1 bg-white p-6 md:px-20 md:pt-[240px]'>
-        <div className="">
-          <img
-            src={Logo}
-            alt='Logo'
-            className='h-[40px] md:h-[40px]'
-          />
-        </div>
-        <h1 className="md:text-[64px] text-[34px] font-bold leading-[40px] mt-16">Set a new password</h1>
-        <p className="text-[25px] font-normal  my-4">It’s easy and quick </p>
-        <form className="form" onSubmit={handleSubmit}>
-          <div className='mt-5'>
-            <label className="font-normal text-[25px] mb-1">
-              Password
-            </label>
-            <input
-              className="w-full border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-              type="password"
+        <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-7">
+          Set a new password
+        </h1>
+        <p className="mt-px text-base font-normal text-neutral-600">
+          It’s easy and quick
+        </p>
+        <Form {...form}>
+          <form className="mt-10 space-y-6">
+            <FormField
+              control={form.control}
               name="password"
-              value={formData.password}
-              placeholder='Enter your new password'
-              onChange={handleChange}
-            />
-            {errors.password && <div className="text-red-500">{errors.password}</div>}
-          </div>
-          <div className='mt-5'>
-              <label className="font-normal text-[25px] mb-1">
-                Confirm password
-              </label>
-              <input
-                className="w-full border rounded-xl md:rounded-md border-slate-300 h-12 text-xl pl-4"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                placeholder='Confirm your new password'
-                onChange={handleChange}
-              />
-              {errors.confirmPassword && (
-                <div className="text-red-500">{errors.confirmPassword}</div>
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="">New password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your new password"
+                      className="border-neutral-300"
+                      type="password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
               )}
-            </div>
-          <Button label="Reset Password"/>
-        </form>
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm new password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Confirm your new password"
+                      type="password"
+                      className="border-neutral-300"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+
+          <Button
+            onClick={form.handleSubmit(onSubmit)}
+            className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
+          >
+            Reset password
+          </Button>
+        </Form>
       </div>
-    </div>
-  )
-}
+    </OnboardingLayout>
+  );
+};
 
 export default ResetNewPassword;

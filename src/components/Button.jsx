@@ -10,7 +10,8 @@ const Button = ({ label, handleSubmit, btnClass }) => {
 
 Button.propTypes = {
   label: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  btnClass: PropTypes.string.isRequired
 };
 
 export default Button;

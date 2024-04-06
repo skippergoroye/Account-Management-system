@@ -1,21 +1,26 @@
-import { NavLink } from "react-router-dom"
 
-
+import { Menu, User } from "lucide-react";
+import React, { useState } from "react";
+import MobileSideBar from "./mobileSideBar";
 
 
 const DashBoardNavbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <nav className="flex justify-between items-center text-center fixed z-50 w-full bg-white px-6 lg:px-10 pt-4 pb-2">
-      <NavLink href="/" >
-        <img src="src/assets/SVG/logo.svg" alt="logo" width={100} height={50} />
-      </NavLink>
-
-      <div className="flex items-center justify-center gap-4">
-        <h2>Hi, Folaranmi</h2>
-        <img src="src/assets/SVG/dashboard-user-icon.svg" alt="Dasboard usericon and text" width={50} height={30} />
+    <div className="bg-white sticky h-[82px] top-0 w-full px-5 md:px-14 z-20 flex items-center justify-between ">
+      <div className="lg:hidden">
+        <Menu onClick={() => setIsOpen(!isOpen)} />
       </div>
-    </nav>
-  )
-}
+      <div className="hidden lg:block" />
+      <div className="flex items-center gap-4">
+        <p className="text-sm font-normal">Hi, Folaranmi</p>
+        <div className="flex items-center justify-center border rounded-full w-11 h-11">
+          <User />
+        </div>
+      </div>
+      <MobileSideBar isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
+    </div>
+  );
+};
 
-export default DashBoardNavbar
+export default DashBoardNavbar;

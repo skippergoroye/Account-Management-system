@@ -9,6 +9,7 @@ import AccountSettings from "./AccountSettings";
 import SecuritySettings from "./SecuritySettings";
 import ResetPassword from "./ResetPassword";
 import ResetNewPassword from "./ResetNewPassword";
+import Users from "./Users";
 
 
 
@@ -25,5 +26,6 @@ export {
     Dashboard,
     ResetPassword,
     ResetNewPassword,
+    Users,
 
 }

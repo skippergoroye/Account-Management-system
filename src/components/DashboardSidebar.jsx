@@ -1,7 +1,8 @@
 import { sidebarLinks } from "../constants";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../assets/PNG/logo.png";
-import { LayoutGrid, Settings, Users } from "lucide-react";
+import { LayoutGrid, LogOut, Settings, Users } from "lucide-react";
+import { Button } from "./ui/button";
 
 const DashboardSidebar = () => {
   const { pathname } = useLocation();
@@ -14,7 +15,7 @@ const DashboardSidebar = () => {
   };
 
   return (
-    <div className="col-span-3 bg-white">
+    <div className="relative hidden col-span-3 bg-white lg:block">
       <div className="flex items-center justify-center mt-7">
         <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
       </div>
@@ -51,6 +52,13 @@ const DashboardSidebar = () => {
           );
         })}
       </div>
+      <Button
+        variant="ghost"
+        className="absolute flex items-center gap-4 left-16 hover:bg-transparent bottom-10"
+      >
+        <LogOut />
+        Logout
+      </Button>
     </div>
   );
 };

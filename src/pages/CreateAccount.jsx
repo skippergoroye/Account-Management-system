@@ -33,7 +33,7 @@ confirmPassword: yup
 });
 
 const textInputClassName =
-"border border-gray-300 text-gray-900 text-[25px] rounded-lg  block w-full p-2  dark:placeholder-gray-400 dark:text-white";
+"border border-gray-300 text-gray-900 md:text-[25px] text-[20px] rounded-lg  block w-full p-2  dark:placeholder-gray-400 dark:text-white";
 
 const CreateAccount = () => {
 
@@ -65,7 +65,7 @@ const CreateAccount = () => {
             className='hidden md:flex h-[1080px] w-full object-cover'
           />
         </div>
-        <div className="md:w-1/2 w-full h-full bg-white flex flex-col justify-between pt-[60px] px-6">
+        <div className="md:w-1/2 w-full h-full bg-white flex flex-col justify-between pt-[60px] md:px-6 px-2">
           <div className="md:pl-[60px] pl-4">
             <img 
               src={Logo}
@@ -73,16 +73,16 @@ const CreateAccount = () => {
               className='flex justify-start items-start h-[40px]'
             />
           
-            <h1 className="md:text-[64px] text-[45px] font-bold leading-[40px] mt-16">Create an account</h1>
-            <p className="text-[25px] font-normal mb-6">Create your accman account</p>
+            <h1 className="md:text-[64px] text-[35px] font-bold leading-[40px] mt-16">Create an account</h1>
+            <p className="md:text-[25px] text-[20px] font-normal mb-6">Create your accman account</p>
           </div>
           <div className="shadow-sm shadow-white bg-white] md:mx-auto md:px-7 px-4 py-4 rounded-xl">
             <form onSubmit={handleSubmit(formSubmitHandler)} className="w-full">
-              <div className="mb-6 flex gap-4">
+              <div className="mb-6 flex flex-col md:flex-row gap-4">
                   <div className="w-full">
                       <label
                           htmlFor="firstName"
-                          className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                          className="block mb-2 md:text-[25px] text-[20px] font-medium text-black"
                       >
                           First name
                       </label>
@@ -103,7 +103,7 @@ const CreateAccount = () => {
                   <div className="w-full">
                       <label
                           htmlFor="lastName"
-                          className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                          className="block mb-2 md:text-[25px] text-[20px] font-medium text-black"
                       >
                           Last name
                       </label>
@@ -126,7 +126,7 @@ const CreateAccount = () => {
               <div className="mb-6"> 
                   <label
                       htmlFor="phoneNumber"
-                      className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                      className="block mb-2 md:text-[25px] text-[20px] font-medium text-black"
                   >
                       Phone number
                   </label>
@@ -148,7 +148,7 @@ const CreateAccount = () => {
               <div className="mb-6">
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                  className="block mb-2 md:text-[25px] text-[20px] font-medium text-black"
                 >
                   Your email
                 </label>
@@ -169,7 +169,7 @@ const CreateAccount = () => {
               <div className="mb-6">
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                  className="block mb-2 md:text-[25px] text-[20px] font-medium text-black"
                 >
                   Your password
                 </label>
@@ -190,7 +190,7 @@ const CreateAccount = () => {
               <div className="mb-6">
                 <label
                   htmlFor="confirmPassword"
-                  className="block mb-2 text-[25px] font-medium text-gray-900 dark:text-gray-300"
+                  className="block mb-2 md:text-[25px] text-[20px] font-medium text-black"
                 >
                   Confirm Password
                 </label>
@@ -213,7 +213,7 @@ const CreateAccount = () => {
               <p className='mt-5 mb-4 text-gray-400 text-[18px] font-normal'>By clicking on create account below you agree to our <Link to ='/' className="text-primary">Terms of use</Link> and <Link to ='/' className="text-primary">Privacy policy.</Link></p>
               <button
                 type="submit"
-                className="w-full bg-primary border rounded-xl md:rounded-md text-[25px] text-white px-10 py-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                className="w-full bg-primary border rounded-xl md:rounded-md md:text-[25px] text-[20px] text-white px-10 py-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
               >
                 Create account
               </button>

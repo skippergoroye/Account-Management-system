@@ -6,7 +6,6 @@ import { Button } from "./ui/button";
 
 const DashboardSidebar = () => {
   const { pathname } = useLocation();
-
   return (
     <div className="relative hidden col-span-3 bg-white lg:block">
       <div className="flex items-center justify-center mt-7">
@@ -14,6 +13,7 @@ const DashboardSidebar = () => {
       </div>
       <p className="mt-2 text-center">Howdy Folaranmi,</p>
       <div className="w-10/12 mx-auto mt-14">
+
         {sidebarLinks.map((item) => {
           const isActive =
             pathname === item.route || pathname.startsWith(`${item.route}/`);

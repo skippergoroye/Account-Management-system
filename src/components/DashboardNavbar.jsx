@@ -1,6 +1,8 @@
+
 import { Menu, User } from "lucide-react";
 import React, { useState } from "react";
 import MobileSideBar from "./mobileSideBar";
+
 
 const DashBoardNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);

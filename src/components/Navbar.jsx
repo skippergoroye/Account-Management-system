@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Logo from '../assets/PNG/logo.png';
 
 const Navbar = () => {
@@ -16,13 +16,13 @@ const Navbar = () => {
             <div className='md:flex items-center justify-between bg-white py-4 md:px-10 px-7'>
                 <div className='font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800'>
                     <span className='text-3xl w-28 text-indigo-600 mr-1 pt-2'>
-                        <NavLink to="/">
+                        <Link to="/">
                             <img 
                                 src={Logo}
                                 alt="Logo"
                                 className='h-[40px]'
                             />
-                        </NavLink>
+                        </Link>
                     </span>
                 </div>
 
@@ -30,12 +30,12 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={faBars} />
                 </div>
 
-                <ul className={`logo md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white text-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in`}>
+                <ul className={`logo md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white text-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-20 ' : 'top-[-490px]'}`}>
                     <li className='md:ml-8 text-xl md:mb-0 mb-3 md:my-0 my-7'>
-                        <NavLink to="/login" className='text-primary hover:text-gray-400 duration-500'>Sign In</NavLink>
+                        <Link to="/login" className='text-primary hover:text-gray-400 duration-500'>Sign In</Link>
                     </li>
                     <li className='md:ml-8 text-xl md:mt-0 mt-2 md:my-0 my-12'>
-                        <NavLink to="/create-account" className='text-white bg-primary py-2 px-6 rounded-lg'>Create Account</NavLink>
+                        <Link to="/create-account" className='text-white bg-primary py-2 px-6 rounded-lg'>Create Account</Link>
                     </li>
                 </ul>
             </div>

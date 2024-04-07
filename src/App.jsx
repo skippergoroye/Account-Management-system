@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   CreateAccount,
@@ -14,6 +13,12 @@ import {
   SecuritySettings,
 } from "./pages";
 import Users from "./pages/Users";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./layout/AdminLayout";
+import ProtectedAdminLayout from "./layout/ProtectedAdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import Transactions from "./pages/Transactions";
+import AdminTransactions from "./pages/admin/Transactions";
 
 // import { PrivateRoute } from "./components";
 
@@ -29,13 +34,30 @@ function App() {
 
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/reset-new-password" element={<ResetNewPassword />} />
-          <Route path="/Users" element={<Users />} />
+
+          <Route path="/Transactions" element={<Transactions />} />
 
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/verification-mail" element={<VerificationMail />} />
           <Route path="/settings" element={<Settings />}>
             <Route index element={<AccountSettings />} />
             <Route path="security-settings" element={<SecuritySettings />} />
+          </Route>
+          <Route path="/backoffice" element={<AdminLayout />}>
+            <Route index element={<AdminLogin />} />
+            <Route path="dashboard" element={<ProtectedAdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<Users />} />
+              <Route path="transactions" element={<AdminTransactions />} />
+
+              <Route path="settings" element={<Settings />}>
+                <Route index element={<AccountSettings />} />
+                <Route
+                  path="security-settings"
+                  element={<SecuritySettings />}
+                />
+              </Route>
+            </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CustomSheet } from "./CustomSheet";
 import PropTypes from "prop-types";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
-import { sidebarLinks } from "../constants";
+import { adminSidebarLinks, sidebarLinks } from "../constants";
 import Logo from "../assets/PNG/logo.png";
 import { ICONS } from "./DashboardSidebar";
 
 function MobileSideBar({ isOpen, onClose }) {
   const { pathname } = useLocation();
+  const [route, setRoute] = useState([]);
+
+  useEffect(() => {
+    let route;
+    if (pathname.includes("/backoffice")) {
+      route = adminSidebarLinks;
+    } else {
+      route = sidebarLinks;
+    }
+    setRoute(route);
+    return () => {
+      setRoute([]);
+    };
+  }, []);
 
   return (
     <CustomSheet side="left" isOpen={isOpen} onClose={onClose}>
@@ -19,9 +33,9 @@ function MobileSideBar({ isOpen, onClose }) {
         </div>
         <p className="mt-2">Howdy Folaranmi,</p>
         <div className="w-full mx-auto mt-14">
-          {sidebarLinks.map((item) => {
-            const isActive =
-              pathname === item.route || pathname.startsWith(`${item.route}/`);
+          {route.map((item) => {
+            const isActive = pathname === item.route;
+            // || pathname.startsWith(`${item.route}/`);
 
             return (
               <NavLink

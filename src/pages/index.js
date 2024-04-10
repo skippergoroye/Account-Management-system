@@ -25,5 +25,4 @@ export {
     Dashboard,
     ResetPassword,
     ResetNewPassword,
-
 }

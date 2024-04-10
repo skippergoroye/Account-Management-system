@@ -1,9 +1,10 @@
 import avatar from "../assets/icons/avatar.svg";
-
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
+import DeleteAccount from "../components/dashboard/DeleteAccount";
 
 const formSchema = yup.object().shape({
   firstName: yup.string().required("first name is required"),
@@ -20,6 +21,7 @@ const formSchema = yup.object().shape({
 });
 
 const AccountSettings = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -167,9 +169,12 @@ const AccountSettings = () => {
           </Button>
         </div>
         <div className="mt-7">
-          <span className="text-sm text-red-600 cursor-pointer">Delete</span>
+          <Button variant="destructive" onClick={() => setIsOpen(!isOpen)}>
+            Delete
+          </Button>
         </div>
       </div>
+      <DeleteAccount isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
     </div>
   );
 };

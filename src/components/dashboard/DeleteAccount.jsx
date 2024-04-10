@@ -13,7 +13,7 @@ const DeleteAccount = ({ isOpen, onClose }) => {
     >
       <h2 className="-mt-4 text-lg font-semibold">Are you absolutely sure?</h2>
       <p className="p-0 -mt-4 text-sm font-normal">
-        This action cannot be undonde. This will permanently delete your account
+        This action cannot be undone. This will permanently delete your account
         and remove your data from our servers.
       </p>
       <div className="flex justify-end">

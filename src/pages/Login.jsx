@@ -1,5 +1,5 @@
 import Logo from "../assets/PNG/logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -17,11 +17,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
-
-// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-// const passwordValidation = new RegExp(
-//   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-// );
+import { toast } from "react-toastify";
+import { useLoginMutation } from "../features/api/users";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../features/auth/authSlice";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -31,8 +30,11 @@ const formSchema = z.object({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [login] = useLoginMutation();
+  const { userInfo } = useSelector((state) => state.auth);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -42,10 +44,28 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log({ values });
-    navigate("/dashboard");
-  }
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/dashboard");
+    }
+  }, [navigate, userInfo]);
+
+  const successNotifying = () => {
+    toast.success("Login Successful");
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await login(data).unwrap();
+      // console.log(response.data.user)
+      dispatch(setCredentials(response.data.user));
+      successNotifying();
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error);
+      console.error("Login failed:", error);
+    }
+  };
 
   return (
     <OnboardingLayout

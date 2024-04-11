@@ -18,6 +18,7 @@ import { Input } from "../components/ui/input";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
+import { useSignupMutation } from "../features/api/users.js";
 
 // Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
 const passwordValidation = new RegExp(
@@ -56,7 +57,6 @@ const formSchema = z
     path: ["confirmPassword"], // path of error
   });
 
-
 const CreateAccount = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -70,9 +70,22 @@ const CreateAccount = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log({ values });
-  }
+  const [signup] = useSignupMutation();
+
+  const successNotifying = () => {
+    toast.success("Registration Successful");
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await signup(data).unwrap();
+      console.log(response, "REGISTERRRRR");
+      successNotifying();
+    } catch (error) {
+      toast.error(error);
+      console.error("Login failed:", error);
+    }
+  };
 
   return (
     <OnboardingLayout

@@ -2,7 +2,7 @@ import Button from "./Button";
 import Input from "./Input";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
-import PrivateRoute from "./PrivateRoute";
+import PrivateUserRoute from "./PrivateUserRoute";
 
 
 
@@ -15,5 +15,5 @@ export {
     Input,
     DashboardNavbar,
     DashboardSidebar,
-    PrivateRoute,
+    PrivateUserRoute,
 }

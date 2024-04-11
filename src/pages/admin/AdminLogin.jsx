@@ -1,5 +1,5 @@
 import Logo from "../../assets/PNG/logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -15,14 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
-import OnboardingLayout from "../../layout/OnboardingLayout";
+import { toast } from "react-toastify";
 import { EyeOff, Eye } from "lucide-react";
+import { SyncLoader } from "react-spinners";
 import AdminOnboardingLayout from "../../layout/AdminOnboardingLayout";
-
-// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-// const passwordValidation = new RegExp(
-//   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-// );
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginAdminMutation } from "../../features/api/admin";
+import { setAdminCredentials } from "../../features/auth/authSliceAdmin";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -32,8 +31,11 @@ const formSchema = z.object({
 });
 
 const AdminLogin = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [login, { isLoading }] = useLoginAdminMutation();
+  const { adminInfo } = useSelector((state) => state.authAdmin);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -43,10 +45,32 @@ const AdminLogin = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log({ values });
-    navigate("/backoffice/dashboard");
-  }
+  useEffect(() => {
+    if (adminInfo) {
+      navigate("/backoffice/dashboard");
+    }
+  }, [navigate, adminInfo]);
+
+  const successNotifying = () => {
+    toast.success("Login Successful");
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await login(data).unwrap();
+      dispatch(
+        setAdminCredentials({
+          user: response.data.admin,
+          token: response.data.accessToken,
+        })
+      );
+      successNotifying();
+      navigate("/backoffice/dashboard");
+    } catch (error) {
+      toast.error(error.data.message);
+      // console.log(error)
+    }
+  };
 
   return (
     <AdminOnboardingLayout
@@ -129,7 +153,11 @@ const AdminLogin = () => {
               onClick={form.handleSubmit(onSubmit)}
               className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
             >
-              Sign In
+              {isLoading ? (
+                <SyncLoader size={"0.8rem"} color="#ffffff" />
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </Form>
         </div>

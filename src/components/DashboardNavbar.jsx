@@ -15,10 +15,9 @@ const DashBoardNavbar = () => {
     if (pathname.includes("/backoffice")) {
       setUser("Admin");
     } else if (userInfo) {
-      const user = JSON.parse(userInfo);
-      setUser(user?.firstName);
+      setUser(userInfo?.firstName);
     }
-  }, []);
+  }, [pathname]);
   return (
     <div className="bg-white sticky h-[82px] top-0 w-full px-5 md:px-14 z-20 flex items-center justify-between ">
       <div className="lg:hidden">

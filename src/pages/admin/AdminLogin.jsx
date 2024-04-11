@@ -19,10 +19,7 @@ import OnboardingLayout from "../../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
 import AdminOnboardingLayout from "../../layout/AdminOnboardingLayout";
 
-// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-// const passwordValidation = new RegExp(
-//   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-// );
+
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {

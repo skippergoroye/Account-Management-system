@@ -17,18 +17,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
 import { SyncLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../components/ui/button";
-import { useForgotPasswordMutation } from "../features/api/users";
+import { useVerifyOtpMutation } from "../features/api/users";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
     message: "Email is required.",
   }),
+  otp: z.string().min(6, {
+    message: "Otp should be 6 digits",
+  }),
 });
 
-const ResetPassword = () => {
+const VerifyOtp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,24 +40,21 @@ const ResetPassword = () => {
     },
   });
 
-  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
 
-  // function onSubmit(values) {
-  //   navigate("/verification-mail");
-  //   console.log({ values });
-  // }
+  console.log(location, "ROUTEEES");
 
   const successNotifying = () => {
-    toast.success("verification email sent Successful");
+    toast.success("Otp verification Successful");
   };
 
   const onSubmit = async (data) => {
     try {
-      const response = await forgotPassword(data).unwrap();
-      console.log(response, "REGISTERRRRR");
+      const response = await verifyOtp(data).unwrap();
       successNotifying();
+      navigate("login");
     } catch (error) {
-      toast.error(error.data.message);
+      toast.error(error.data.error);
       console.error("verification email failed:", error);
     }
   };
@@ -96,6 +97,25 @@ const ResetPassword = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="otp"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="">Enter Otp</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your otp password"
+                      className="border-neutral-300"
+                      type="tel"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </form>
           <Button
             onClick={form.handleSubmit(onSubmit)}
@@ -108,9 +128,8 @@ const ResetPassword = () => {
             )}
           </Button>
           <p className="mt-4 text-center">
-            Back to{" "}
             <span className="font-semibold text-violet-600">
-              <Link to={"/login"}>Login</Link>
+              <Link to={"/login"}>Resend Otp</Link>
             </span>
           </p>
         </Form>
@@ -119,4 +138,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default VerifyOtp;

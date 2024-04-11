@@ -1,9 +1,15 @@
 import Logo from "../assets/PNG/logo.svg";
 import VerifyImg from "../assets/PNG/envilope.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const VerificationMail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location.state.email, "ROUTEEES");
+  setTimeout(() => {
+    navigate("/verify-otp");
+  }, 10000);
 
   return (
     <div className="flex items-center justify-center bg-[#eef2ff] flex-col h-screen">
@@ -23,7 +29,7 @@ const VerificationMail = () => {
             Dear customer, your verification link has just been sent to your
             email address
             <Link to="/" className="font-semibold text-violet-600">
-              (jamessoon@gmail.com)
+              ({location.state.email})
             </Link>
             . Click the link to verify your account.
           </p>

@@ -18,10 +18,10 @@ import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
 import { SyncLoader } from "react-spinners";
-import { toast } from "react-toastify";
 import { useLoginUserMutation } from "../features/api/users";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserCredentials } from "../features/auth/authSliceUser";
+import { toastSuccess } from "../components/Toast";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -34,7 +34,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, { isLoading }] = useLoginUserMutation();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
   const { userInfo } = useSelector((state) => state.authUser);
 
   const form = useForm({
@@ -51,19 +51,21 @@ const Login = () => {
     }
   }, [navigate, userInfo]);
 
-  const successNotifying = () => {
-    toast.success("Login Successful");
-  };
-
   const onSubmit = async (data) => {
-    try {
-      const response = await login(data).unwrap();
-      dispatch(setUserCredentials(response.data.user));
-      successNotifying();
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(error.data.message);
-    }
+    loginUser(data)
+      .unwrap()
+      .then((res) => {
+        if (res?.data) {
+          dispatch(
+            setUserCredentials({
+              user: res.data.user,
+              token: res.data.accessToken,
+            })
+          );
+          toastSuccess("Login Successful");
+          navigate("/dashboard");
+        }
+      });
   };
 
   return (

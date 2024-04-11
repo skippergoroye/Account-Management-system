@@ -10,6 +10,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: "/api/auth/login/user",
         method: "POST",
         body: values,
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+          try {
+            const result = await queryFulfilled;
+            return result;
+          } catch (err) {
+            const { errorMessage } = parseError(err);
+            toastError(errorMessage);
+          }
+        },
       }),
     }),
     signup: builder.mutation({

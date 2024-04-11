@@ -20,7 +20,8 @@ import { EyeOff, Eye } from "lucide-react";
 import { toast } from 'react-toastify';
 import { useLoginMutation } from "../features/api/users";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../features/auth/authSliceUser";
+import { setUserCredentials } from "../features/auth/authSliceUser";
+
 
 
 const formSchema = z.object({
@@ -61,7 +62,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const response = await login(data).unwrap();
-      dispatch(setCredentials(response.data.user));
+      dispatch(setUserCredentials(response.data.user));
       successNotifying();
       navigate("/dashboard");
     } catch (error) {

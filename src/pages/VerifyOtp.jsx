@@ -52,6 +52,7 @@ const VerifyOtp = () => {
     try {
       const response = await verifyOtp(data).unwrap();
       successNotifying();
+      navigate("login");
     } catch (error) {
       toast.error(error.data.error);
       console.error("verification email failed:", error);

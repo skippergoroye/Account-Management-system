@@ -8,11 +8,7 @@ const VerificationMail = () => {
 
   console.log(location.state.email, "ROUTEEES");
   setTimeout(() => {
-    navigate("verify-otp", {
-      state: {
-        email: location.state.email,
-      },
-    });
+    navigate("/verify-otp");
   }, 10000);
 
   return (

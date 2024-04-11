@@ -16,7 +16,6 @@ const DashboardSidebar = () => {
   const [route, setRoute] = useState([]);
 
   const getRoute = useCallback(() => {
-    console.log("object");
     let route;
     if (pathname.includes("/backoffice")) {
       route = adminSidebarLinks;

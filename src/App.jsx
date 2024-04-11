@@ -24,15 +24,22 @@ import ProtectedAdminLayout from "./layout/ProtectedAdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminTransactions from "./pages/admin/Transactions";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PrivateRoute } from "./components";
 
-// import { PrivateRoute } from "./components";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    <> 
     <Route>
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login />} />
-      <Route path="dashboard" element={<Dashboard />} />
+
+      {/* Private Route */}
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="dashboard" element={<Dashboard />} />
+      </Route>
       <Route path="reset-password" element={<ResetPassword />} />
       <Route path="reset-new-password" element={<ResetNewPassword />} />
       <Route path="transactions" element={<Transactions />} />
@@ -57,12 +64,14 @@ const router = createBrowserRouter(
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
+    </>
+    
   )
 );
 
 function App() {
   return <RouterProvider router={router} />;
+  <ToastContainer />
 }
-
 
 export default App;

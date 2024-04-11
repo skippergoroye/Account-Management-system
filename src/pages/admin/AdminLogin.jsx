@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { toast } from 'react-toastify';
 import { EyeOff, Eye } from "lucide-react";
+import { SyncLoader } from "react-spinners";
 import AdminOnboardingLayout from "../../layout/AdminOnboardingLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginAdminMutation } from "../../features/api/admin";
@@ -35,7 +36,7 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login] = useLoginAdminMutation();
+  const [login, {isLoading}] = useLoginAdminMutation();
   const { adminInfo} = useSelector((state) => state.authAdmin)
 
 
@@ -154,7 +155,12 @@ const AdminLogin = () => {
               onClick={form.handleSubmit(onSubmit)}
               className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
             >
-              Sign In
+              {isLoading? (
+               <SyncLoader size={"0.8rem"} color="#ffffff" />
+              ) : (
+
+              "Sign In"
+              )}
             </Button>
           </Form>
         </div>

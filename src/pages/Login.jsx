@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
+import { toast } from 'react-toastify';
 import { useLoginMutation } from "../features/api/users";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
@@ -51,6 +52,10 @@ const Login = () => {
     }
   }, [navigate, userInfo]);
 
+  const successNotifying = () => {
+    toast.success("Login Successful", { position: toast.POSITION.TOP_RIGHT });
+  };
+
 
 
   const onSubmit = async (data) => {
@@ -58,6 +63,7 @@ const Login = () => {
       const response = await login(data).unwrap();
       // console.log(response.data.user)
       dispatch(setCredentials(response.data.user));
+      successNotifying();
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);

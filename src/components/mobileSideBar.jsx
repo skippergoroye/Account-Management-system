@@ -7,10 +7,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import { adminSidebarLinks, sidebarLinks } from "../constants";
 import Logo from "../assets/PNG/logo.png";
 import { ICONS } from "./DashboardSidebar";
+import { useSelector } from "react-redux";
 
 function MobileSideBar({ isOpen, onClose }) {
   const { pathname } = useLocation();
   const [route, setRoute] = useState([]);
+  const { userInfo } = useSelector((state) => state?.auth);
 
   useEffect(() => {
     let route;
@@ -31,7 +33,9 @@ function MobileSideBar({ isOpen, onClose }) {
         <div className="flex items-center mt-7">
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
-        <p className="mt-2">Howdy Folaranmi,</p>
+        <p className="mt-2">
+          Howdy {userInfo?.role === "admin" ? "Admin" : userInfo?.firstName},
+        </p>
         <div className="w-full mx-auto mt-14">
           {route.map((item) => {
             const isActive = pathname === item.route;

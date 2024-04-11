@@ -24,9 +24,10 @@ import ProtectedAdminLayout from "./layout/ProtectedAdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminTransactions from "./pages/admin/Transactions";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { PrivateRoute } from "./components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { PrivateUserRoute } from "./components";
+import VerifyOtp from "./pages/VerifyOtp";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,12 +36,13 @@ const router = createBrowserRouter(
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
 
-        {/* Private Route */}
-        <Route path="" element={<PrivateRoute />}>
+        {/* Private Users Route */}
+        <Route path="" element={<PrivateUserRoute />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
 
         <Route path="reset-password" element={<ResetPassword />} />
+        <Route path="verify-otp" element={<VerifyOtp />} />
         <Route path="reset-new-password" element={<ResetNewPassword />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="create-account" element={<CreateAccount />} />
@@ -49,6 +51,8 @@ const router = createBrowserRouter(
           <Route index element={<AccountSettings />} />
           <Route path="security-settings" element={<SecuritySettings />} />
         </Route>
+
+        {/* Private Admin Route */}
         <Route path="/backoffice" element={<AdminLayout />}>
           <Route index element={<AdminLogin />} />
           <Route path="dashboard" element={<ProtectedAdminLayout />}>

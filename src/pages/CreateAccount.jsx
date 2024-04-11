@@ -15,7 +15,9 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SyncLoader } from "react-spinners";
+import { toast } from "react-toastify";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { useSignupMutation } from "../features/api/users.js";
@@ -58,6 +60,7 @@ const formSchema = z
   });
 
 const CreateAccount = () => {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,20 +73,25 @@ const CreateAccount = () => {
     },
   });
 
-  const [signup] = useSignupMutation();
+  const [signup, { isLoading }] = useSignupMutation();
 
-  const successNotifying = () => {
-    toast.success("Registration Successful");
+  const successNotifying = (msg) => {
+    toast.success(msg);
   };
 
   const onSubmit = async (data) => {
     try {
       const response = await signup(data).unwrap();
       console.log(response, "REGISTERRRRR");
-      successNotifying();
+      successNotifying(response.message);
+      navigate("/verification-mail", {
+        state: {
+          email: response?.data?.user?.email,
+        },
+      });
     } catch (error) {
-      toast.error(error);
-      console.error("Login failed:", error);
+      toast.error(error.data.message);
+      console.error("registration failed:", error);
     }
   };
 
@@ -233,7 +241,11 @@ const CreateAccount = () => {
             onClick={form.handleSubmit(onSubmit)}
             className="w-full h-12 mt-2 bg-violet-600 hover:bg-violet-400"
           >
-            Create account
+            {isLoading ? (
+              <SyncLoader size={"0.8rem"} color="#ffffff" />
+            ) : (
+              "Create account"
+            )}
           </Button>
           <p className="mt-4 text-sm font-normal text-center">
             Already have an account ?{" "}

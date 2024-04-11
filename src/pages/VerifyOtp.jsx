@@ -1,5 +1,7 @@
+"use client";
 import Logo from "../assets/PNG/logo.png";
-import { useState, useEffect } from "react";
+
+import OnboardingLayout from "../layout/OnboardingLayout";
 import {
   Form,
   FormControl,
@@ -13,56 +15,46 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../components/ui/button";
-import OnboardingLayout from "../layout/OnboardingLayout";
-import { EyeOff, Eye } from "lucide-react";
 import { SyncLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useLoginUserMutation } from "../features/api/users";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserCredentials } from "../features/auth/authSliceUser";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { useVerifyOtpMutation } from "../features/api/users";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
     message: "Email is required.",
   }),
-  password: z.string().min(1, { message: "Must have at least 1 character" }),
+  otp: z.string().min(6, {
+    message: "Otp should be 6 digits",
+  }),
 });
 
-const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const VerifyOtp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [login, { isLoading }] = useLoginUserMutation();
-  const { userInfo } = useSelector((state) => state.authUser);
-
+  const location = useLocation();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/dashboard");
-    }
-  }, [navigate, userInfo]);
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+
+  console.log(location, "ROUTEEES");
 
   const successNotifying = () => {
-    toast.success("Login Successful");
+    toast.success("Otp verification Successful");
   };
 
   const onSubmit = async (data) => {
     try {
-      const response = await login(data).unwrap();
-      dispatch(setUserCredentials(response.data.user));
+      const response = await verifyOtp(data).unwrap();
       successNotifying();
-      navigate("/dashboard");
     } catch (error) {
-      toast.error(error.data.message);
+      toast.error(error.data.error);
+      console.error("verification email failed:", error);
     }
   };
 
@@ -77,11 +69,12 @@ const Login = () => {
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
         <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-7">
-          Welcome back!
+          Reset password
         </h1>
         <p className="mt-px text-base font-normal text-neutral-600">
-          Sign in to your account
+          It’s easy and quick. let’s get you back.
         </p>
+
         <Form {...form}>
           <form className="mt-10 space-y-6">
             <FormField
@@ -105,29 +98,16 @@ const Login = () => {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="otp"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="">Enter Otp</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter Password"
+                      placeholder="Enter your otp password"
                       className="border-neutral-300"
-                      type={showPassword ? "text" : "password"}
+                      type="tel"
                       {...field}
-                      rightIcon={
-                        showPassword ? (
-                          <Eye
-                            className="cursor-pointer"
-                            onClick={() => setShowPassword(!showPassword)}
-                          />
-                        ) : (
-                          <EyeOff
-                            className="cursor-pointer"
-                            onClick={() => setShowPassword(!showPassword)}
-                          />
-                        )
-                      }
                     />
                   </FormControl>
                   <FormDescription />
@@ -136,11 +116,6 @@ const Login = () => {
               )}
             />
           </form>
-          <p className="mt-2 text-sm font-semibold text-purple-600">
-            <Link to="/reset-password" className="text-primary">
-              Forgot password?
-            </Link>
-          </p>
           <Button
             onClick={form.handleSubmit(onSubmit)}
             className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
@@ -148,13 +123,12 @@ const Login = () => {
             {isLoading ? (
               <SyncLoader size={"0.8rem"} color="#ffffff" />
             ) : (
-              "Sign In"
+              "Reset password"
             )}
           </Button>
-          <p className="mt-4 text-sm text-center">
-            Don’t have an account ?{" "}
+          <p className="mt-4 text-center">
             <span className="font-semibold text-violet-600">
-              <Link to={"/create-account"}>Create an account</Link>
+              <Link to={"/login"}>Resend Otp</Link>
             </span>
           </p>
         </Form>
@@ -163,4 +137,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default VerifyOtp;

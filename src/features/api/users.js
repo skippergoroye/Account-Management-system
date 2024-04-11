@@ -2,7 +2,7 @@ import { apiSlice } from "./apiSlice";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
+    loginUser: builder.mutation({
       query: (values) => ({
         url: "/api/auth/login/user",
         method: "POST",
@@ -16,7 +16,28 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: values,
       }),
     }),
+
+    forgotPassword: builder.mutation({
+      query: (values) => ({
+        url: "/api/auth/forgot-password",
+        method: "POST",
+        body: values,
+      }),
+    }),
+
+    verifyOtp: builder.mutation({
+      query: (values) => ({
+        url: "/api/auth/verify-otp",
+        method: "POST",
+        body: values,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation } = usersApiSlice;
+export const {
+  useLoginUserMutation,
+  useSignupMutation,
+  useForgotPasswordMutation,
+  useVerifyOtpMutation,
+} = usersApiSlice;

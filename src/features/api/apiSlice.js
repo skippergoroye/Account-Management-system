@@ -6,10 +6,11 @@ export const apiSlice = createApi({
     baseUrl: BASE_URL,
     prepareHeaders: async (headers, { getState, endpoint }) => {
       const token =
-        getState()?.auth?.userInfo?.token || getState()?.auth?.token || null;
-      // console.log(getState());
+        getState()?.authUser?.token || getState()?.authAdmin?.token || null;
+      console.log(getState());
       if (token) {
         return headers.set("Authorization", `Bearer ${token}`);
+        // window.pu
       }
 
       return headers;

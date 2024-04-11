@@ -34,14 +34,14 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, { isLoading }] = useLoginAdminMutation();
+  const [loginAdmin, { isLoading }] = useLoginAdminMutation();
   const { adminInfo } = useSelector((state) => state.authAdmin);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "obadara16@gmail.com",
+      password: "accman1234",
     },
   });
 
@@ -57,7 +57,7 @@ const AdminLogin = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await login(data).unwrap();
+      const response = await loginAdmin(data).unwrap();
       dispatch(
         setAdminCredentials({
           user: response.data.admin,
@@ -151,10 +151,11 @@ const AdminLogin = () => {
 
             <Button
               onClick={form.handleSubmit(onSubmit)}
+              disabled={isLoading}
               className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
             >
               {isLoading ? (
-                <SyncLoader size={"0.8rem"} color="#ffffff" />
+                <SyncLoader size={"0.5rem"} color="#ffffff" />
               ) : (
                 "Sign In"
               )}

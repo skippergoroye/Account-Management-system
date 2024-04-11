@@ -26,7 +26,7 @@ import Transactions from "./pages/Transactions";
 import AdminTransactions from "./pages/admin/Transactions";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { PrivateRoute } from "./components";
+import { PrivateUserRoute } from "./components";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,8 +35,8 @@ const router = createBrowserRouter(
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
 
-        {/* Private Route */}
-        <Route path="" element={<PrivateRoute />}>
+        {/* Private Users Route */}
+        <Route path="" element={<PrivateUserRoute />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
 
@@ -49,6 +49,8 @@ const router = createBrowserRouter(
           <Route index element={<AccountSettings />} />
           <Route path="security-settings" element={<SecuritySettings />} />
         </Route>
+
+        {/* Private Admin Route */}
         <Route path="/backoffice" element={<AdminLayout />}>
           <Route index element={<AdminLogin />} />
           <Route path="dashboard" element={<ProtectedAdminLayout />}>

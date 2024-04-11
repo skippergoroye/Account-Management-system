@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const DashBoardNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { userInfo } = useSelector((state) => state?.auth);
+  const { userInfo } = useSelector((state) => state?.authUser);
   return (
     <div className="bg-white sticky h-[82px] top-0 w-full px-5 md:px-14 z-20 flex items-center justify-between ">
       <div className="lg:hidden">

@@ -61,13 +61,11 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const response = await login(data).unwrap();
-      // console.log(response.data.user)
       dispatch(setCredentials(response.data.user));
       successNotifying();
       navigate("/dashboard");
     } catch (error) {
-      toast.error(error)
-      console.error("Login failed:", error);
+      toast.error(error.data.message) 
     }
   };
 

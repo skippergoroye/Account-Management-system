@@ -10,10 +10,14 @@ import {
   ArrowRightLeft,
 } from "lucide-react";
 import { Button } from "./ui/button";
+import { useSelector } from "react-redux";
 
 const DashboardSidebar = () => {
   const { pathname } = useLocation();
   const [route, setRoute] = useState([]);
+  const { userInfo } = useSelector((state) => state?.authUser);
+
+  const [user, setUser] = useState("");
 
   const getRoute = useCallback(() => {
     let route;
@@ -29,6 +33,14 @@ const DashboardSidebar = () => {
     getRoute();
   }, []);
 
+  useEffect(() => {
+    if (pathname.includes("/backoffice")) {
+      setUser("Admin");
+    } else if (userInfo) {
+      const user = JSON.parse(userInfo);
+      setUser(user?.firstName);
+    }
+  }, []);
   // const route = pathname.includes("/backoffice")
   //   ? adminSidebarLinks
   //   : sidebarLinks;
@@ -37,7 +49,7 @@ const DashboardSidebar = () => {
       <div className="flex items-center justify-center mt-7">
         <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
       </div>
-      <p className="mt-2 text-center">Howdy Folaranmi,</p>
+      <p className="mt-2 text-center">Howdy {user},</p>
       <div className="w-10/12 mx-auto mt-14">
         {route.map((item) => {
           const isActive = pathname === item.route;

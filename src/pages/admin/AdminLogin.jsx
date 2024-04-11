@@ -15,15 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { EyeOff, Eye } from "lucide-react";
 import { SyncLoader } from "react-spinners";
 import AdminOnboardingLayout from "../../layout/AdminOnboardingLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginAdminMutation } from "../../features/api/admin";
 import { setAdminCredentials } from "../../features/auth/authSliceAdmin";
-
-
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -36,9 +34,8 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, {isLoading}] = useLoginAdminMutation();
-  const { adminInfo} = useSelector((state) => state.authAdmin)
-
+  const [login, { isLoading }] = useLoginAdminMutation();
+  const { adminInfo } = useSelector((state) => state.authAdmin);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -48,31 +45,32 @@ const AdminLogin = () => {
     },
   });
 
-
   useEffect(() => {
-    if(adminInfo) {
-     navigate("/backoffice/dashboard")
+    if (adminInfo) {
+      navigate("/backoffice/dashboard");
     }
-  }, [navigate, adminInfo])
+  }, [navigate, adminInfo]);
 
   const successNotifying = () => {
     toast.success("Login Successful");
   };
 
-
   const onSubmit = async (data) => {
     try {
-      const response = await login(data).unwrap()
-      dispatch(setAdminCredentials(response.data.admin))
-      successNotifying()
-      navigate("/backoffice/dashboard")
+      const response = await login(data).unwrap();
+      dispatch(
+        setAdminCredentials({
+          user: response.data.admin,
+          token: response.data.accessToken,
+        })
+      );
+      successNotifying();
+      navigate("/backoffice/dashboard");
     } catch (error) {
-      toast.error(error.data.message) 
+      toast.error(error.data.message);
       // console.log(error)
     }
-
-  }
-
+  };
 
   return (
     <AdminOnboardingLayout
@@ -155,11 +153,10 @@ const AdminLogin = () => {
               onClick={form.handleSubmit(onSubmit)}
               className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
             >
-              {isLoading? (
-               <SyncLoader size={"0.8rem"} color="#ffffff" />
+              {isLoading ? (
+                <SyncLoader size={"0.8rem"} color="#ffffff" />
               ) : (
-
-              "Sign In"
+                "Sign In"
               )}
             </Button>
           </Form>

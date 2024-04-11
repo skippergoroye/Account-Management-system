@@ -12,8 +12,12 @@ import {
 } from "../ui/table";
 import { Button } from "../ui/button";
 import avatar from "../../assets/icons/avatar.svg";
+import { useSelector } from "react-redux";
+import EditCash from "../../utils/editCash";
 
 function UserList() {
+  const { users } = useSelector((state) => state?.users);
+
   return (
     <div className="col-span-2 md:col-span-2  px-6 relative overflow-hidden bg-white rounded-lg shadow-md h-[440px] overflow-y-scroll hideScrollbar">
       <div className="sticky top-0 z-20 bg-white pt-7 ">
@@ -21,7 +25,7 @@ function UserList() {
           <div className="flex items-center gap-4">
             <p>All users</p>
             <div className="bg-[#F0FDF4] px-3 rounded-md text-sm py-1">
-              2,000
+              <EditCash amount={users?.length || 0} />
             </div>
           </div>
           <div className="w-full md:w-[220px]">
@@ -45,21 +49,25 @@ function UserList() {
             </TableRow>
           </TableHeader>
           <TableBody className="overflow-y-scroll">
-            {[1, 2, 3, 4, 5].map((_data, i) => (
+            {users.slice(0, 3).map((_data, i) => (
               <TableRow key={_data + i}>
                 <TableCell className="font-medium ">
-                  <div className="flex w-[180px] md:w-full items-center justify-center gap-3">
-                    <div className="w-12 h-12 overflow-hidden rounded-full shrink-0">
+                  <div className="flex w-[180px] md:w-full gap-3">
+                    {/* <div className="w-12 h-12 overflow-hidden rounded-full shrink-0">
                       <img src={avatar} className="object-cover w-12 h-12" />
-                    </div>
+                    </div> */}
                     <div>
-                      <h6>James Olakunle</h6>
-                      <p className="text-xs font-normal">@olakunle</p>
+                      <h6>
+                        {_data?.firstName} {_data?.lastName}
+                      </h6>
+                      {/* <p className="text-xs font-normal">{@olakunle}</p> */}
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>james@gmail.com</TableCell>
-                <TableCell>Active</TableCell>
+                <TableCell>{_data?.email}</TableCell>
+                <TableCell>
+                  {_data?.isActive ? "Verified" : "Not verified"}
+                </TableCell>
                 <TableCell className="">May 12, 2024</TableCell>
                 {/* <TableCell className="">
                   <Button

@@ -1,37 +1,75 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../layout/DashboardLayout";
-import { Button } from "../../components/ui/button";
-import Addmoney from "../../components/dashboard/Addmoney";
-import RecentActivity from "../../components/dashboard/RecentActivity";
-import TransactionList from "../../components/dashboard/TransactionList";
+import DocumentImg from "../../assets/PNG/documents.png";
 import PropsType from "prop-types";
 import EditCash from "../../utils/editCash";
 import UserList from "../../components/dashboard/UserList";
+import { useGetAllUsersQuery } from "../../features/api/users";
+import { useSelector } from "react-redux";
 
 const AdminDashboard = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { users } = useSelector((state) => state?.users);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [totalActive, setTotalActive] = useState(0);
+  const [totalBlocked, setTotalBlocked] = useState(0);
+  const { isLoading } = useGetAllUsersQuery();
+
+  useEffect(() => {
+    if (users.length > 0) {
+      const bal = users.reduce((prev, cur) => {
+        return prev + cur.walletBalance;
+      }, 0);
+      const active = users.filter((user) => {
+        if (user.isActive) {
+          return user;
+        }
+      }).length;
+      const blocked = users.filter((user) => user.blocked).length;
+      setTotalBalance(bal);
+      setTotalActive(active);
+      setTotalBlocked(blocked);
+    }
+
+    return () => {};
+  }, [users]);
+
   return (
     <DashboardLayout>
       <div className="grid grid-cols-3 gap-4 pr-4">
-        <TopCard title={"Total Balance"} amount={33000000} isAmount={true} />
         <TopCard
-          title={"Active Accounts"}
+          title={"Total Balance"}
+          amount={totalBalance}
+          isAmount={true}
+        />
+        <TopCard
+          title={"Verified Accounts"}
           textColor="text-green-500"
-          amount={234000}
+          amount={totalActive}
           isAmount={false}
         />
         <TopCard
           title={"Block Accounts"}
           textColor="text-red-500"
-          amount={400}
+          amount={totalBlocked}
           isAmount={false}
         />
       </div>
       <div className="grid grid-cols-2 gap-6 pr-4 mt-14">
-        <UserList />
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center col-span-2">
+            <img
+              src={DocumentImg}
+              alt="Documents"
+              className="mt-12 h-auto w-full max-w-[300px]"
+            />
+            <h3 className="mt-10 text-xl">Fetching Data...</h3>
+          </div>
+        ) : (
+          <UserList />
+        )}
         {/* <TransactionList /> */}
       </div>
-      <Addmoney isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
+      {/* <Addmoney isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} /> */}
     </DashboardLayout>
   );
 };

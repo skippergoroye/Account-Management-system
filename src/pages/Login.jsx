@@ -53,7 +53,7 @@ const Login = () => {
   }, [navigate, userInfo]);
 
   const successNotifying = () => {
-    toast.success("Login Successful", { position: toast.POSITION.TOP_RIGHT });
+    toast.success("Login Successful");
   };
 
 
@@ -66,6 +66,7 @@ const Login = () => {
       successNotifying();
       navigate("/dashboard");
     } catch (error) {
+      toast.error(error)
       console.error("Login failed:", error);
     }
   };

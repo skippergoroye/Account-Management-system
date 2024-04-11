@@ -24,54 +24,57 @@ import ProtectedAdminLayout from "./layout/ProtectedAdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import Transactions from "./pages/Transactions";
 import AdminTransactions from "./pages/admin/Transactions";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PrivateRoute } from "./components";
 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <> 
-    <Route>
-      <Route path="/" element={<Home />} />
-      <Route path="login" element={<Login />} />
+    <>
+      <Route>
+        <Route path="/" element={<Home />} />
+        <Route path="login" element={<Login />} />
 
-      {/* Private Route */}
-      <Route path="" element={<PrivateRoute />}>
-        <Route path="dashboard" element={<Dashboard />} />
-      </Route>
-      <Route path="reset-password" element={<ResetPassword />} />
-      <Route path="reset-new-password" element={<ResetNewPassword />} />
-      <Route path="transactions" element={<Transactions />} />
-      <Route path="create-account" element={<CreateAccount />} />
-      <Route path="verification-mail" element={<VerificationMail />} />
-      <Route path="settings" element={<Settings />}>
-        <Route index element={<AccountSettings />} />
-        <Route path="security-settings" element={<SecuritySettings />} />
-      </Route>
-      <Route path="/backoffice" element={<AdminLayout />}>
-        <Route index element={<AdminLogin />} />
-        <Route path="dashboard" element={<ProtectedAdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="users" element={<Users />} />
-          <Route path="transactions" element={<AdminTransactions />} />
+        {/* Private Route */}
+        <Route path="" element={<PrivateRoute />}>
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
 
-          <Route path="settings" element={<Settings />}>
-            <Route index element={<AccountSettings />} />
-            <Route path="security-settings" element={<SecuritySettings />} />
+        <Route path="reset-password" element={<ResetPassword />} />
+        <Route path="reset-new-password" element={<ResetNewPassword />} />
+        <Route path="transactions" element={<Transactions />} />
+        <Route path="create-account" element={<CreateAccount />} />
+        <Route path="verification-mail" element={<VerificationMail />} />
+        <Route path="settings" element={<Settings />}>
+          <Route index element={<AccountSettings />} />
+          <Route path="security-settings" element={<SecuritySettings />} />
+        </Route>
+        <Route path="/backoffice" element={<AdminLayout />}>
+          <Route index element={<AdminLogin />} />
+          <Route path="dashboard" element={<ProtectedAdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<Users />} />
+            <Route path="transactions" element={<AdminTransactions />} />
+
+            <Route path="settings" element={<Settings />}>
+              <Route index element={<AccountSettings />} />
+              <Route path="security-settings" element={<SecuritySettings />} />
+            </Route>
           </Route>
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="*" element={<NotFound />} />
-    </Route>
     </>
-    
   )
 );
 
 function App() {
-  return <RouterProvider router={router} />;
-  <ToastContainer />
+  return (
+    <>
+      <RouterProvider router={router} />;
+      <ToastContainer />
+    </>
+  );
 }
 
 export default App;

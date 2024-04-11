@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 function MobileSideBar({ isOpen, onClose }) {
   const { pathname } = useLocation();
   const [route, setRoute] = useState([]);
-  const { userInfo } = useSelector((state) => state?.auth);
+  const { userInfo } = useSelector((state) => state?.authUser);
 
   useEffect(() => {
     let route;

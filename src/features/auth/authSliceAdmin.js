@@ -15,13 +15,12 @@ const authSliceAdmin = createSlice({
   reducers: {
     setAdminCredentials: (state, action) => {
       state.adminInfo = action.payload.user;
-      console.log("lo", action.payload)
       state.token = action.payload.token;
       localStorage.setItem("admintoken", JSON.stringify(action.payload.token));
       localStorage.setItem("adminInfo", JSON.stringify(action.payload.user));
     },
     adminLogout: (state) => {
-      state.userInfo = null;
+      state.adminInfo = null;
       state.token = null;
       localStorage.removeItem("adminInfo");
       localStorage.removeItem("admintoken");

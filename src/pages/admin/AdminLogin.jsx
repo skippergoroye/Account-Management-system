@@ -51,25 +51,21 @@ const AdminLogin = () => {
     }
   }, [navigate, adminInfo]);
 
-  const successNotifying = () => {
-    toast.success("Login Successful");
-  };
-
   const onSubmit = async (data) => {
-    try {
-      const response = await loginAdmin(data).unwrap();
-      dispatch(
-        setAdminCredentials({
-          user: response.data.admin,
-          token: response.data.accessToken,
-        })
-      );
-      successNotifying();
-      navigate("/backoffice/dashboard");
-    } catch (error) {
-      toast.error(error.data.message);
-      // console.log(error)
-    }
+    loginAdmin(data)
+      .unwrap()
+      .then((res) => {
+        console.log({ res });
+        if (res?.data) {
+          dispatch(
+            setAdminCredentials({
+              user: res.data.admin,
+              token: res.data.accessToken,
+            })
+          );
+          navigate("/backoffice/dashboard");
+        }
+      });
   };
 
   return (

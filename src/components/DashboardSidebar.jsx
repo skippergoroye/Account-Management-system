@@ -37,10 +37,9 @@ const DashboardSidebar = () => {
     if (pathname.includes("/backoffice")) {
       setUser("Admin");
     } else if (userInfo) {
-      const user = JSON.parse(userInfo);
-      setUser(user?.firstName);
+      setUser(userInfo?.firstName);
     }
-  }, []);
+  }, [pathname]);
   // const route = pathname.includes("/backoffice")
   //   ? adminSidebarLinks
   //   : sidebarLinks;

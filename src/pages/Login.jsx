@@ -18,7 +18,7 @@ import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
 import { toast } from 'react-toastify';
-import { useLoginMutation } from "../features/api/users";
+import { useLoginUserMutation } from "../features/api/users";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserCredentials } from "../features/auth/authSliceUser";
 
@@ -35,7 +35,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login] = useLoginMutation();
+  const [login] = useLoginUserMutation();
   const { userInfo } = useSelector((state) => state.authUser);
 
 

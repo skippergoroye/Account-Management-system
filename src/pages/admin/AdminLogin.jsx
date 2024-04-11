@@ -1,5 +1,5 @@
 import Logo from "../../assets/PNG/logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -15,9 +15,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
-import OnboardingLayout from "../../layout/OnboardingLayout";
+import { toast } from 'react-toastify';
 import { EyeOff, Eye } from "lucide-react";
 import AdminOnboardingLayout from "../../layout/AdminOnboardingLayout";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginAdminMutation } from "../../features/api/admin";
+import { setAdminCredentials } from "../../features/auth/authSliceAdmin";
 
 
 
@@ -29,8 +32,12 @@ const formSchema = z.object({
 });
 
 const AdminLogin = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [login] = useLoginAdminMutation();
+  const { adminInfo} = useSelector((state) => state.authAdmin)
+
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -40,10 +47,31 @@ const AdminLogin = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log({ values });
-    navigate("/backoffice/dashboard");
+
+  useEffect(() => {
+    if(adminInfo) {
+     navigate("/backoffice/dashboard")
+    }
+  }, [navigate, adminInfo])
+
+  const successNotifying = () => {
+    toast.success("Login Successful");
+  };
+
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await login(data).unwrap()
+      dispatch(setAdminCredentials(response.data.admin))
+      successNotifying()
+      navigate("/backoffice/dashboard")
+    } catch (error) {
+      toast.error(error.data.message) 
+      // console.log(error)
+    }
+
   }
+
 
   return (
     <AdminOnboardingLayout

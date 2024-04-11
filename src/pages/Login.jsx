@@ -20,7 +20,7 @@ import { EyeOff, Eye } from "lucide-react";
 import { toast } from 'react-toastify';
 import { useLoginMutation } from "../features/api/users";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../features/auth/authSlice";
+import { setCredentials } from "../features/auth/authSliceUser";
 
 
 const formSchema = z.object({
@@ -35,7 +35,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.authUser);
 
 
   const form = useForm({

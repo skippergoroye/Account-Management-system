@@ -32,7 +32,6 @@ const AccountSettings = () => {
   const {data: userData} = useGetSingleUserByIdQuery(userInfo?._id)
 
 
-  console.log("jjjj", userData.data)
 
 
   const {

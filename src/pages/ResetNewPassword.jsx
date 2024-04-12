@@ -16,6 +16,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
+import { useResetPasswordMutation } from "../features/api/users";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
@@ -27,7 +28,7 @@ const passwordValidation = new RegExp(
 
 const formSchema = z
   .object({
-    password: z
+    newPassword: z
       .string()
       .min(1, { message: "Must have at least 1 character" })
       .regex(passwordValidation, {
@@ -40,7 +41,7 @@ const formSchema = z
         message: "Your password is not valid",
       }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"], // path of error
   });
@@ -56,10 +57,21 @@ const ResetNewPassword = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log({ values });
-    navigate("/login");
-  }
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await resetPassword(
+        data.newPassword,
+        "hdhsjdhskdhskdkd"
+      ).unwrap();
+      successNotifying();
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.data.message);
+      console.error("verification email failed:", error);
+    }
+  };
 
   return (
     <OnboardingLayout
@@ -81,7 +93,7 @@ const ResetNewPassword = () => {
           <form className="mt-10 space-y-6">
             <FormField
               control={form.control}
-              name="password"
+              name="newPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="">New password</FormLabel>
@@ -149,7 +161,11 @@ const ResetNewPassword = () => {
             onClick={form.handleSubmit(onSubmit)}
             className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
           >
-            Reset password
+            {isLoading ? (
+              <SyncLoader size={"0.8rem"} color="#ffffff" />
+            ) : (
+              "Reset password"
+            )}
           </Button>
         </Form>
       </div>

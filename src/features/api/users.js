@@ -21,6 +21,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+
     signup: builder.mutation({
       query: (values) => ({
         url: "/api/auth/register/user",
@@ -51,25 +52,46 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data.valOne,
       }),
     }),
-    // adminLogin: builder.mutation({
-    //   query: (values) => ({
-    //     url: "/api/auth/login/admin",
-    //     method: "POST",
-    //     body: values,
-    //     async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-    //       try {
-    //         const result = await queryFulfilled;
-    //         return result;
-    //       } catch (err) {
-    //         const { errorMessage } = parseError(err);
-    //         toastError(errorMessage);
-    //       }
-    //     },
-    //   }),
-    // }),
-    getAllUsers: builder.query({
-      query: () => "/api/user",
-      providesTags: ["Auth"],
+    getUserTransactions: builder.query({
+      query: (id) => `/api/transaction/find/user/${id}`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
+    updateUser: builder.mutation({
+      query: ({ id, updatedUser }) => ({
+        url: `/api/user/${id}`,
+        method: "PUT",
+        body: updatedUser,
+      }),
+    }),
+    getSingleUserById: builder.query({
+      query: (id) => `/api/user/find/${id}`,
+    }),
+
+    getTransactionsUserId: builder.query({
+      query: (userId, tranId) => `/api/transaction/${userId}/${tranId}`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
+    getBalance: builder.query({
+      query: (id) => `/api/user/balance`,
+      providesTags: ["Users"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -85,6 +107,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useGetSingleUserByIdQuery,
+  useUpdateUserMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,

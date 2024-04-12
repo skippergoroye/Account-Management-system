@@ -1,15 +1,20 @@
 import avatar from "../assets/icons/avatar.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
 import DeleteAccount from "../components/dashboard/DeleteAccount";
+import { useGetSingleUserByIdQuery, useUpdateUserMutation } from "../features/api/users";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { SyncLoader } from "react-spinners";
+
 
 const formSchema = yup.object().shape({
   firstName: yup.string().required("first name is required"),
   lastName: yup.string().required("last name is required"),
-  emailAddress: yup
+  email: yup
     .string()
     .email("please provide a valid email address")
     .required("email address is required"),
@@ -22,16 +27,55 @@ const formSchema = yup.object().shape({
 
 const AccountSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { userInfo } = useSelector((state) => state.authUser);
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const {data: userData} = useGetSingleUserByIdQuery(userInfo?._id)
+
+
+
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue 
   } = useForm({
     resolver: yupResolver(formSchema),
   });
 
-  const formSubmitHandler = (data) => {
-    console.log(data);
+
+  useEffect(() => {
+    if(userData) {
+      setValue("firstName", userData.data?.firstName);
+      setValue("lastName", userData.data?.lastName);
+      setValue("email", userData.data?.email);
+      setValue("phoneNumber", userData.data?.phoneNumber);
+      setValue("gender", userData.data?.gender);
+    }
+  }, [userData, setValue]);
+
+  const successNotifying = (msg) => {
+    toast.success(msg);
+  };
+
+  const formSubmitHandler = async (data) => {
+    try {
+      const id = userInfo?._id;
+      if (!id) {
+        console.error("User ID is undefined.");
+        return;
+      }
+      const updatedUserData = { ...data, _id: id };
+      const res = await updateUser({
+        id,
+        updatedUser: updatedUserData,
+      }).unwrap();
+      successNotifying(res.message);
+      console.log(res);
+    } catch (error) {
+      toast.error("error");
+      console.log(error);
+    }
   };
 
   return (
@@ -94,22 +138,22 @@ const AccountSettings = () => {
             </div>
             <div className="flex flex-col gap-1">
               <label
-                htmlFor="emailAddress"
+                htmlFor="email"
                 className="font-medium text-sm text-[#09090B]"
               >
                 Email Address
               </label>
               <input
-                {...register("emailAddress")}
+                {...register("email")}
                 type="email"
-                name="emailAddress"
-                id="emailAddress"
+                name="email"
+                id="email"
                 placeholder="johndoe@gmail.com"
                 className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black"
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <div className="text-sm text-red-600">
-                  {errors.emailAddress.message}
+                  {errors.email.message}
                 </div>
               )}
             </div>
@@ -165,7 +209,11 @@ const AccountSettings = () => {
             className="bg-violet-700 hover:bg-violet-500"
             onClick={handleSubmit(formSubmitHandler)}
           >
-            Update Account
+            {isLoading ? (
+              <SyncLoader size={"0.8rem"} color="#ffffff" />
+            ) : (
+              "Update Account"
+            )}
           </Button>
         </div>
         <div className="mt-7">

@@ -1,38 +1,97 @@
 import avatar from "../assets/icons/avatar.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
 import DeleteAccount from "../components/dashboard/DeleteAccount";
+import { useSelector } from "react-redux";
+import { useQuery, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { BASE_URL } from "../features/constants";
+import { User, Loader2 } from "lucide-react";
+import { toastSuccess } from "../components/Toast";
+
 
 const formSchema = yup.object().shape({
-  firstName: yup.string().required("first name is required"),
-  lastName: yup.string().required("last name is required"),
-  emailAddress: yup
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
+  email: yup
     .string()
-    .email("please provide a valid email address")
-    .required("email address is required"),
+    .email("Please provide a valid email address")
+    .required("Email address is required"),
   phoneNumber: yup
     .string()
-    .matches(/^0\d{10}$/, "invalid phone number")
-    .required("phone number is required"),
-  gender: yup.string().required("gender is required"),
+    .matches(/^0\d{10}$/, "Invalid phone number")
+    .required("Phone number is required"),
+  gender: yup.string().required("Gender is required"),
 });
 
 const AccountSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { userInfo } = useSelector((state) => state?.authUser);
+
+  // Fetch User details
+
+  const userId = userInfo?._id;
+  const token = JSON.parse(localStorage.getItem("usertoken"));
+
+  const { data: userDetails, isLoading } = useQuery({
+    queryKey: ['getUserDetails'],
+    queryFn: async () => {
+      return await axios.get(`${BASE_URL}/api/user/find/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((res) => res.data.data);
+    }
+  });
+
+  // Update user details
+  const { mutate: updateUserDetails, isPending: loadingUpdate } = useMutation({
+    mutationFn: (values) => {
+      return axios.put(`${BASE_URL}/api/user/${userId}`, values, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((res) => res.data)
+    },
+    onSuccess: () => {
+      toastSuccess("Details updated successfully.");
+      queryClient.invalidateQueries({ queryKey: ["getUserDetails"] });
+    }
+  });
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      gender: "",
+    },
+    mode: "onTouched"
   });
 
-  const formSubmitHandler = (data) => {
-    console.log(data);
+  const formSubmitHandler = (values) => {
+    updateUserDetails(values)
   };
+
+  useEffect(() => {
+    if (userDetails) {
+      setValue("firstName", userDetails.firstName);
+      setValue("lastName", userDetails.lastName);
+      setValue("email", userDetails.email);
+      setValue("phoneNumber", userDetails.phoneNumber);
+      setValue("gender", userDetails?.gender === "F" ? "female" : "male");
+    }
+  }, [userDetails])
 
   return (
     <div>
@@ -42,7 +101,10 @@ const AccountSettings = () => {
       </div>
       <div className="mt-8">
         <div className="flex items-center gap-2">
-          <img src={avatar} className="w-12 h-12 rounded-full" alt="" />
+          {userDetails?.img !== "" && !isLoading ?
+            (<img src={userDetails?.img} className="w-12 h-12 rounded-full" alt="" />) :
+            (<div className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-200"><User /></div>)
+          }
           <div>
             <h5 className="text-[#09090B] font-medium">Profile picture</h5>
             <p className="text-[#71717A] text-xs">JPG, PNG max of 2MB</p>
@@ -94,22 +156,22 @@ const AccountSettings = () => {
             </div>
             <div className="flex flex-col gap-1">
               <label
-                htmlFor="emailAddress"
+                htmlFor="email"
                 className="font-medium text-sm text-[#09090B]"
               >
                 Email Address
               </label>
               <input
-                {...register("emailAddress")}
+                {...register("email")}
                 type="email"
-                name="emailAddress"
-                id="emailAddress"
+                name="email"
+                id="email"
                 placeholder="johndoe@gmail.com"
                 className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black"
               />
-              {errors.emailAddress && (
+              {errors.email && (
                 <div className="text-sm text-red-600">
-                  {errors.emailAddress.message}
+                  {errors.email.message}
                 </div>
               )}
             </div>
@@ -164,12 +226,14 @@ const AccountSettings = () => {
           <Button
             className="bg-violet-700 hover:bg-violet-500"
             onClick={handleSubmit(formSubmitHandler)}
+            disabled={loadingUpdate}
           >
-            Update Account
+            {!loadingUpdate && "Update Account"}
+            {loadingUpdate && <>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin " /></>}
           </Button>
         </div>
         <div className="mt-7">
-          <Button variant="destructive" onClick={() => setIsOpen(!isOpen)}>
+          <Button variant="link" className="text-red-500" onClick={() => setIsOpen(!isOpen)}>
             Delete
           </Button>
         </div>

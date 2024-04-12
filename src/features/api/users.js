@@ -21,6 +21,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+   
     signup: builder.mutation({
       query: (values) => ({
         url: "/api/auth/register/user",
@@ -74,6 +75,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    updateUser: builder.mutation({
+      query: ({id, updatedUser}) => ({
+        url: `/api/user/${id}`,
+        method: "PUT",
+        body: updatedUser,
+      })
+    }),
+    getSingleUserById: builder.query({
+      query: (id) => `/api/user/find/${id}`,
+    }),
+
     getTransactionsUserId: builder.query({
       query: (userId, tranId) => `/api/transaction/${userId}/${tranId}`,
       providesTags: ["Users"],
@@ -92,6 +104,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useGetSingleUserByIdQuery,
+  useUpdateUserMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,

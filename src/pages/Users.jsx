@@ -7,7 +7,6 @@ import { Input } from "../components/ui/input";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -17,13 +16,21 @@ import { Button } from "../components/ui/button";
 import UserDetailsSheet from "../components/dashboard/UserDetailsSheet";
 import FetchingComp from "../components/FetchingComp";
 import { useSelector } from "react-redux";
-import { useGetAllUsersQuery } from "../features/api/users";
+import {
+  useGetAllUsersQuery,
+  useLazyGetSingleUserQuery,
+} from "../features/api/admin";
+import { SyncLoader } from "react-spinners";
 
 const Users = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState("");
+
   const { users } = useSelector((state) => state?.users);
 
   const { isLoading } = useGetAllUsersQuery();
+  const [getSingleUser, { isLoading: fetchingUser }] =
+    useLazyGetSingleUserQuery();
 
   return (
     <DashboardLayout>
@@ -82,16 +89,32 @@ const Users = () => {
                   <TableCell>
                     {_data?.isActive ? "Verified" : "Not verified"}
                   </TableCell>
-                  <TableCell className="">May 12, 2024</TableCell>
-                  {/* <TableCell className="">
-                  <Button
-                    variant="link"
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="hover:bg-transparent text-violet-600"
-                  >
-                    View
-                  </Button>
-                </TableCell> */}
+                  <TableCell className="">
+                    {new Date(_data?.createdAt).toDateString()}
+                  </TableCell>
+                  <TableCell className="">
+                    <Button
+                      variant="link"
+                      onClick={() => {
+                        setSelected(_data?._id);
+                        getSingleUser(_data?._id)
+                          .unwrap()
+                          .then((res) => {
+                            console.log(res);
+                            if (res?.data) {
+                              setIsOpen(!isOpen);
+                            }
+                          });
+                      }}
+                      className="hover:bg-transparent text-violet-600"
+                    >
+                      {fetchingUser && selected === _data?._id ? (
+                        <SyncLoader size={"0.5rem"} color="#000" />
+                      ) : (
+                        "View"
+                      )}
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

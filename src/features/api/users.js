@@ -60,29 +60,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     //     },
     //   }),
     // }),
-    getAllUsers: builder.query({
-      query: () => "/api/user",
-      providesTags: ["Auth"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-          dispatch(setUsers(result?.data?.data));
-          return result;
-        } catch (err) {
-          // console.log({ err }, "getProfile");
-          const { errorMessage } = parseError(err);
-          toastError(errorMessage);
-        }
-      },
-    }),
   }),
 });
 
 export const {
   useLoginMutation,
-  useGetAllUsersQuery,
-  useLazyGetAllUsersQuery,
-  // useAdminLoginMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,

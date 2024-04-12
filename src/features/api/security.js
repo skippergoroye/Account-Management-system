@@ -6,8 +6,6 @@ export const securityApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     changePassword: builder.mutation({
       query: (userId) => {
-        
-        console.log(userId);
         return ({
           url: `/api/user/${userId.userId}/password`,
           method: "PUT",
@@ -23,6 +21,11 @@ export const securityApiSlice = apiSlice.injectEndpoints({
           },
         });
       },
+    }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        
+      }),
     }),
   }),
 });

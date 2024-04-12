@@ -38,11 +38,6 @@ const ResetPassword = () => {
 
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
-  // function onSubmit(values) {
-  //   navigate("/verification-mail");
-  //   console.log({ values });
-  // }
-
   const successNotifying = () => {
     toast.success("verification email sent Successful");
   };
@@ -52,6 +47,11 @@ const ResetPassword = () => {
       const response = await forgotPassword(data).unwrap();
       console.log(response, "REGISTERRRRR");
       successNotifying();
+      // navigate("/verification-mail", {
+      //   state: {
+      //     email: response?.data?.user?.email,
+      //   },
+      // });
     } catch (error) {
       toast.error(error.data.message);
       console.error("verification email failed:", error);
@@ -69,7 +69,7 @@ const ResetPassword = () => {
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
         <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-7">
-          Reset password
+          Forgot password
         </h1>
         <p className="mt-px text-base font-normal text-neutral-600">
           It’s easy and quick. let’s get you back.

@@ -52,7 +52,7 @@ const VerifyOtp = () => {
     try {
       const response = await verifyOtp(data).unwrap();
       successNotifying();
-      navigate("login");
+      navigate("/login");
     } catch (error) {
       toast.error(error.data.error);
       console.error("verification email failed:", error);
@@ -70,7 +70,7 @@ const VerifyOtp = () => {
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
         <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-7">
-          Reset password
+          Verify OTP
         </h1>
         <p className="mt-px text-base font-normal text-neutral-600">
           It’s easy and quick. let’s get you back.

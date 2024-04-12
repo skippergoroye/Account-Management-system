@@ -43,7 +43,7 @@ const router = createBrowserRouter(
 
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="verify-otp" element={<VerifyOtp />} />
-        <Route path="reset-new-password" element={<ResetNewPassword />} />
+        <Route path="reset-new-password/:id" element={<ResetNewPassword />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="create-account" element={<CreateAccount />} />
         <Route path="verification-mail" element={<VerificationMail />} />

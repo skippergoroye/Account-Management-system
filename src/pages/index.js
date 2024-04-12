@@ -10,19 +10,16 @@ import SecuritySettings from "./SecuritySettings";
 import ResetPassword from "./ResetPassword";
 import ResetNewPassword from "./ResetNewPassword";
 
-
-
-
 export {
-    Login,
-    Home,
-    NotFound,
-    CreateAccount,
-    VerificationMail,
-    Settings,
-    AccountSettings,
-    SecuritySettings,
-    Dashboard,
-    ResetPassword,
-    ResetNewPassword,
-}
+  Login,
+  Home,
+  NotFound,
+  CreateAccount,
+  VerificationMail,
+  Settings,
+  AccountSettings,
+  SecuritySettings,
+  Dashboard,
+  ResetPassword,
+  ResetNewPassword,
+};

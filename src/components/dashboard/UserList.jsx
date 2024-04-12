@@ -68,7 +68,9 @@ function UserList() {
                 <TableCell>
                   {_data?.isActive ? "Verified" : "Not verified"}
                 </TableCell>
-                <TableCell className="">May 12, 2024</TableCell>
+                <TableCell className="">
+                  {new Date(_data?.createdAt).toDateString()}
+                </TableCell>
                 {/* <TableCell className="">
                   <Button
                     variant="link"

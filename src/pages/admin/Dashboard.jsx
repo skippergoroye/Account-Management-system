@@ -4,8 +4,9 @@ import DocumentImg from "../../assets/PNG/documents.png";
 import PropsType from "prop-types";
 import EditCash from "../../utils/editCash";
 import UserList from "../../components/dashboard/UserList";
-import { useGetAllUsersQuery } from "../../features/api/users";
+
 import { useSelector } from "react-redux";
+import { useGetAllUsersQuery } from "../../features/api/admin";
 
 const AdminDashboard = () => {
   const { users } = useSelector((state) => state?.users);

@@ -1,10 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { CustomModal } from "../CustomModal";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../components/ui/form";
+import AddMoneyAlert from "./addMoneyAlert";
+import { useAddFundMutation } from "../../features/api/users";
 
+const formSchema = z.object({
+  amount: z.string().min(1, {
+    message: "Amount field is required",
+  }),
+});
 function Addmoney({ isOpen, onClose }) {
+  const [openAlert, setIsOpen] = useState(false);
+  const [addFund, { isLoading }] = useAddFundMutation();
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      amount: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    setIsOpen(!openAlert);
+  };
+
+  const onFund = () => {
+    addFund({ amount: Number(form.watch("amount")) }).then((res) => {
+      if (res?.data) {
+        setIsOpen(!openAlert);
+        onClose();
+      }
+    });
+  };
+
+  console.log(form.formState.errors);
+
   return (
     <CustomModal
       className={"w-[95%] md:max-w-lg"}
@@ -18,11 +62,38 @@ function Addmoney({ isOpen, onClose }) {
       </p>
       <div className="flex items-center gap-4 mt-4">
         <p className="">Amount</p>
-        <Input placeholder="Enter amount" className="h-11" />
+        <Form {...form}>
+          <form className="w-full">
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter amount"
+                      className="w-full h-11"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       </div>
       <div className="flex justify-end">
-        <Button>Continue</Button>
+        <Button onClick={form.handleSubmit(onSubmit)}>Continue</Button>
       </div>
+      <AddMoneyAlert
+        isOpen={openAlert}
+        onClose={() => setIsOpen(!openAlert)}
+        onFund={onFund}
+        isLoading={isLoading}
+      />
     </CustomModal>
   );
 }

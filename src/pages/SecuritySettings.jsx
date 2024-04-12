@@ -4,10 +4,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
 import { useChangePasswordMutation } from "../features/api/security";
 import { useSelector } from "react-redux";
-import { toastError } from "../components/Toast";
+import { toastError, toastSuccess } from "../components/Toast";
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { BASE_URL } from "../features/constants";
+import { Loader2 } from "lucide-react";
+
 
 const formSchema = yup.object().shape({
-  oldPassword: yup.string().required("old password is required"),
+  currentPassword: yup.string().required("old password is required"),
   newPassword: yup
     .string()
     .min(8, "password must not be less than 8 characters")
@@ -19,7 +24,7 @@ const formSchema = yup.object().shape({
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("newPassword")], "password mismatch")
-    .required("confirm password is required"),
+  // .required("confirm password is required"),
 });
 
 const SecuritySettings = () => {
@@ -27,25 +32,55 @@ const SecuritySettings = () => {
   const { userInfo } = useSelector((state) => state?.authUser);
   const userId = userInfo?._id;
 
+  // Update user details
+  const { mutate: changeMyPassword, isPending } = useMutation({
+    mutationFn: (values) => {
+      return axios.put(`${BASE_URL}/api/user/${userId}/password`, values, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((res) => res.data)
+    },
+    onSuccess: () => {
+      toastSuccess("Password changed successfully.");
+    }
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: yupResolver(formSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+    mode: "onTouched"
   });
 
   const [changePassword, { isLoading }] = useChangePasswordMutation();
 
-  const formSubmitHandler = async (values) => {
-    changePassword(userId, values)
-      .unwrap()
-      .then((res) => {
-        console.log(res)
-      })
-    // console.log(values);
+  const formSubmitHandler = (values) => {
+    const theData = {
+      currentPassword: values.currentPassword,
+      newPassword: values.newPassword
+    }
+
+    // changePassword(theData);
+    console.log(theData);
+
+    changePassword({
+      userId, theData
+    }).unwrap().then((res) => {
+      reset();
+      toastSuccess("Password changed successfully.")
+    });
+
     // try {
-    //   const response = await changePassword(userId, values);
+    //   const response = await changePassword(userId, theData);
     //   console.log("[CHANGEPASSWORD]", response);
     // } catch (error) {
     //   // toastError(error.data.error);
@@ -65,22 +100,22 @@ const SecuritySettings = () => {
         <form className="grid grid-cols-1 mt-12 gap-y-5 md:gap-y-7">
           <div className="flex flex-col gap-1 lg:w-1/2">
             <label
-              htmlFor="oldPassword"
+              htmlFor="currentPassword"
               className="font-medium text-sm text-[#09090B]"
             >
               Current password
             </label>
             <input
-              {...register("oldPassword")}
+              {...register("currentPassword")}
               type="password"
-              name="oldPassword"
-              id="oldPassword"
+              name="currentPassword"
+              id="currentPassword"
               placeholder="**************"
               className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black"
             />
-            {errors.oldPassword && (
+            {errors.currentPassword && (
               <div className="text-sm text-red-600">
-                {errors.oldPassword.message}
+                {errors.currentPassword.message}
               </div>
             )}
           </div>
@@ -129,8 +164,10 @@ const SecuritySettings = () => {
           <Button
             className="bg-violet-700 hover:bg-violet-500 w-min"
             onClick={handleSubmit(formSubmitHandler)}
+            disabled={isLoading}
           >
-            Change password
+            {!isLoading && "Change password"}
+            {isLoading && <>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin" /></>}
           </Button>
         </form>
       </div>

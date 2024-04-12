@@ -21,7 +21,8 @@ import { SyncLoader } from "react-spinners";
 import { useLoginUserMutation } from "../features/api/users";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserCredentials } from "../features/auth/authSliceUser";
-import { toastSuccess } from "../components/Toast";
+// import { toastSuccess } from "../components/Toast";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -40,8 +41,8 @@ const Login = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "obadararoqeeb@gmail.com",
+      password: "secretpassword",
     },
   });
 
@@ -51,21 +52,26 @@ const Login = () => {
     }
   }, [navigate, userInfo]);
 
+  const successNotifying = (msg) => {
+    toast.success(msg);
+  };
+
   const onSubmit = async (data) => {
-    loginUser(data)
-      .unwrap()
-      .then((res) => {
-        if (res?.data) {
-          dispatch(
-            setUserCredentials({
-              user: res.data.user,
-              token: res.data.accessToken,
-            })
-          );
-          toastSuccess("Login Successful");
-          navigate("/dashboard");
-        }
-      });
+    try {
+      const response = await loginUser(data).unwrap();
+      console.log(response);
+      dispatch(
+        setUserCredentials({
+          user: response.data.user,
+          token: response.data.accessToken,
+        })
+      );
+      successNotifying(response.message);
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error.data.message);
+      // console.log(error)
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { toastError } from "../../components/Toast";
+import { toastError, toastSuccess } from "../../components/Toast";
 import parseError from "../../lib/ParseError";
 import { setUsers } from "../users/userSlice";
 import { apiSlice } from "./apiSlice";
@@ -73,10 +73,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          dispatch(setUsers(result?.data?.data));
           return result;
         } catch (err) {
-          // console.log({ err }, "getProfile");
           const { errorMessage } = parseError(err);
           toastError(errorMessage);
         }
@@ -87,12 +85,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
-  useGetAllUsersQuery,
-  useLazyGetAllUsersQuery,
-  // useAdminLoginMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,
   useVerifyOtpMutation,
+  useAddFundMutation,
+  useGetTransactionsUserIdQuery,
+  useGetUserTransactionsQuery,
+  useLazyGetTransactionsUserIdQuery,
+  useLazyGetUserTransactionsQuery,
+  useGetBalanceQuery,
   useResetPasswordMutation,
 } = usersApiSlice;

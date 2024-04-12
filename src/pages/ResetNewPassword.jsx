@@ -15,7 +15,9 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { SyncLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useResetPasswordMutation } from "../features/api/users";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
@@ -48,6 +50,7 @@ const formSchema = z
 
 const ResetNewPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -59,16 +62,18 @@ const ResetNewPassword = () => {
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
+  console.log(location.pathname?.split("/")[2], "LOCATE");
+
   const onSubmit = async (data) => {
     try {
       const response = await resetPassword(
         data.newPassword,
-        "hdhsjdhskdhskdkd"
+        location.pathname?.split("/")[2]
       ).unwrap();
       successNotifying();
       navigate("/login");
     } catch (error) {
-      toast.error(error.data.message);
+      toast.error(error.data.error);
       console.error("verification email failed:", error);
     }
   };

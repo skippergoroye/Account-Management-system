@@ -11,11 +11,16 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useSelector } from "react-redux";
+import Logout from "./dashboard/Logout";
 
 const DashboardSidebar = () => {
   const { pathname } = useLocation();
+
   const [route, setRoute] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const { userInfo } = useSelector((state) => state?.authUser);
+
+  const [user, setUser] = useState("");
 
   const getRoute = useCallback(() => {
     let route;
@@ -31,6 +36,17 @@ const DashboardSidebar = () => {
     getRoute();
   }, []);
 
+  useEffect(() => {
+    if (pathname.includes("/backoffice")) {
+      setUser("Admin");
+    } else if (userInfo) {
+      setUser(userInfo?.firstName);
+    }
+  }, [pathname]);
+
+  const onLogout = () => {
+    setIsOpen(!isOpen);
+  };
   // const route = pathname.includes("/backoffice")
   //   ? adminSidebarLinks
   //   : sidebarLinks;
@@ -39,7 +55,7 @@ const DashboardSidebar = () => {
       <div className="flex items-center justify-center mt-7">
         <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
       </div>
-      <p className="mt-2 text-center">Howdy {userInfo?.firstName ? userInfo?.firstName: "Folaranmi"}</p>
+      <p className="mt-2 text-center">Howdy {user},</p>
       <div className="w-10/12 mx-auto mt-14">
         {route.map((item) => {
           const isActive = pathname === item.route;
@@ -72,10 +88,12 @@ const DashboardSidebar = () => {
       <Button
         variant="ghost"
         className="absolute flex items-center gap-4 left-16 hover:bg-transparent bottom-10"
+        onClick={onLogout}
       >
         <LogOut />
         Logout
       </Button>
+      <Logout isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
     </div>
   );
 };

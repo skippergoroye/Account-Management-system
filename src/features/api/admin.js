@@ -1,6 +1,6 @@
 import { toastError, toastSuccess } from "../../components/Toast";
 import parseError from "../../lib/ParseError";
-import { setTransaction } from "../auth/authSliceAdmin";
+import { setRequests, setTransaction } from "../auth/authSliceAdmin";
 import { setUser, setUsers } from "../users/userSlice";
 import { apiSliceAdmin } from "./adminApiSlice";
 
@@ -127,6 +127,55 @@ export const adminApiSlice = apiSliceAdmin.injectEndpoints({
         }
       },
     }),
+    getFundingRequests: builder.query({
+      query: (id) => `/api/fund/requests`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          console.log(result);
+          dispatch(setRequests(result?.data?.data));
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
+    approveFunding: builder.mutation({
+      query: (id) => ({
+        url: `/api/fund/approve/${id}`,
+        method: "PATCH",
+        body: {},
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+          try {
+            const result = await queryFulfilled;
+            toastSuccess(result?.message);
+            return result;
+          } catch (err) {
+            const { errorMessage } = parseError(err);
+            toastError(errorMessage);
+          }
+        },
+      }),
+    }),
+    rejectFunding: builder.mutation({
+      query: (id) => ({
+        url: `/api/fund/reject/${id}`,
+        method: "PATCH",
+        body: {},
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+          try {
+            const result = await queryFulfilled;
+            toastSuccess(result?.message);
+            return result;
+          } catch (err) {
+            const { errorMessage } = parseError(err);
+            toastError(errorMessage);
+          }
+        },
+      }),
+    }),
   }),
 });
 
@@ -144,4 +193,8 @@ export const {
   useGetUserTransactionIDQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTransactionIDQuery,
+  useApproveFundingMutation,
+  useGetFundingRequestsQuery,
+  useLazyGetFundingRequestsQuery,
+  useRejectFundingMutation,
 } = adminApiSlice;

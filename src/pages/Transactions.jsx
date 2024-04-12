@@ -25,7 +25,6 @@ const Transactions = () => {
     userInfo?._id || ""
   );
 
-  console.log({ data });
   return (
     <DashboardLayout>
       <div className="bg-white px-5 lg:px-10 py-8 h-[95%] w-[97%] rounded-xl shadow-lg overflow-y-scroll hideScrollbar">

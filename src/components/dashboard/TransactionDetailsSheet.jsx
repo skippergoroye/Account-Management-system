@@ -1,24 +1,12 @@
 import React, { useState } from "react";
 import { CustomSheet } from "../CustomSheet";
 import PropTypes from "prop-types";
-import avatar from "../../assets/icons/avatar.svg";
-import { Button } from "../ui/button";
+
 import { useSelector } from "react-redux";
 import EditCash from "../../utils/editCash";
-import {
-  useBlockUserMutation,
-  useLazyGetSingleUserQuery,
-  useUnBlockUserMutation,
-} from "../../features/api/admin";
 
 function TransactionDetailsSheet({ isOpen, onClose }) {
-  const { user } = useSelector((state) => state?.authAdmin);
   const { transaction } = useSelector((state) => state?.authAdmin);
-
-  const [getSingleUser, { isLoading: fetchingUser }] =
-    useLazyGetSingleUserQuery();
-  const [blockUser, { isLoading: blocking }] = useBlockUserMutation();
-  const [unBlockUser, { isLoading: unblocking }] = useUnBlockUserMutation();
 
   console.log({ transaction });
   return (

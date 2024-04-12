@@ -82,6 +82,7 @@ const AdminTransactions = () => {
                 <TableHead>TRANSACTION ID</TableHead>
                 <TableHead>TRANSACTION TYPE</TableHead>
                 <TableHead>AMOUNT</TableHead>
+                <TableHead>DATE</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -96,6 +97,9 @@ const AdminTransactions = () => {
                         style: "currency",
                         currency: "NGN",
                       }).format(row.amount) ?? 0}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(row?.createdAt).toDateString()}
                     </TableCell>
                     <TableCell className="">
                       <Button

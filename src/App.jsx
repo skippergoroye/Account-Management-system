@@ -47,6 +47,7 @@ const router = createBrowserRouter(
         <Route path="transactions" element={<Transactions />} />
         <Route path="create-account" element={<CreateAccount />} />
         <Route path="verification-mail" element={<VerificationMail />} />
+        
         <Route path="settings" element={<Settings />}>
           <Route index element={<AccountSettings />} />
           <Route path="security-settings" element={<SecuritySettings />} />

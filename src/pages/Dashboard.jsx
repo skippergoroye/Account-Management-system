@@ -1,21 +1,6 @@
 import React, { useState } from "react";
 import DashboardLayout from "../layout/DashboardLayout";
-import avatar from "../assets/icons/avatar.svg";
-
-import { Search, User } from "lucide-react";
-import { Input } from "../components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../components/ui/table";
-import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
-import UserDetailsSheet from "../components/dashboard/UserDetailsSheet";
 import Addmoney from "../components/dashboard/Addmoney";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import TransactionList from "../components/dashboard/TransactionList";
@@ -36,7 +21,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-6 pr-4 mt-14">
-        <RecentActivity />
+        {/* <RecentActivity /> */}
         <TransactionList />
       </div>
       <Addmoney isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />

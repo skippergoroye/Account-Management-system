@@ -28,13 +28,6 @@ function UserList() {
               <EditCash amount={users?.length || 0} />
             </div>
           </div>
-          <div className="w-full md:w-[220px]">
-            <Input
-              className=""
-              leftIcon={<Search />}
-              placeholder="Search users"
-            />
-          </div>
         </div>
         <hr className="my-6" />
       </div>
@@ -42,15 +35,18 @@ function UserList() {
         <Table>
           <TableHeader className="rounded-md bg-gray-50 h-14">
             <TableRow>
+              <TableHead className="">S/N</TableHead>
               <TableHead className=" md:w-[220px]">Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Enrolled</TableHead>
+              <TableHead>Date Enrolled</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="overflow-y-scroll">
-            {users.slice(0, 3).map((_data, i) => (
+            {users.slice(0, 5).map((_data, i) => (
               <TableRow key={_data + i}>
+                <TableCell>{i + 1}</TableCell>
+
                 <TableCell className="font-medium ">
                   <div className="flex w-[180px] md:w-full gap-3">
                     {/* <div className="w-12 h-12 overflow-hidden rounded-full shrink-0">

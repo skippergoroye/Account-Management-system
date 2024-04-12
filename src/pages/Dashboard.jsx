@@ -10,7 +10,7 @@ import EditCash from "../utils/editCash";
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isFetching } = useGetBalanceQuery();
-  console.log({ data });
+
   return (
     <DashboardLayout>
       <div className="w-[96%] lg:w-[495px] bg-white rounded-lg h-[161px] flex flex-col justify-between p-8">

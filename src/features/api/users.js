@@ -52,6 +52,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data.valOne,
       }),
     }),
+    addFund: builder.mutation({
+      query: (values) => ({
+        url: `/api/fund/add`,
+        method: "POST",
+        body: values,
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+          try {
+            const result = await queryFulfilled;
+            toastSuccess("Funding request submitted successfully");
+          } catch (error) {
+            const { errorMessage } = parseError(err);
+            toastError(errorMessage);
+          }
+        }
+      })
+    }),
     getUserTransactions: builder.query({
       query: (id) => `/api/transaction/find/user/${id}`,
       providesTags: ["Users"],

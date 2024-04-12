@@ -45,10 +45,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     resetPassword: builder.mutation({
-      query: (values, id) => ({
-        url: `/api/auth/reset-password/${id}`,
+      query: (data) => ({
+        url: `/api/auth/reset-new-password/${data.valTwo}`,
         method: "PUT",
-        body: values,
+        body: data.valOne,
       }),
     }),
     // adminLogin: builder.mutation({

@@ -65,11 +65,13 @@ const ResetNewPassword = () => {
   console.log(location.pathname?.split("/")[2], "LOCATE");
 
   const onSubmit = async (data) => {
+    let obj = {
+      valOne: data.newPassword,
+      valTwo: location.pathname?.split("/")[2],
+    };
     try {
-      const response = await resetPassword(
-        data.newPassword,
-        location.pathname?.split("/")[2]
-      ).unwrap();
+      const response = await resetPassword(obj).unwrap();
+      console.log(response, "REGISTERRRRR");
       successNotifying();
       navigate("/login");
     } catch (error) {

@@ -6,52 +6,34 @@ import EditCash from "../../utils/editCash";
 import UserList from "../../components/dashboard/UserList";
 
 import { useSelector } from "react-redux";
-import { useGetAllUsersQuery } from "../../features/api/admin";
+import {
+  useAdminDashboardMetricsQuery,
+  useGetAllUsersQuery,
+} from "../../features/api/admin";
 
 const AdminDashboard = () => {
-  const { users } = useSelector((state) => state?.users);
-  const [totalBalance, setTotalBalance] = useState(0);
-  const [totalActive, setTotalActive] = useState(0);
-  const [totalBlocked, setTotalBlocked] = useState(0);
   const { isLoading } = useGetAllUsersQuery();
 
-  useEffect(() => {
-    if (users.length > 0) {
-      const bal = users.reduce((prev, cur) => {
-        return prev + cur.walletBalance;
-      }, 0);
-      const active = users.filter((user) => {
-        if (user.isActive) {
-          return user;
-        }
-      }).length;
-      const blocked = users.filter((user) => user.blocked).length;
-      setTotalBalance(bal);
-      setTotalActive(active);
-      setTotalBlocked(blocked);
-    }
-
-    return () => {};
-  }, [users]);
+  const { data } = useAdminDashboardMetricsQuery();
 
   return (
     <DashboardLayout>
       <div className="grid grid-cols-3 gap-4 pr-4">
         <TopCard
           title={"Total Balance"}
-          amount={totalBalance}
+          amount={data?.data?.totalBalance || 0}
           isAmount={true}
         />
         <TopCard
-          title={"Verified Accounts"}
+          title={"Pending Transactions"}
           textColor="text-green-500"
-          amount={totalActive}
+          amount={data?.data?.pendingTransactions || 0}
           isAmount={false}
         />
         <TopCard
-          title={"Block Accounts"}
+          title={"Failed Transactions"}
           textColor="text-red-500"
-          amount={totalBlocked}
+          amount={data?.data?.failedTransactions || 0}
           isAmount={false}
         />
       </div>

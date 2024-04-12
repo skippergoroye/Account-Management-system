@@ -4,9 +4,13 @@ import { Button } from "../components/ui/button";
 import Addmoney from "../components/dashboard/Addmoney";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import TransactionList from "../components/dashboard/TransactionList";
+import { useGetBalanceQuery } from "../features/api/users";
+import EditCash from "../utils/editCash";
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data, isFetching } = useGetBalanceQuery();
+
   return (
     <DashboardLayout>
       <div className="w-[96%] lg:w-[495px] bg-white rounded-lg h-[161px] flex flex-col justify-between p-8">
@@ -16,7 +20,10 @@ const Dashboard = () => {
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm">
-            NGN <span className="text-2xl font-semibold">0.00</span>
+            NGN{" "}
+            <span className="text-2xl font-semibold">
+              <EditCash amount={data?.balance || 0} />
+            </span>
           </p>
         </div>
       </div>

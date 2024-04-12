@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
+import { useChangePasswordMutation } from "../features/api/security";
+import { useSelector } from "react-redux";
+import { toastError } from "../components/Toast";
 
 const formSchema = yup.object().shape({
   oldPassword: yup.string().required("old password is required"),
@@ -20,6 +23,10 @@ const formSchema = yup.object().shape({
 });
 
 const SecuritySettings = () => {
+
+  const { userInfo } = useSelector((state) => state?.authUser);
+  const userId = userInfo?._id;
+
   const {
     register,
     handleSubmit,
@@ -28,9 +35,25 @@ const SecuritySettings = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const formSubmitHandler = (data) => {
-    console.log(data);
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
+
+  const formSubmitHandler = async (values) => {
+    changePassword(userId, values)
+      .unwrap()
+      .then((res) => {
+        console.log(res)
+      })
+    // console.log(values);
+    // try {
+    //   const response = await changePassword(userId, values);
+    //   console.log("[CHANGEPASSWORD]", response);
+    // } catch (error) {
+    //   // toastError(error.data.error);
+    //   console.log(error.data);
+    // }
   };
+
+
 
   return (
     <div>

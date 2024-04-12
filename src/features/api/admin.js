@@ -85,7 +85,7 @@ export const adminApiSlice = apiSliceAdmin.injectEndpoints({
       }),
     }),
     searchUser: builder.query({
-      query: (id) => `/api/user/find/${id}`,
+      query: (query) => `/api/user/search?query=${query}`,
       providesTags: ["Auth"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {

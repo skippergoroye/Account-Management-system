@@ -15,6 +15,9 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setSearch: (state, action) => {
+      state.users = action.payload;
+    },
   },
 });
 

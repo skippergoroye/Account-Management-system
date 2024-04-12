@@ -7,6 +7,7 @@ const initialState = {
   token: localStorage.getItem("admintoken")
     ? JSON.parse(localStorage.getItem("admintoken"))
     : null,
+  transaction: {},
 };
 
 const authSliceAdmin = createSlice({
@@ -25,8 +26,12 @@ const authSliceAdmin = createSlice({
       localStorage.removeItem("adminInfo");
       localStorage.removeItem("admintoken");
     },
+    setTransaction: (state, action) => {
+      state.transaction = action.payload;
+    },
   },
 });
 
-export const { setAdminCredentials, adminLogout } = authSliceAdmin.actions;
+export const { setAdminCredentials, adminLogout, setTransaction } =
+  authSliceAdmin.actions;
 export default authSliceAdmin.reducer;

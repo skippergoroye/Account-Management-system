@@ -14,47 +14,18 @@ import {
 // import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import UserDetailsSheet from "../components/dashboard/UserDetailsSheet";
+import { useGetUserTransactionsQuery } from "../features/api/users";
+import FetchingComp from "../components/FetchingComp";
+import { useSelector } from "react-redux";
 
 const Transactions = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { userInfo } = useSelector((state) => state.authUser);
+  const { data, isLoading, isFetching } = useGetUserTransactionsQuery(
+    userInfo?._id || ""
+  );
 
-  const data = [
-    {
-      id: "m5gr84i9",
-      amount: 316,
-      status: "success",
-      email: "ken99@yahoo.com",
-      name: "Folaranmi Olujobi",
-    },
-    {
-      id: "3u1reuv4",
-      amount: 242,
-      status: "success",
-      email: "Abe45@gmail.com",
-      name: "Folaranmi Olujobi",
-    },
-    {
-      id: "derv1ws0",
-      amount: 837,
-      status: "processing",
-      email: "Monserrat44@gmail.com",
-      name: "Folaranmi Olujobi",
-    },
-    {
-      id: "5kma53ae",
-      amount: 874,
-      status: "success",
-      email: "Silas22@gmail.com",
-      name: "Folaranmi Olujobi",
-    },
-    {
-      id: "bhqecj4p",
-      amount: 721,
-      status: "failed",
-      email: "carmella@hotmail.com",
-      name: "Folaranmi Olujobi",
-    },
-  ];
+  console.log({ data });
   return (
     <DashboardLayout>
       <div className="bg-white px-5 lg:px-10 py-8 h-[95%] w-[97%] rounded-xl shadow-lg overflow-y-scroll hideScrollbar">
@@ -62,54 +33,57 @@ const Transactions = () => {
           <div className="flex items-center gap-4">
             <p>All Transaction</p>
             <div className="bg-[#F0FDF4] px-3 rounded-md text-sm py-1">
-              1,000
+              {data?.data ? data?.data?.length : 0}
             </div>
           </div>
-          <div className="w-full md:w-[320px]">
+          {/* <div className="w-full md:w-[320px]">
             <Input
               className=""
               leftIcon={<Search />}
               placeholder="Search for transaction"
             />
-          </div>
+          </div> */}
         </div>
         <hr className="my-8" />
-        <Table>
-          <TableHeader className="rounded-md bg-gray-50 h-14">
-            <TableRow>
-              <TableHead className=" md:w-[220px]">STATUS</TableHead>
-              <TableHead>TRANSACTION ID</TableHead>
-              <TableHead>EMAIL</TableHead>
-              <TableHead>AMOUNT</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.length ? (
-              data.map((row, i) => (
-                <TableRow key={i}>
-                  <TableCell>{row?.status}</TableCell>
-                  <TableCell>{row?.id}</TableCell>
-                  <TableCell>{row?.email}</TableCell>
-                  <TableCell>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "NGN",
-                    }).format(row.amount) ?? 0}
+        {isLoading || isFetching ? (
+          <div className="w-full centered">
+            <FetchingComp message="Fetching Transactions..." />
+          </div>
+        ) : (
+          <Table>
+            <TableHeader className="rounded-md bg-gray-50 h-14">
+              <TableRow>
+                <TableHead className=" md:w-[220px]">STATUS</TableHead>
+                <TableHead>TRANSACTION ID</TableHead>
+                <TableHead>TRANSACTION TYPE</TableHead>
+                <TableHead>AMOUNT</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data?.data && data?.data.length ? (
+                data?.data.map((row, i) => (
+                  <TableRow key={i}>
+                    <TableCell>{row?.status}</TableCell>
+                    <TableCell>{row?._id}</TableCell>
+                    <TableCell>{row?.type}</TableCell>
+                    <TableCell>
+                      {new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "NGN",
+                      }).format(row.amount) ?? 0}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} className="h-24 text-center">
+                    No results.
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
       <UserDetailsSheet isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
     </DashboardLayout>

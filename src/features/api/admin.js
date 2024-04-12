@@ -1,5 +1,6 @@
 import { toastError, toastSuccess } from "../../components/Toast";
 import parseError from "../../lib/ParseError";
+import { setTransaction } from "../auth/authSliceAdmin";
 import { setUser, setUsers } from "../users/userSlice";
 import { apiSliceAdmin } from "./adminApiSlice";
 
@@ -99,6 +100,33 @@ export const adminApiSlice = apiSliceAdmin.injectEndpoints({
         }
       },
     }),
+    getUserTransactionID: builder.query({
+      query: (data) => `/api/transaction/${data.userId}/${data.tranId}`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(setTransaction(result?.data?.data));
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
+    getTransactions: builder.query({
+      query: (id) => `/api/transaction/`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
   }),
 });
 
@@ -112,4 +140,8 @@ export const {
   useLazySearchUserQuery,
   useSearchUserQuery,
   useUnBlockUserMutation,
+  useGetTransactionsQuery,
+  useGetUserTransactionIDQuery,
+  useLazyGetTransactionsQuery,
+  useLazyGetUserTransactionIDQuery,
 } = adminApiSlice;

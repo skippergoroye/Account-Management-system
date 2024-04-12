@@ -19,6 +19,8 @@ import UserDetailsSheet from "../components/dashboard/UserDetailsSheet";
 import Addmoney from "../components/dashboard/Addmoney";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import TransactionList from "../components/dashboard/TransactionList";
+import Payment from "../components/dashboard/Payment"
+
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +29,7 @@ const Dashboard = () => {
       <div className="w-[96%] lg:w-[495px] bg-white rounded-lg h-[161px] flex flex-col justify-between p-8">
         <div className="flex items-center justify-between">
           <p className="text-sm text-violet-600">Total Balance</p>
-          <Button onClick={() => setIsOpen(!isOpen)}>ADD MONEY</Button>
+          <Button onClick={() => setIsOpen(!isOpen)}><Payment/></Button>
         </div>
         <div className="flex items-center gap-2">
           <p className="text-sm">

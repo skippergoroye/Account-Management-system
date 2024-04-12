@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import FetchingComp from "../FetchingComp";
 
 function TransactionList() {
   const { userInfo } = useSelector((state) => state.authUser);

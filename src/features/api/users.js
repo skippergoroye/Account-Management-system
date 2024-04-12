@@ -87,6 +87,19 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    getBalance: builder.query({
+      query: (id) => `/api/user/balance`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
   }),
 });
 
@@ -101,4 +114,5 @@ export const {
   useGetUserTransactionsQuery,
   useLazyGetTransactionsUserIdQuery,
   useLazyGetUserTransactionsQuery,
+  useGetBalanceQuery,
 } = usersApiSlice;

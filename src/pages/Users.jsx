@@ -22,8 +22,11 @@ import { useGetAllUsersQuery } from "../features/api/users";
 const Users = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { users } = useSelector((state) => state?.users);
-
+  const [query, setQuery] = useState('');
   const { isLoading } = useGetAllUsersQuery();
+
+  const handleSearch = () => {
+    dispatch( useGetAllUsersQuery(query));
 
   return (
     <DashboardLayout>
@@ -38,8 +41,11 @@ const Users = () => {
             </div>
             <div className="w-full md:w-[320px]">
               <Input
+               type="text"
+               value={query}
+               onChange={(e) => setQuery(e.target.value)}
                 className=""
-                leftIcon={<Search />}
+                leftIcon={<Search onClick={handleSearch} />}
                 placeholder="Search users"
               />
             </div>

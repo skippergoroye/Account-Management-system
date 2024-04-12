@@ -41,8 +41,8 @@ const Login = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "obadararoqeeb@gmail.com",
+      password: "secretpassword",
     },
   });
 
@@ -56,11 +56,10 @@ const Login = () => {
     toast.success(msg);
   };
 
-
   const onSubmit = async (data) => {
     try {
       const response = await loginUser(data).unwrap();
-      console.log(response)
+      console.log(response);
       dispatch(
         setUserCredentials({
           user: response.data.user,
@@ -74,9 +73,6 @@ const Login = () => {
       // console.log(error)
     }
   };
-
-  
-
 
   return (
     <OnboardingLayout

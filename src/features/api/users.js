@@ -1,4 +1,4 @@
-import { toastError } from "../../components/Toast";
+import { toastError, toastSuccess } from "../../components/Toast";
 import parseError from "../../lib/ParseError";
 import { setUsers } from "../users/userSlice";
 import { apiSlice } from "./apiSlice";
@@ -44,32 +44,57 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: values,
       }),
     }),
-    // adminLogin: builder.mutation({
-    //   query: (values) => ({
-    //     url: "/api/auth/login/admin",
-    //     method: "POST",
-    //     body: values,
-    //     async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-    //       try {
-    //         const result = await queryFulfilled;
-    //         return result;
-    //       } catch (err) {
-    //         const { errorMessage } = parseError(err);
-    //         toastError(errorMessage);
-    //       }
-    //     },
-    //   }),
-    // }),
-    getAllUsers: builder.query({
-      query: () => "/api/user",
-      providesTags: ["Auth"],
+    addFund: builder.mutation({
+      query: (values) => ({
+        url: `/api/fund/add`,
+        method: "POST",
+        body: values,
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+          try {
+            const result = await queryFulfilled;
+            toastSuccess("Funding request submitted successfully");
+            return result;
+          } catch (err) {
+            const { errorMessage } = parseError(err);
+            toastError(errorMessage);
+          }
+        },
+      }),
+    }),
+    getUserTransactions: builder.query({
+      query: (id) => `/api/transaction/find/user/${id}`,
+      providesTags: ["Users"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          dispatch(setUsers(result?.data?.data));
           return result;
         } catch (err) {
-          // console.log({ err }, "getProfile");
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
+    getTransactionsUserId: builder.query({
+      query: (userId, tranId) => `/api/transaction/${userId}/${tranId}`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          return result;
+        } catch (err) {
+          const { errorMessage } = parseError(err);
+          toastError(errorMessage);
+        }
+      },
+    }),
+    getBalance: builder.query({
+      query: (id) => `/api/user/balance`,
+      providesTags: ["Users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          return result;
+        } catch (err) {
           const { errorMessage } = parseError(err);
           toastError(errorMessage);
         }
@@ -80,11 +105,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
-  useGetAllUsersQuery,
-  useLazyGetAllUsersQuery,
-  // useAdminLoginMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,
   useVerifyOtpMutation,
+  useAddFundMutation,
+  useGetTransactionsUserIdQuery,
+  useGetUserTransactionsQuery,
+  useLazyGetTransactionsUserIdQuery,
+  useLazyGetUserTransactionsQuery,
+  useGetBalanceQuery,
 } = usersApiSlice;

@@ -11,10 +11,13 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useSelector } from "react-redux";
+import Logout from "./dashboard/Logout";
 
 const DashboardSidebar = () => {
   const { pathname } = useLocation();
+
   const [route, setRoute] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const { userInfo } = useSelector((state) => state?.authUser);
 
   const [user, setUser] = useState("");
@@ -40,6 +43,10 @@ const DashboardSidebar = () => {
       setUser(userInfo?.firstName);
     }
   }, [pathname]);
+
+  const onLogout = () => {
+    setIsOpen(!isOpen);
+  };
   // const route = pathname.includes("/backoffice")
   //   ? adminSidebarLinks
   //   : sidebarLinks;
@@ -81,10 +88,12 @@ const DashboardSidebar = () => {
       <Button
         variant="ghost"
         className="absolute flex items-center gap-4 left-16 hover:bg-transparent bottom-10"
+        onClick={onLogout}
       >
         <LogOut />
         Logout
       </Button>
+      <Logout isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
     </div>
   );
 };

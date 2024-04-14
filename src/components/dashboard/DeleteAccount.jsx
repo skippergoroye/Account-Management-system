@@ -19,7 +19,6 @@ const DeleteAccount = ({ isOpen, onClose, setIsOpen }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   const [deleteUser, { isLoading }] = useDeleteUserMutation();
 
   const onUserDelete = () => {

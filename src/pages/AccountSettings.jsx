@@ -8,6 +8,7 @@ import DeleteAccount from "../components/dashboard/DeleteAccount";
 import { useGetSingleUserByIdQuery, useUpdateUserMutation } from "../features/api/users";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
 
 
 const formSchema = yup.object().shape({

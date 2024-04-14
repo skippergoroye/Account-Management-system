@@ -8,7 +8,6 @@ import DeleteAccount from "../components/dashboard/DeleteAccount";
 import { useGetSingleUserByIdQuery, useUpdateUserMutation } from "../features/api/users";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { SyncLoader } from "react-spinners";
 
 
 const formSchema = yup.object().shape({
@@ -67,7 +66,6 @@ const AccountSettings = () => {
     try {
       const id = userInfo?._id;
       if (!id) {
-        console.error("User ID is undefined.");
         return;
       }
       const updatedUserData = { ...data, _id: id };
@@ -76,10 +74,8 @@ const AccountSettings = () => {
         updatedUser: updatedUserData,
       }).unwrap();
       successNotifying(res.message);
-      console.log(res);
     } catch (error) {
       toast.error("error");
-      console.log(error);
     }
   };
 

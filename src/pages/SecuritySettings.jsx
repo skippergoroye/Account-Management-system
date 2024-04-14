@@ -4,10 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
 import { useChangePasswordMutation } from "../features/api/security";
 import { useSelector } from "react-redux";
-import { toastError, toastSuccess } from "../components/Toast";
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { BASE_URL } from "../features/constants";
+import { toastSuccess } from "../components/Toast";
 import { Loader2 } from "lucide-react";
 
 
@@ -31,20 +28,6 @@ const SecuritySettings = () => {
 
   const { userInfo } = useSelector((state) => state?.authUser);
   const userId = userInfo?._id;
-
-  // Update user details
-  const { mutate: changeMyPassword, isPending } = useMutation({
-    mutationFn: (values) => {
-      return axios.put(`${BASE_URL}/api/user/${userId}/password`, values, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }).then((res) => res.data)
-    },
-    onSuccess: () => {
-      toastSuccess("Password changed successfully.");
-    }
-  });
 
   const {
     register,

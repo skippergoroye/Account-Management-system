@@ -65,8 +65,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             const { errorMessage } = parseError(err);
             toastError(errorMessage);
           }
-        }
-      })
+        },
+      }),
     }),
     getUserTransactions: builder.query({
       query: (id) => `/api/transaction/find/user/${id}`,
@@ -91,7 +91,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     getSingleUserById: builder.query({
       query: (id) => `/api/user/find/${id}`,
     }),
-
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/api/user/${id}`,
+        method: "DELETE",
+      }),
+    }),
     getTransactionsUserId: builder.query({
       query: (userId, tranId) => `/api/transaction/${userId}/${tranId}`,
       providesTags: ["Users"],
@@ -125,6 +130,7 @@ export const {
   useLoginMutation,
   useGetSingleUserByIdQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,

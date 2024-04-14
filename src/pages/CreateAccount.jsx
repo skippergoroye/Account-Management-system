@@ -102,9 +102,9 @@ const CreateAccount = () => {
       feedback="“Using AccMan software has been a game-changer for me! It’s streamlined my finances, making it effortless to track expenses, set budgets, and monitor transactions.”"
     >
       <div className="w-5/6 lg:w-[60%] h-full pt-28 pb-10  hideScrollbar overflow-y-scroll">
-        <div>
+        <Link to="/">
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
-        </div>
+        </Link>
         <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-8">
           Create an account
         </h1>

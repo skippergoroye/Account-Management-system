@@ -80,9 +80,9 @@ const Login = () => {
       author="Idris Alabi"
     >
       <div className="w-5/6 lg:w-[60%]">
-        <div>
+        <Link to="/">
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
-        </div>
+        </Link>
         <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-7">
           Welcome back!
         </h1>

@@ -1,5 +1,5 @@
 import avatar from "../assets/icons/avatar.svg";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,21 +8,20 @@ import DeleteAccount from "../components/dashboard/DeleteAccount";
 import { useGetSingleUserByIdQuery, useUpdateUserMutation } from "../features/api/users";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { SyncLoader } from "react-spinners";
 
 
 const formSchema = yup.object().shape({
-  firstName: yup.string().required("first name is required"),
-  lastName: yup.string().required("last name is required"),
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
   email: yup
     .string()
-    .email("please provide a valid email address")
-    .required("email address is required"),
+    .email("Please provide a valid email address")
+    .required("Email address is required"),
   phoneNumber: yup
     .string()
-    .matches(/^0\d{10}$/, "invalid phone number")
-    .required("phone number is required"),
-  gender: yup.string().required("gender is required"),
+    .matches(/^0\d{10}$/, "Invalid phone number")
+    .required("Phone number is required"),
+  gender: yup.string().required("Gender is required"),
 });
 
 const AccountSettings = () => {
@@ -31,16 +30,21 @@ const AccountSettings = () => {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const {data: userData} = useGetSingleUserByIdQuery(userInfo?._id)
 
-
-
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    setValue 
+    setValue,
+    formState: { errors }, 
   } = useForm({
     resolver: yupResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      gender: "",
+    },
+    mode: "onTouched"
   });
 
 
@@ -62,7 +66,6 @@ const AccountSettings = () => {
     try {
       const id = userInfo?._id;
       if (!id) {
-        console.error("User ID is undefined.");
         return;
       }
       const updatedUserData = { ...data, _id: id };
@@ -71,10 +74,8 @@ const AccountSettings = () => {
         updatedUser: updatedUserData,
       }).unwrap();
       successNotifying(res.message);
-      console.log(res);
     } catch (error) {
       toast.error("error");
-      console.log(error);
     }
   };
 
@@ -86,7 +87,10 @@ const AccountSettings = () => {
       </div>
       <div className="mt-8">
         <div className="flex items-center gap-2">
-          <img src={avatar} className="w-12 h-12 rounded-full" alt="" />
+          {userData?.data?.img !== "" && !isLoading ?
+            (<img src={userData?.data?.img} className="w-12 h-12 rounded-full" alt="" />) :
+            (<div className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-200"><User /></div>)
+          }
           <div>
             <h5 className="text-[#09090B] font-medium">Profile picture</h5>
             <p className="text-[#71717A] text-xs">JPG, PNG max of 2MB</p>
@@ -208,21 +212,19 @@ const AccountSettings = () => {
           <Button
             className="bg-violet-700 hover:bg-violet-500"
             onClick={handleSubmit(formSubmitHandler)}
+            disabled={isLoading}
           >
-            {isLoading ? (
-              <SyncLoader size={"0.8rem"} color="#ffffff" />
-            ) : (
-              "Update Account"
-            )}
+            {!isLoading && "Update Account"}
+            {isLoading && (<>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin " /></>)}
           </Button>
         </div>
         <div className="mt-7">
-          <Button variant="destructive" onClick={() => setIsOpen(!isOpen)}>
+          <Button variant="link" className="text-red-500" onClick={() => setIsOpen(!isOpen)}>
             Delete
           </Button>
         </div>
       </div>
-      <DeleteAccount isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
+      <DeleteAccount isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => setIsOpen(!isOpen)} />
     </div>
   );
 };

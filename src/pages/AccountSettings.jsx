@@ -87,10 +87,7 @@ const AccountSettings = () => {
       </div>
       <div className="mt-8">
         <div className="flex items-center gap-2">
-          {userData?.data?.img !== "" && !isLoading ?
-            (<img src={userData?.data?.img} className="w-12 h-12 rounded-full" alt="" />) :
-            (<div className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-200"><User /></div>)
-          }
+        <img src={avatar} className="w-12 h-12 rounded-full" alt="" />
           <div>
             <h5 className="text-[#09090B] font-medium">Profile picture</h5>
             <p className="text-[#71717A] text-xs">JPG, PNG max of 2MB</p>

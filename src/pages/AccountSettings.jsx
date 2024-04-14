@@ -91,8 +91,8 @@ const AccountSettings = () => {
       </div>
       <div className="mt-8">
         <div className="flex items-center gap-2">
-          {userDetails?.img !== "" && !isLoading ?
-            (<img src={userDetails?.img} className="w-12 h-12 rounded-full" alt="" />) :
+          {userData?.data?.img !== "" && !isLoading ?
+            (<img src={userData?.data?.img} className="w-12 h-12 rounded-full" alt="" />) :
             (<div className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-200"><User /></div>)
           }
           <div>
@@ -216,7 +216,7 @@ const AccountSettings = () => {
           <Button
             className="bg-violet-700 hover:bg-violet-500"
             onClick={handleSubmit(formSubmitHandler)}
-            disabled={loadingUpdate}
+            disabled={isLoading}
           >
             {!isLoading && "Update Account"}
             {isLoading && (<>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin " /></>)}
@@ -228,7 +228,7 @@ const AccountSettings = () => {
           </Button>
         </div>
       </div>
-      <DeleteAccount isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
+      <DeleteAccount isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => setIsOpen(!isOpen)} />
     </div>
   );
 };

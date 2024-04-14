@@ -69,23 +69,12 @@ const SecuritySettings = () => {
       newPassword: values.newPassword
     }
 
-    // changePassword(theData);
-    console.log(theData);
-
     changePassword({
       userId, theData
     }).unwrap().then((res) => {
       reset();
       toastSuccess("Password changed successfully.")
     });
-
-    // try {
-    //   const response = await changePassword(userId, theData);
-    //   console.log("[CHANGEPASSWORD]", response);
-    // } catch (error) {
-    //   // toastError(error.data.error);
-    //   console.log(error.data);
-    // }
   };
 
 

@@ -22,11 +22,6 @@ export const securityApiSlice = apiSlice.injectEndpoints({
         });
       },
     }),
-    deleteUser: builder.mutation({
-      query: (userId) => ({
-        
-      }),
-    }),
   }),
 });
 

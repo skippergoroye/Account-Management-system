@@ -52,6 +52,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data.valOne,
       }),
     }),
+    addFund: builder.mutation({
+      query: (values) => ({
+        url: `/api/fund/add`,
+        method: "POST",
+        body: values,
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+          try {
+            const result = await queryFulfilled;
+            toastSuccess("Funding request submitted successfully");
+          } catch (error) {
+            const { errorMessage } = parseError(err);
+            toastError(errorMessage);
+          }
+        },
+      }),
+    }),
     getUserTransactions: builder.query({
       query: (id) => `/api/transaction/find/user/${id}`,
       providesTags: ["Users"],
@@ -75,7 +91,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     getSingleUserById: builder.query({
       query: (id) => `/api/user/find/${id}`,
     }),
-
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/api/user/${id}`,
+        method: "DELETE",
+      }),
+    }),
     getTransactionsUserId: builder.query({
       query: (userId, tranId) => `/api/transaction/${userId}/${tranId}`,
       providesTags: ["Users"],
@@ -109,6 +130,7 @@ export const {
   useLoginMutation,
   useGetSingleUserByIdQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,

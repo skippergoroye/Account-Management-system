@@ -21,6 +21,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+
     signup: builder.mutation({
       query: (values) => ({
         url: "/api/auth/register/user",
@@ -44,21 +45,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: values,
       }),
     }),
-    addFund: builder.mutation({
-      query: (values) => ({
-        url: `/api/fund/add`,
-        method: "POST",
-        body: values,
-        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-          try {
-            const result = await queryFulfilled;
-            toastSuccess("Funding request submitted successfully");
-            return result;
-          } catch (err) {
-            const { errorMessage } = parseError(err);
-            toastError(errorMessage);
-          }
-        },
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: `/api/auth/reset-new-password/${data.valTwo}`,
+        method: "PUT",
+        body: data.valOne,
       }),
     }),
     getUserTransactions: builder.query({
@@ -74,6 +65,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    updateUser: builder.mutation({
+      query: ({ id, updatedUser }) => ({
+        url: `/api/user/${id}`,
+        method: "PUT",
+        body: updatedUser,
+      }),
+    }),
+    getSingleUserById: builder.query({
+      query: (id) => `/api/user/find/${id}`,
+    }),
+
     getTransactionsUserId: builder.query({
       query: (userId, tranId) => `/api/transaction/${userId}/${tranId}`,
       providesTags: ["Users"],
@@ -105,6 +107,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useGetSingleUserByIdQuery,
+  useUpdateUserMutation,
   useLoginUserMutation,
   useSignupMutation,
   useForgotPasswordMutation,
@@ -115,4 +119,5 @@ export const {
   useLazyGetTransactionsUserIdQuery,
   useLazyGetUserTransactionsQuery,
   useGetBalanceQuery,
+  useResetPasswordMutation,
 } = usersApiSlice;

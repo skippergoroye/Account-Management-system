@@ -5,12 +5,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
 import DeleteAccount from "../components/dashboard/DeleteAccount";
+import { useGetSingleUserByIdQuery, useUpdateUserMutation } from "../features/api/users";
 import { useSelector } from "react-redux";
-import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { BASE_URL } from "../features/constants";
-import { User, Loader2 } from "lucide-react";
-import { toastSuccess } from "../components/Toast";
+import { toast } from "react-toastify";
+import { SyncLoader } from "react-spinners";
 
 
 const formSchema = yup.object().shape({
@@ -29,44 +27,15 @@ const formSchema = yup.object().shape({
 
 const AccountSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { userInfo } = useSelector((state) => state?.authUser);
-
-  // Fetch User details
-
-  const userId = userInfo?._id;
-  const token = JSON.parse(localStorage.getItem("usertoken"));
-
-  const { data: userDetails, isLoading } = useQuery({
-    queryKey: ['getUserDetails'],
-    queryFn: async () => {
-      return await axios.get(`${BASE_URL}/api/user/find/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }).then((res) => res.data.data);
-    }
-  });
-
-  // Update user details
-  const { mutate: updateUserDetails, isPending: loadingUpdate } = useMutation({
-    mutationFn: (values) => {
-      return axios.put(`${BASE_URL}/api/user/${userId}`, values, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }).then((res) => res.data)
-    },
-    onSuccess: () => {
-      toastSuccess("Details updated successfully.");
-      queryClient.invalidateQueries({ queryKey: ["getUserDetails"] });
-    }
-  });
+  const { userInfo } = useSelector((state) => state.authUser);
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const {data: userData} = useGetSingleUserByIdQuery(userInfo?._id)
 
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors }, 
   } = useForm({
     resolver: yupResolver(formSchema),
     defaultValues: {
@@ -79,19 +48,40 @@ const AccountSettings = () => {
     mode: "onTouched"
   });
 
-  const formSubmitHandler = (values) => {
-    updateUserDetails(values)
-  };
 
   useEffect(() => {
-    if (userDetails) {
-      setValue("firstName", userDetails.firstName);
-      setValue("lastName", userDetails.lastName);
-      setValue("email", userDetails.email);
-      setValue("phoneNumber", userDetails.phoneNumber);
-      setValue("gender", userDetails?.gender === "F" ? "female" : "male");
+    if(userData) {
+      setValue("firstName", userData.data?.firstName);
+      setValue("lastName", userData.data?.lastName);
+      setValue("email", userData.data?.email);
+      setValue("phoneNumber", userData.data?.phoneNumber);
+      setValue("gender", userData.data?.gender);
     }
-  }, [userDetails])
+  }, [userData, setValue]);
+
+  const successNotifying = (msg) => {
+    toast.success(msg);
+  };
+
+  const formSubmitHandler = async (data) => {
+    try {
+      const id = userInfo?._id;
+      if (!id) {
+        console.error("User ID is undefined.");
+        return;
+      }
+      const updatedUserData = { ...data, _id: id };
+      const res = await updateUser({
+        id,
+        updatedUser: updatedUserData,
+      }).unwrap();
+      successNotifying(res.message);
+      console.log(res);
+    } catch (error) {
+      toast.error("error");
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -228,8 +218,8 @@ const AccountSettings = () => {
             onClick={handleSubmit(formSubmitHandler)}
             disabled={loadingUpdate}
           >
-            {!loadingUpdate && "Update Account"}
-            {loadingUpdate && <>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin " /></>}
+            {!isLoading && "Update Account"}
+            {isLoading && (<>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin " /></>)}
           </Button>
         </div>
         <div className="mt-7">

@@ -1,24 +1,64 @@
-import { sidebarLinks } from "../constants";
+import { memo, useCallback, useEffect, useState } from "react";
+import { adminSidebarLinks, sidebarLinks } from "../constants";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../assets/PNG/logo.png";
-import { LayoutGrid, LogOut, Settings, Users } from "lucide-react";
+import {
+  LayoutGrid,
+  LogOut,
+  Settings,
+  Users,
+  ArrowRightLeft,
+} from "lucide-react";
 import { Button } from "./ui/button";
+import { useSelector } from "react-redux";
+import Logout from "./dashboard/Logout";
 
 const DashboardSidebar = () => {
   const { pathname } = useLocation();
+
+  const [route, setRoute] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const { userInfo } = useSelector((state) => state?.authUser);
+
+  const [user, setUser] = useState("");
+
+  const getRoute = useCallback(() => {
+    let route;
+    if (pathname.includes("/backoffice")) {
+      route = adminSidebarLinks;
+    } else {
+      route = sidebarLinks;
+    }
+    setRoute(route);
+  }, [pathname]);
+
+  useEffect(() => {
+    getRoute();
+  }, []);
+
+  useEffect(() => {
+    if (pathname.includes("/backoffice")) {
+      setUser("Admin");
+    } else if (userInfo) {
+      setUser(userInfo?.firstName);
+    }
+  }, [pathname]);
+
+  const onLogout = () => {
+    setIsOpen(!isOpen);
+  };
+  // const route = pathname.includes("/backoffice")
+  //   ? adminSidebarLinks
+  //   : sidebarLinks;
   return (
-    <div className="relative hidden col-span-3 bg-white lg:block">
+    <div className="relative hidden col-span-3 bg-white border-r lg:block">
       <div className="flex items-center justify-center mt-7">
         <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
       </div>
-      <p className="mt-2 text-center">Howdy Folaranmi,</p>
+      <p className="mt-2 text-center">Howdy {user},</p>
       <div className="w-10/12 mx-auto mt-14">
-
-        {sidebarLinks.map((item) => {
-          const isActive =
-            pathname === item.route || pathname.startsWith(`${item.route}/`);
-
-          console.log(isActive);
+        {route.map((item) => {
+          const isActive = pathname === item.route;
           return (
             <NavLink
               to={item.route}
@@ -48,17 +88,20 @@ const DashboardSidebar = () => {
       <Button
         variant="ghost"
         className="absolute flex items-center gap-4 left-16 hover:bg-transparent bottom-10"
+        onClick={onLogout}
       >
         <LogOut />
         Logout
       </Button>
+      <Logout isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
     </div>
   );
 };
 
-export default DashboardSidebar;
+export default memo(DashboardSidebar);
 export const ICONS = {
   Dashboard: <LayoutGrid />,
   Users: <Users />,
   Settings: <Settings />,
+  Transactions: <ArrowRightLeft />,
 };

@@ -1,5 +1,5 @@
 import Logo from "../assets/PNG/logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -17,11 +17,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import OnboardingLayout from "../layout/OnboardingLayout";
 import { EyeOff, Eye } from "lucide-react";
-
-// Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-// const passwordValidation = new RegExp(
-//   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-// );
+import { SyncLoader } from "react-spinners";
+import { useLoginUserMutation } from "../features/api/users";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserCredentials } from "../features/auth/authSliceUser";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -31,8 +31,11 @@ const formSchema = z.object({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const { userInfo } = useSelector((state) => state.authUser);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -42,10 +45,33 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log({ values });
-    navigate("/dashboard");
-  }
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/dashboard");
+    }
+  }, [navigate, userInfo]);
+
+  const successNotifying = (msg) => {
+    toast.success(msg);
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await loginUser(data).unwrap();
+      console.log(response);
+      dispatch(
+        setUserCredentials({
+          user: response.data.user,
+          token: response.data.accessToken,
+        })
+      );
+      successNotifying(response.message);
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(error.data.message);
+      // console.log(error)
+    }
+  };
 
   return (
     <OnboardingLayout
@@ -126,7 +152,11 @@ const Login = () => {
             onClick={form.handleSubmit(onSubmit)}
             className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
           >
-            Sign In
+            {isLoading ? (
+              <SyncLoader size={"0.8rem"} color="#ffffff" />
+            ) : (
+              "Sign In"
+            )}
           </Button>
           <p className="mt-4 text-sm text-center">
             Don’t have an account ?{" "}

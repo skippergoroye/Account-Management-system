@@ -15,8 +15,11 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../components/ui/input";
+import { SyncLoader } from "react-spinners";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
+import { useForgotPasswordMutation } from "../features/api/users";
 
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address.").min(1, {
@@ -33,10 +36,27 @@ const ResetPassword = () => {
     },
   });
 
-  function onSubmit(values) {
-    navigate("/verification-mail");
-    console.log({ values });
-  }
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+
+  const successNotifying = () => {
+    toast.success("verification email sent Successful");
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await forgotPassword(data).unwrap();
+      console.log(response, "REGISTERRRRR");
+      successNotifying();
+      // navigate("/verification-mail", {
+      //   state: {
+      //     email: response?.data?.user?.email,
+      //   },
+      // });
+    } catch (error) {
+      toast.error(error.data.message);
+      console.error("verification email failed:", error);
+    }
+  };
 
   return (
     <OnboardingLayout
@@ -49,7 +69,7 @@ const ResetPassword = () => {
           <img src={Logo} alt="Logo" className="h-[20px] md:h-[34px]" />
         </div>
         <h1 className="md:text-4xl text-2xl font-medium leading-[40px] mt-7">
-          Reset password
+          Forgot password
         </h1>
         <p className="mt-px text-base font-normal text-neutral-600">
           It’s easy and quick. let’s get you back.
@@ -81,7 +101,11 @@ const ResetPassword = () => {
             onClick={form.handleSubmit(onSubmit)}
             className="w-full h-12 mt-6 bg-violet-600 hover:bg-violet-400"
           >
-            Reset password
+            {isLoading ? (
+              <SyncLoader size={"0.8rem"} color="#ffffff" />
+            ) : (
+              "Reset password"
+            )}
           </Button>
           <p className="mt-4 text-center">
             Back to{" "}

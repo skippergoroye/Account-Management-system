@@ -11,7 +11,7 @@ const Home = () => {
         <h1 className="text-[68px] font-bold line-[67px]">
           Unlock <span className="text-[#C4B5FD]">Efficiency</span>.
         </h1>
-        <h5 className="text-[38.32px]">
+        <h5 className="text-[38.32px] mb-3">
           Seamlessly Manage your Accounts Today!
         </h5>
         <div className="flex flex-col items-center">

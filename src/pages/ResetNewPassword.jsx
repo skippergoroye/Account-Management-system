@@ -70,10 +70,13 @@ const ResetNewPassword = () => {
       valTwo: location.pathname?.split("/")[2],
     };
     try {
-      const response = await resetPassword(obj).unwrap();
-      console.log(response, "REGISTERRRRR");
-      successNotifying();
-      navigate("/login");
+      const response = await resetPassword(obj)
+        .unwrap()
+        .then((res) => {
+          if (res?.status_code === 200) {
+            navigate("/login");
+          }
+        });
     } catch (error) {
       toast.error(error.data.error);
       console.error("verification email failed:", error);

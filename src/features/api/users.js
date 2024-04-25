@@ -49,7 +49,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `/api/auth/reset-new-password/${data.valTwo}`,
         method: "PUT",
-        body: data.valOne,
+        body: {
+          newPassword: data.valOne,
+        },
       }),
     }),
     addFund: builder.mutation({

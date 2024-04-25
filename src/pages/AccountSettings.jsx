@@ -5,11 +5,13 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/ui/button";
 import DeleteAccount from "../components/dashboard/DeleteAccount";
-import { useGetSingleUserByIdQuery, useUpdateUserMutation } from "../features/api/users";
+import {
+  useGetSingleUserByIdQuery,
+  useUpdateUserMutation,
+} from "../features/api/users";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
-
 
 const formSchema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
@@ -29,13 +31,13 @@ const AccountSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { userInfo } = useSelector((state) => state.authUser);
   const [updateUser, { isLoading }] = useUpdateUserMutation();
-  const {data: userData} = useGetSingleUserByIdQuery(userInfo?._id)
+  const { data: userData } = useGetSingleUserByIdQuery(userInfo?._id);
 
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors }, 
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(formSchema),
     defaultValues: {
@@ -45,12 +47,11 @@ const AccountSettings = () => {
       phoneNumber: "",
       gender: "",
     },
-    mode: "onTouched"
+    mode: "onTouched",
   });
 
-
   useEffect(() => {
-    if(userData) {
+    if (userData) {
       setValue("firstName", userData.data?.firstName);
       setValue("lastName", userData.data?.lastName);
       setValue("email", userData.data?.email);
@@ -87,13 +88,13 @@ const AccountSettings = () => {
         <p className="mt-1.5 text-gray-600">Manage your Accman profile</p>
       </div>
       <div className="mt-8">
-        <div className="flex items-center gap-2">
-        <img src={avatar} className="w-12 h-12 rounded-full" alt="" />
+        {/* <div className="flex items-center gap-2">
+          <img src={avatar} className="w-12 h-12 rounded-full" alt="" />
           <div>
             <h5 className="text-[#09090B] font-medium">Profile picture</h5>
             <p className="text-[#71717A] text-xs">JPG, PNG max of 2MB</p>
           </div>
-        </div>
+        </div> */}
         <div className="border-b border-[#F3F3F3] pb-9">
           <form className="grid grid-cols-1 mt-12 lg:grid-cols-2 md:gap-x-10 lg:gap-x-10 xl:gap-x-14 gap-y-5 md:gap-y-7 pb-9">
             <div className="flex flex-col gap-1">
@@ -150,6 +151,7 @@ const AccountSettings = () => {
                 type="email"
                 name="email"
                 id="email"
+                readOnly
                 placeholder="johndoe@gmail.com"
                 className="px-4 py-2 rounded-md border border-[#E4E4E7] outline-none bg-white text-black"
               />
@@ -213,16 +215,29 @@ const AccountSettings = () => {
             disabled={isLoading}
           >
             {!isLoading && "Update Account"}
-            {isLoading && (<>Saving changes <Loader2 className="w-5 h-5 ml-2 animate-spin " /></>)}
+            {isLoading && (
+              <>
+                Saving changes{" "}
+                <Loader2 className="w-5 h-5 ml-2 animate-spin " />
+              </>
+            )}
           </Button>
         </div>
         <div className="mt-7">
-          <Button variant="link" className="text-red-500" onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            variant="link"
+            className="text-red-500"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             Delete
           </Button>
         </div>
       </div>
-      <DeleteAccount isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => setIsOpen(!isOpen)} />
+      <DeleteAccount
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onClose={() => setIsOpen(!isOpen)}
+      />
     </div>
   );
 };

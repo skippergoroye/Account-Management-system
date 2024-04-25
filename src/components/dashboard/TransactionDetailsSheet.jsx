@@ -8,7 +8,6 @@ import EditCash from "../../utils/editCash";
 function TransactionDetailsSheet({ isOpen, onClose }) {
   const { transaction } = useSelector((state) => state?.authAdmin);
 
-  console.log({ transaction });
   return (
     <CustomSheet isOpen={isOpen} onClose={onClose}>
       <h2 className="text-lg font-semibold">Transaction Details</h2>
@@ -19,17 +18,27 @@ function TransactionDetailsSheet({ isOpen, onClose }) {
         </p>
       </div>
       <div className="flex items-center justify-between mt-5">
+        <p className="font-normal">User </p>
+        <p className="font-normal text-right">
+          {transaction?.userId?.firstName} {transaction?.userId?.lastName}
+        </p>
+      </div>
+      <div className="flex items-center justify-between mt-5">
         <p className="font-normal">User Email address</p>
         <p className="font-normal text-right">{transaction?.userId?.email}</p>
       </div>
       <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Transaction Type</p>
-        <p className="font-normal text-right">{transaction?.type}</p>
+        <p className="font-normal text-right">
+          {transaction?.type.replaceAll("_", " ")}
+        </p>
       </div>
 
       <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Status</p>
-        <p className="font-normal text-right">{transaction?.status}</p>
+        <p className="font-normal text-right">
+          {transaction?.status.toUpperCase()}
+        </p>
       </div>
       <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Transaction ID</p>

@@ -44,6 +44,7 @@ function AllTransactionRequests({ isOpen, onClose, onFund }) {
               return req;
             }
           })
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((req, index) => (
             <div key={index} className="flex items-center justify-between">
               <div>

@@ -7,9 +7,11 @@ function FetchingComp({ message = "Fetching..." }) {
       <img
         src={DocumentImg}
         alt="Documents"
-        className="mt-12 h-auto w-full max-w-[300px]"
+        className="mt-12 h-auto w-full max-w-[200px]"
       />
-      <h3 className="mt-10 text-xl">{message}</h3>
+      <div className="gap-2 mt-10 centered">
+        <h3 className="text-base">{message}</h3>
+      </div>
     </div>
   );
 }

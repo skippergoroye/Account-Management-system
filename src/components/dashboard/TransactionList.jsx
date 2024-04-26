@@ -44,9 +44,7 @@ function TransactionList() {
                 .slice(0, 4)
                 .map((row, i) => (
                   <TableRow key={i}>
-                    <TableCell className="w-min">
-                      {row?.status.toUpperCase()}
-                    </TableCell>
+                    <TableCell className="w-min">{row?.status}</TableCell>
                     <TableCell>
                       {row?.userId?.firstName} {row?.userId?.lastName}
                     </TableCell>

@@ -51,7 +51,9 @@ function AllTransactionRequests({ isOpen, onClose, onFund }) {
                 <p className="font-bold">
                   NGN <EditCash amount={req?.amount} />
                 </p>
-                <p className="font-normal">{req?.userId}</p>
+                <p className="font-normal">
+                  {req?.userId?.firstName} {req?.userId?.lastName}
+                </p>
               </div>
               <div className="flex items-center gap-3">
                 <Button

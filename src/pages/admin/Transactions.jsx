@@ -94,12 +94,12 @@ const AdminTransactions = () => {
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((row, i) => (
                     <TableRow key={i}>
-                      <TableCell>{row?.status.toUpperCase()}</TableCell>
+                      <TableCell>{row?.status}</TableCell>
                       <TableCell>
                         {row?.userId?.firstName} {row?.userId?.lastName}
                       </TableCell>
                       <TableCell>{row?._id}</TableCell>
-                      <TableCell>{row?.type.replaceAll("_", " ")}</TableCell>
+                      <TableCell>{!row?.type ? "" : row?.type}</TableCell>
                       <TableCell>
                         {new Intl.NumberFormat("en-US", {
                           style: "currency",

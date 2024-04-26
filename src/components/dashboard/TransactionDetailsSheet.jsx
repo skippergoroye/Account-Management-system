@@ -29,15 +29,13 @@ function TransactionDetailsSheet({ isOpen, onClose }) {
       </div>
       <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Transaction Type</p>
-        <p className="font-normal text-right">
-          {transaction?.type.replaceAll("_", " ")}
-        </p>
+        <p className="font-normal text-right">{transaction?.type}</p>
       </div>
 
       <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Status</p>
         <p className="font-normal text-right">
-          {transaction?.status.toUpperCase()}
+          {transaction?.status && transaction?.status}
         </p>
       </div>
       <div className="flex items-center justify-between mt-5">

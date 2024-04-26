@@ -90,7 +90,7 @@ function UserDetailsSheet({ isOpen, onClose }) {
               ? "Unblocking..."
               : fetchingUser
               ? "Fetching..."
-              : "Unblock Folaranmi"}
+              : `Unblock ${user?.firstName}`}
           </Button>
         ) : (
           <Button
@@ -110,7 +110,7 @@ function UserDetailsSheet({ isOpen, onClose }) {
               ? "Blocking..."
               : fetchingUser
               ? "Fetching..."
-              : "Block Folaranmi"}
+              : `Block ${user?.firstName}`}
           </Button>
         )}
       </div>

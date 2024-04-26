@@ -9,12 +9,16 @@ import EditCash from "../../utils/editCash";
 import {
   useApproveFundingMutation,
   useLazyGetFundingRequestsQuery,
+  useLazyGetTransactionsQuery,
   useRejectFundingMutation,
 } from "../../features/api/admin";
 import FetchingComp from "../FetchingComp";
 
 function AllTransactionRequests({ isOpen, onClose, onFund }) {
   const { requests } = useSelector((state) => state.authAdmin);
+  const { userInfo } = useSelector((state) => state.authUser);
+  const [getTransactions, { data, isLoading, isFetching }] =
+    useLazyGetTransactionsQuery();
   const [selected, setSelected] = useState("");
 
   const [approveFunding, { isLoading: approving }] =
@@ -63,6 +67,7 @@ function AllTransactionRequests({ isOpen, onClose, onFund }) {
                       .unwrap()
                       .then((res) => {
                         getFundingRequest().unwrap();
+                        getTransactions().unwrap();
                       });
                   }}
                 >
@@ -81,6 +86,7 @@ function AllTransactionRequests({ isOpen, onClose, onFund }) {
                       .unwrap()
                       .then((res) => {
                         getFundingRequest().unwrap();
+                        getTransactions().unwrap();
                       });
                   }}
                 >

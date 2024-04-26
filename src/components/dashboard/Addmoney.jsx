@@ -16,7 +16,11 @@ import {
   FormMessage,
 } from "../../components/ui/form";
 import AddMoneyAlert from "./addMoneyAlert";
-import { useAddFundMutation } from "../../features/api/users";
+import {
+  useAddFundMutation,
+  useLazyGetUserTransactionsQuery,
+} from "../../features/api/users";
+import { useSelector } from "react-redux";
 
 const formSchema = z.object({
   amount: z.string().min(1, {
@@ -26,6 +30,10 @@ const formSchema = z.object({
 function Addmoney({ isOpen, onClose }) {
   const [openAlert, setIsOpen] = useState(false);
   const [addFund, { isLoading }] = useAddFundMutation();
+  const { userInfo } = useSelector((state) => state.authUser);
+  const [getUserTransactions] = useLazyGetUserTransactionsQuery(
+    userInfo?._id || ""
+  );
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -41,6 +49,7 @@ function Addmoney({ isOpen, onClose }) {
   const onFund = () => {
     addFund({ amount: Number(form.watch("amount")) }).then((res) => {
       if (res?.data) {
+        getUserTransactions(userInfo?._id || "");
         setIsOpen(!openAlert);
         onClose();
       }

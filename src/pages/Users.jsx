@@ -119,7 +119,7 @@ const Users = () => {
           <Table>
             <TableHeader className="rounded-md bg-gray-50 h-14">
               <TableRow>
-                <TableHead className=" md:w-[220px]">Name</TableHead>
+                <TableHead className="">Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Enrolled</TableHead>
@@ -128,53 +128,56 @@ const Users = () => {
             </TableHeader>
 
             <TableBody className>
-              {users.map((_data, i) => (
-                <TableRow key={_data + i}>
-                  <TableCell className="font-medium ">
-                    <div className="flex w-[180px] md:w-full  gap-3">
-                      {/* <div className="w-12 h-12 overflow-hidden rounded-full shrink-0">
+              {users
+                .slice()
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((_data, i) => (
+                  <TableRow key={_data + i}>
+                    <TableCell className="font-medium ">
+                      <div className="flex w-[180px] md:w-full  gap-3">
+                        {/* <div className="w-12 h-12 overflow-hidden rounded-full shrink-0">
                         <img src={avatar} className="object-cover w-12 h-12" />
                       </div> */}
-                      <div>
-                        <h6>
-                          {_data?.firstName} {_data?.lastName}
-                        </h6>
-                        {/* <p className="text-xs font-normal">{@olakunle}</p> */}
+                        <div>
+                          <h6>
+                            {_data?.firstName} {_data?.lastName}
+                          </h6>
+                          {/* <p className="text-xs font-normal">{@olakunle}</p> */}
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{_data?.email}</TableCell>
-                  <TableCell>
-                    {_data?.isActive ? "Verified" : "Not verified"}
-                  </TableCell>
-                  <TableCell className="">
-                    {new Date(_data?.createdAt).toDateString()}
-                  </TableCell>
-                  <TableCell className="">
-                    <Button
-                      variant="link"
-                      onClick={() => {
-                        setSelected(_data?._id);
-                        getSingleUser(_data?._id)
-                          .unwrap()
-                          .then((res) => {
-                            console.log(res);
-                            if (res?.data) {
-                              setIsOpen(!isOpen);
-                            }
-                          });
-                      }}
-                      className="hover:bg-transparent text-violet-600"
-                    >
-                      {fetchingUser && selected === _data?._id ? (
-                        <SyncLoader size={"0.5rem"} color="#000" />
-                      ) : (
-                        "View"
-                      )}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>{_data?.email}</TableCell>
+                    <TableCell>
+                      {_data?.isVerified ? "Verified" : "Not verified"}
+                    </TableCell>
+                    <TableCell className="">
+                      {new Date(_data?.createdAt).toDateString()}
+                    </TableCell>
+                    <TableCell className="">
+                      <Button
+                        variant="link"
+                        onClick={() => {
+                          setSelected(_data?._id);
+                          getSingleUser(_data?._id)
+                            .unwrap()
+                            .then((res) => {
+                              console.log(res);
+                              if (res?.data) {
+                                setIsOpen(!isOpen);
+                              }
+                            });
+                        }}
+                        className="hover:bg-transparent text-violet-600"
+                      >
+                        {fetchingUser && selected === _data?._id ? (
+                          <SyncLoader size={"0.5rem"} color="#000" />
+                        ) : (
+                          "View"
+                        )}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         )}

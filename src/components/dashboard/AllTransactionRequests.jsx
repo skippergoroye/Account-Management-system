@@ -44,13 +44,16 @@ function AllTransactionRequests({ isOpen, onClose, onFund }) {
               return req;
             }
           })
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((req, index) => (
             <div key={index} className="flex items-center justify-between">
               <div>
                 <p className="font-bold">
                   NGN <EditCash amount={req?.amount} />
                 </p>
-                <p className="font-normal">{req?.userId}</p>
+                <p className="font-normal">
+                  {req?.userId?.firstName} {req?.userId?.lastName}
+                </p>
               </div>
               <div className="flex items-center gap-3">
                 <Button

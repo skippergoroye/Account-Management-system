@@ -52,7 +52,9 @@ const Transactions = () => {
           <Table>
             <TableHeader className="rounded-md bg-gray-50 h-14">
               <TableRow>
-                <TableHead className=" md:w-[220px]">STATUS</TableHead>
+                <TableHead className=" md:w-min">STATUS</TableHead>
+                <TableHead>USER</TableHead>
+
                 <TableHead>TRANSACTION ID</TableHead>
                 <TableHead>TRANSACTION TYPE</TableHead>
                 <TableHead>AMOUNT</TableHead>
@@ -61,22 +63,28 @@ const Transactions = () => {
             </TableHeader>
             <TableBody>
               {data?.data && data?.data.length ? (
-                data?.data.map((row, i) => (
-                  <TableRow key={i}>
-                    <TableCell>{row?.status}</TableCell>
-                    <TableCell>{row?._id}</TableCell>
-                    <TableCell>{row?.type}</TableCell>
-                    <TableCell>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "NGN",
-                      }).format(row.amount) ?? 0}
-                    </TableCell>
-                    <TableCell>
-                      {new Date(row?.createdAt).toDateString()}
-                    </TableCell>
-                  </TableRow>
-                ))
+                data?.data
+                  .slice()
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .map((row, i) => (
+                    <TableRow key={i}>
+                      <TableCell>{row?.status}</TableCell>
+                      <TableCell>
+                        {row?.userId?.firstName} {row?.userId?.lastName}
+                      </TableCell>
+                      <TableCell>{row?._id}</TableCell>
+                      <TableCell>{row?.type && row?.type}</TableCell>
+                      <TableCell>
+                        {new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "NGN",
+                        }).format(row.amount) ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        {new Date(row?.createdAt).toDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ))
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} className="h-24 text-center">

@@ -25,20 +25,29 @@ function UserDetailsSheet({ isOpen, onClose }) {
         Below is folaranmi personal details, you can reach folaranmi via this
         details.
       </p>
-      <div className="flex flex-col items-center justify-center">
+      {/* <div className="flex flex-col items-center justify-center">
         <div className="h-[108px] w-[108px] overflow-hidden mt-10">
           <img src={avatar} alt="avatar" className="h-[108px] w-[108px]" />
         </div>
         <h1 className="mt-2">
           {user?.firstName} {user?.lastName}
         </h1>
-        <p className="mt-px text-sm text-muted">
-          {user?.gender === "M" ? "Male" : "Female"}
+        <p className="mt-px text-sm text-muted">{user?.gender ?? ""}</p>
+      </div> */}
+      <div className="flex items-center justify-between mt-10">
+        <p className="font-normal">User</p>
+        <p className="font-normal text-right">
+          {" "}
+          {user?.firstName} {user?.lastName}
         </p>
       </div>
-      <div className="flex items-center justify-between mt-10">
+      <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Email address</p>
         <p className="font-normal text-right">{user?.email}</p>
+      </div>
+      <div className="flex items-center justify-between mt-5">
+        <p className="font-normal">Gender</p>
+        <p className="font-normal text-right">{user?.gender}</p>
       </div>
       <div className="flex items-center justify-between mt-5">
         <p className="font-normal">Phone Number</p>
@@ -81,7 +90,7 @@ function UserDetailsSheet({ isOpen, onClose }) {
               ? "Unblocking..."
               : fetchingUser
               ? "Fetching..."
-              : "Unblock Folaranmi"}
+              : `Unblock ${user?.firstName}`}
           </Button>
         ) : (
           <Button
@@ -101,7 +110,7 @@ function UserDetailsSheet({ isOpen, onClose }) {
               ? "Blocking..."
               : fetchingUser
               ? "Fetching..."
-              : "Block Folaranmi"}
+              : `Block ${user?.firstName}`}
           </Button>
         )}
       </div>

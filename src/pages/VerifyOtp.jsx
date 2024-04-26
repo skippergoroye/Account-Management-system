@@ -124,7 +124,7 @@ const VerifyOtp = () => {
             {isLoading ? (
               <SyncLoader size={"0.8rem"} color="#ffffff" />
             ) : (
-              "Reset password"
+              "Verify account"
             )}
           </Button>
           <p className="mt-4 text-center">

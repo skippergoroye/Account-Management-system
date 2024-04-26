@@ -62,7 +62,7 @@ function UserList() {
                 </TableCell>
                 <TableCell>{_data?.email}</TableCell>
                 <TableCell>
-                  {_data?.isActive ? "Verified" : "Not verified"}
+                  {_data?.isVerified ? "Verified" : "Not verified"}
                 </TableCell>
                 <TableCell className="">
                   {new Date(_data?.createdAt).toDateString()}
